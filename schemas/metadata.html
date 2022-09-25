@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schema Element Metadata &mdash; linkml  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Inheritance" href="inheritance.html" />
+    <link rel="prev" title="Models" href="models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> linkml
+            <img src="https://linkml.io/uploads/linkml-logo_color.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/overview.html">LinkML at a glance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Quick Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">LinkML Schemas</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Schema Element Metadata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#providing-descriptions">Providing descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#providing-aliases">Providing aliases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structured-aliases">Structured aliases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecating-elements">Deprecating elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-units">Specifying units</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arbitrary-annotations">Arbitrary annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-metadata-slots">Other metadata slots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inheritance.html">Inheritance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slots.html">Slots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uris-and-mappings.html">URIs and Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enums.html">Semantic Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inlining.html">Inlining objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constraints.html">Adding constraints and rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subsets.html">Subsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imports.html">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Advanced features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">Mapping schemas to other frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linter.html">Schema Linter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="derived-models.html">Derived models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metamodel.html">The metamodel</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">Working with Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generators/index.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">How-to Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ecosystem.html">The LinkML Ecosystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../specifications/linkml-spec.html">LinkML specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/contributing.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers guide:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developers/index.html">Developers guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code.html">Code</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">linkml</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">LinkML Schemas</a> &raquo;</li>
+      <li>Schema Element Metadata</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/schemas/metadata.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="schema-element-metadata">
+<h1>Schema Element Metadata<a class="headerlink" href="#schema-element-metadata" title="Permalink to this heading"></a></h1>
+<p>There are various slots that can be used to provide metadata about
+either a schema or elements of a schema. These typically don’t affect
+the semantics of the model, but rather act as annotations that can be
+used to provide more information to people, or that can guide the
+behavior of some tools.</p>
+<section id="providing-descriptions">
+<h2>Providing descriptions<a class="headerlink" href="#providing-descriptions" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference external" href="https://w3id.org/linkml/description">description</a> slot can be used to provide a human-readable description of any schema element</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">Person</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span><span class="w"></span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span><span class="w"></span>
+<span class="w">      </span><span class="no">A person (alive, dead, undead, or fictional).</span><span class="w"></span>
+</pre></div>
+</div>
+<p>descriptions can include markdown</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>  Person:
+    is_a: NamedThing
+    description: :-
+      A human being including those that are:
+         * alive
+         * dead
+         * undead
+         * fictional
+</pre></div>
+</div>
+<p>However, this is only recommended for schema descriptions.</p>
+<p>This <a class="reference external" href="https://yaml-multiline.info/">guide to yaml formatting</a> may be helpful</p>
+</section>
+<section id="providing-aliases">
+<h2>Providing aliases<a class="headerlink" href="#providing-aliases" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference external" href="https://w3id.org/linkml/aliases">aliases</a> slot can be used to define a list of aliases for a class or slot. This is useful for adding synonymous names to your class (or slot), that serve either as hints for human users, or to enhance search and findability over your model</p>
+<p>Example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Person</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">aliases</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">human being</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">individual</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In practice, aliases are used to help interpret the model, not as an equivalent name for a class or slot name.
+Downstream tooling could use these aliases to help users query the model for example, but the LinkML tooling does not consider
+aliases and element names interchangeable.</p>
+</section>
+<section id="structured-aliases">
+<h2>Structured aliases<a class="headerlink" href="#structured-aliases" title="Permalink to this heading"></a></h2>
+<p>Sometimes you may want to include additional information about an alias</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Person</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">structured_aliases</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">literal_form</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Homo sapiens</span><span class="w"></span>
+<span class="w">      </span><span class="nt">alias_predicate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skos:exactMapping</span><span class="w"></span>
+<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Linnaeus</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">literal_form</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Persona</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">alias_predicate</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skos:exactMapping</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">source</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Google Translate</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">in_language</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">es</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="deprecating-elements">
+<h2>Deprecating elements<a class="headerlink" href="#deprecating-elements" title="Permalink to this heading"></a></h2>
+<p>Any schema element can be deprecated, with a reason provided; optionally, a replacement can be provided</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">classes</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Agent</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">deprecated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the concept of Agent was too abstract, use Person instead</span><span class="w"></span>
+<span class="w">    </span><span class="nt">deprecated_element_has_exact_replacement</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Person</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="specifying-units">
+<h2>Specifying units<a class="headerlink" href="#specifying-units" title="Permalink to this heading"></a></h2>
+<p>You can use the <a class="reference external" href="https://w3id.org/linkml/unit">unit</a> element to annotate a slot
+as holding a value in a particular unit:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">slots</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">height_in_cm</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span><span class="w"></span>
+<span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ucum_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cm</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In this case we are annotating the <code class="docutils literal notranslate"><span class="pre">height_in_cm</span></code> slot with a unit, where that unit is
+itself described as having a <a class="reference external" href="https://ucum.org/">UCUM</a> code of <code class="docutils literal notranslate"><span class="pre">cm</span></code>.</p>
+<p><strong>Note</strong>: embedding the unit in the name of the slot <em>as well</em> as the explicit annotation may seem redundant.
+However, in most scenarios it is good practice to make a measurement slot unambiguous, unless it can be guaranteed
+that the data will never be separated from the LinkML schema / data dictionary.</p>
+<p>You can use a number of different systems for specifying the unit, including:</p>
+<ul class="simple">
+<li><p>UCUM</p></li>
+<li><p>QUDT</p></li>
+<li><p>IEC61360 codes</p></li>
+<li><p>Arbitrary ontology or vocabulary CURIEs, taken from sources like:</p>
+<ul>
+<li><p><a class="reference external" href="https://obofoundry.org/ontology/uo">UO</a></p></li>
+<li><p><a class="reference external" href="https://obofoundry.org/ontology/ncit">NCIT</a></p></li>
+<li><p><a class="reference external" href="https://bioportal.bioontology.org/ontologies/OM">OM</a></p></li>
+<li><p><a class="reference external" href="https://w3id.org/uom/">UOM</a></p></li>
+</ul>
+</li>
+</ul>
+<p>Additionally, you can specify what kind of quantity is being measured,
+using an ontology.</p>
+<p>For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prefixes</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">linkml</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/linkml/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">UO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://purl.obolibrary.org/obo/UO_</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PATO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://purl.obolibrary.org/obo/UO_</span><span class="w"></span>
+<span class="w">  </span><span class="nt">qudt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://qudt.org/schema/qudt/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">uom</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/uom/</span><span class="w"></span>
+<span class="w">    </span>
+<span class="nt">slots</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">height_in_cm</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span><span class="w"></span>
+<span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ucum_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cm</span><span class="w"></span>
+<span class="w">      </span><span class="nt">iec61360code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UAA375</span><span class="w"></span>
+<span class="w">      </span><span class="nt">exact_mappings</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UO:0000015</span><span class="w"> </span><span class="c1">## centimeter</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uom:cm</span><span class="w"></span>
+<span class="w">      </span><span class="nt">has_quantity_kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PATO:0000119</span><span class="w"> </span><span class="c1">## height     </span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you must, you can omit any kind of formal description altogether and simply
+provide a symbol.</p>
+<p>You can also declare your own primitive types extending float, double, decimal, or integer,
+and describing these with a unit element. This type can then be used in multiple
+different slots.</p>
+<p>For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">types</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">KilogramValue</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">typeof</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span><span class="w"></span>
+<span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ucum_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kg</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Specifying the unit doesn’t affect the behavior of the slot or type, but it’s a useful way of
+formally specifying the intended use of a slot, and provides a potential hook for interoperation
+and automated data model mapping.</p>
+</section>
+<section id="arbitrary-annotations">
+<h2>Arbitrary annotations<a class="headerlink" href="#arbitrary-annotations" title="Permalink to this heading"></a></h2>
+<p>You can use the <a class="reference external" href="https://w3id.org/linkml/annotations">annotations</a> element to provide
+arbitrary key-value pairs for any of your schema elements. This can be
+used for when none of the existing metamodel slots are appropriate.</p>
+<p>One use case is providing various tooltips, display hints, or UI hints for
+deta elements. These can then be used by applications such as UIs to drive behavior.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">slots</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">entry_hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make sure you enter the FULL name here</span><span class="w"></span>
+<span class="w">      </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">green</span><span class="w"></span>
+<span class="w">      </span><span class="nt">tooltip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name of person</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="other-metadata-slots">
+<h2>Other metadata slots<a class="headerlink" href="#other-metadata-slots" title="Permalink to this heading"></a></h2>
+<p>See <a class="reference external" href="https://w3id.org/linkml/CommonMetadata">CommonMetadata</a> for other slots</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="models.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="inheritance.html" class="btn btn-neutral float-right" title="Inheritance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, LinkML Authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
