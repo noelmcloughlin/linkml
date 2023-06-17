@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>linkml.utils package - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of use</a></li>
@@ -336,13 +338,14 @@ Otherwise use the class that is not referenced as a range in any other class.</p
 <span id="linkml-utils-datavalidator-module"></span><h2>linkml.utils.datavalidator module<a class="headerlink" href="#module-linkml.utils.datavalidator" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="linkml.utils.datavalidator.DataValidator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.utils.datavalidator.</span></span><span class="sig-name descname"><span class="pre">DataValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SchemaDefinition" title="linkml_runtime.linkml_model.meta.SchemaDefinition"><span class="pre">SchemaDefinition</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/utils/datavalidator.html#DataValidator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.datavalidator.DataValidator" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.utils.datavalidator.</span></span><span class="sig-name descname"><span class="pre">DataValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SchemaDefinition" title="linkml_runtime.linkml_model.meta.SchemaDefinition"><span class="pre">SchemaDefinition</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/utils/datavalidator.html#DataValidator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.datavalidator.DataValidator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for all validators</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.utils.datavalidator.DataValidator.schema">
-<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SchemaDefinition" title="linkml_runtime.linkml_model.meta.SchemaDefinition"><span class="pre">SchemaDefinition</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.utils.datavalidator.DataValidator.schema" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SchemaDefinition" title="linkml_runtime.linkml_model.meta.SchemaDefinition"><span class="pre">SchemaDefinition</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.utils.datavalidator.DataValidator.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>LinkML Schema to validate against</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.utils.datavalidator.DataValidator.validate_dict">
@@ -817,7 +820,7 @@ open file or a pre-parsed schema</p>
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -986,6 +989,11 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <section id="module-linkml.utils.helpers">
 <span id="linkml-utils-helpers-module"></span><h2>linkml.utils.helpers module<a class="headerlink" href="#module-linkml.utils.helpers" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="linkml.utils.helpers.convert_to_snake_case">
+<span class="sig-prename descclassname"><span class="pre">linkml.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">convert_to_snake_case</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/utils/helpers.html#convert_to_snake_case"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.helpers.convert_to_snake_case" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="linkml.utils.helpers.remove_duplicates">
 <span class="sig-prename descclassname"><span class="pre">linkml.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">remove_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/utils/helpers.html#remove_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.helpers.remove_duplicates" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove duplicate tuples from a list of tuples.</p>
@@ -1009,6 +1017,12 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dt class="sig sig-object py" id="linkml.utils.ifabsent_functions.default_curie_or_uri">
 <span class="sig-prename descclassname"><span class="pre">linkml.utils.ifabsent_functions.</span></span><span class="sig-name descname"><span class="pre">default_curie_or_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#linkml.utils.schemaloader.SchemaLoader" title="linkml.utils.schemaloader.SchemaLoader"><span class="pre">SchemaLoader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/utils/ifabsent_functions.html#default_curie_or_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.ifabsent_functions.default_curie_or_uri" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="linkml.utils.ifabsent_functions.default_ns_for">
+<span class="sig-prename descclassname"><span class="pre">linkml.utils.ifabsent_functions.</span></span><span class="sig-name descname"><span class="pre">default_ns_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#linkml.utils.schemaloader.SchemaLoader" title="linkml.utils.schemaloader.SchemaLoader"><span class="pre">SchemaLoader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.ClassDefinition" title="linkml_runtime.linkml_model.meta.ClassDefinition"><span class="pre">ClassDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/utils/ifabsent_functions.html#default_ns_for"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.utils.ifabsent_functions.default_ns_for" title="Permalink to this definition">#</a></dt>
+<dd><p>Return code to produce the default namespace for the supplied class</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="linkml.utils.ifabsent_functions.default_uri_for">
@@ -1493,7 +1507,7 @@ content and load a SchemaSynopsis entry</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>typ</strong> – element type</p></li>
 <li><p><strong>k</strong> – element name</p></li>
-<li><p><strong>v</strong> – element deffinition</p></li>
+<li><p><strong>v</strong> – element definition</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1670,7 +1684,7 @@ content and load a SchemaSynopsis entry</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1808,6 +1822,7 @@ content and load a SchemaSynopsis entry</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-linkml.utils.helpers">linkml.utils.helpers module</a><ul>
+<li><a class="reference internal" href="#linkml.utils.helpers.convert_to_snake_case"><code class="docutils literal notranslate"><span class="pre">convert_to_snake_case()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.helpers.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">remove_duplicates()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.helpers.write_to_file"><code class="docutils literal notranslate"><span class="pre">write_to_file()</span></code></a></li>
 </ul>
@@ -1815,6 +1830,7 @@ content and load a SchemaSynopsis entry</p>
 <li><a class="reference internal" href="#module-linkml.utils.ifabsent_functions">linkml.utils.ifabsent_functions module</a><ul>
 <li><a class="reference internal" href="#linkml.utils.ifabsent_functions.curie_for"><code class="docutils literal notranslate"><span class="pre">curie_for()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.ifabsent_functions.default_curie_or_uri"><code class="docutils literal notranslate"><span class="pre">default_curie_or_uri()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.utils.ifabsent_functions.default_ns_for"><code class="docutils literal notranslate"><span class="pre">default_ns_for()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.ifabsent_functions.default_uri_for"><code class="docutils literal notranslate"><span class="pre">default_uri_for()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.ifabsent_functions.ifabsent_postinit_declaration"><code class="docutils literal notranslate"><span class="pre">ifabsent_postinit_declaration()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.utils.ifabsent_functions.ifabsent_value_declaration"><code class="docutils literal notranslate"><span class="pre">ifabsent_value_declaration()</span></code></a></li>

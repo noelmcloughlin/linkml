@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Derived models" href="derived-models.html" /><link rel="prev" title="Mapping schemas to other frameworks" href="generators.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>Schema Linter - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -299,10 +301,10 @@
         <article role="main">
           <section id="schema-linter">
 <h1>Schema Linter<a class="headerlink" href="#schema-linter" title="Permalink to this heading">#</a></h1>
-<p>When authoring a schema – especially when it is large or there are many authors – it is important to establish and adhere to best practices. For example, while <a class="reference internal" href="metadata.html#providing-descriptions"><span class="std std-doc">providing a description</span></a> for each schema element is not required, descriptions can help reduce miscommunication between schema authors. LinkML provides a configurable <a class="reference external" href="https://en.wikipedia.org/wiki/Lint_(software)">linter</a> to identify violations of best practices or error-prone patterns.</p>
+<p>When authoring a schema – especially when it is large or there are many authors – it is important to establish and adhere to best practices. For example, while <a class="reference internal" href="metadata.html#providing-descriptions"><span class="std std-ref">providing a description</span></a> for each schema element is not required, descriptions can help reduce miscommunication between schema authors. LinkML provides a configurable <a class="reference external" href="https://en.wikipedia.org/wiki/Lint_(software)">linter</a> to identify violations of best practices or error-prone patterns.</p>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">linkml-lint</span></code> command performs checks on a schema which – while valid – may not represent best practices or may indicate a likely mistake in the schema. These checks are referred to as <a class="reference internal" href="#rules"><span class="std std-doc">rules</span></a> and without additional <a class="reference internal" href="#configuration"><span class="std std-doc">configuration</span></a> a default set of rules will be used.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">linkml-lint</span></code> command performs checks on a schema which – while valid – may not represent best practices or may indicate a likely mistake in the schema. These checks are referred to as <a class="reference internal" href="#rules">rules</a> and without additional <a class="reference internal" href="#configuration">configuration</a> a default set of rules will be used.</p>
 <p>To lint a single schema file:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>linkml-lint<span class="w"> </span>schema.yaml
 </pre></div>
@@ -328,7 +330,7 @@
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">extends</span></code> field of the configuration file allows you to inherit from an existing configuration. Currently the only valid value for this field is <code class="docutils literal notranslate"><span class="pre">recommended</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">rules</span></code> field is a dictionary where each key is a rule name and the value is the configuration for that rule. Every rule has at least one configurable property: <code class="docutils literal notranslate"><span class="pre">level</span></code>. Each rule’s <code class="docutils literal notranslate"><span class="pre">level</span></code> can be set to <code class="docutils literal notranslate"><span class="pre">disabled</span></code> (the default) meaning the schema will not be checked with that rule, or <code class="docutils literal notranslate"><span class="pre">level</span></code> can be set to <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code> the schema will be checked with that rule and violations will be reported. The distinction between <code class="docutils literal notranslate"><span class="pre">warning</span></code> and <code class="docutils literal notranslate"><span class="pre">error</span></code> is solely cosmetic and is designed to help you prioritize issues to fix. If you are unsure there is no harm in only using the <code class="docutils literal notranslate"><span class="pre">error</span></code> level. Some rules have additional configuration beyond the <code class="docutils literal notranslate"><span class="pre">level</span></code> property, as described in the <a class="reference internal" href="#rules"><span class="std std-doc">Rules</span></a> section.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rules</span></code> field is a dictionary where each key is a rule name and the value is the configuration for that rule. Every rule has at least one configurable property: <code class="docutils literal notranslate"><span class="pre">level</span></code>. Each rule’s <code class="docutils literal notranslate"><span class="pre">level</span></code> can be set to <code class="docutils literal notranslate"><span class="pre">disabled</span></code> (the default) meaning the schema will not be checked with that rule, or <code class="docutils literal notranslate"><span class="pre">level</span></code> can be set to <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code> the schema will be checked with that rule and violations will be reported. The distinction between <code class="docutils literal notranslate"><span class="pre">warning</span></code> and <code class="docutils literal notranslate"><span class="pre">error</span></code> is solely cosmetic and is designed to help you prioritize issues to fix. If you are unsure there is no harm in only using the <code class="docutils literal notranslate"><span class="pre">error</span></code> level. Some rules have additional configuration beyond the <code class="docutils literal notranslate"><span class="pre">level</span></code> property, as described in the <a class="reference internal" href="#rules">Rules</a> section.</p>
 <p>To use the recommended configuration set except for one of the rules, manually specify <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">disabled</span></code> for that rule:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the recommended rule set except for the standard_naming rule</span>
 <span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">recommended</span>
@@ -451,7 +453,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

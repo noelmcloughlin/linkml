@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="FAQ" href="../faq/index.html" /><link rel="prev" title="LinkML specification" href="../specifications/linkml-spec.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>Contribution Guidelines - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -299,23 +301,24 @@
         <article role="main">
           <section id="contribution-guidelines">
 <h1>Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Permalink to this heading">#</a></h1>
+<p>For general info about how to contribute to LinkML, please see <a class="reference external" href="https://linkml.io/linkml/faq/contributing.html">FAQ: Contributing</a>.</p>
 <section id="linkml-testing-framework">
 <h2>LinkML Testing Framework<a class="headerlink" href="#linkml-testing-framework" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>The LinkML test suite can be found in the <span class="xref myst">tests</span> folder. The tests are written under specific subfolders within the main aggregated <span class="xref myst">tests</span> suite.</p></li>
-<li><p>If you want to formalize your test case into a unit test, you should decide the scope of your test and find the subfolder that the test might best fit under. For example, if your test is related to one of the LinkML generators, then you would create it under the <span class="xref myst">test_generators</span> subfolder.</p></li>
-<li><p>There are a few model LinkML schemas within the test suite that you can use while creating your unit tests. You will ideally find them in an <code class="docutils literal notranslate"><span class="pre">input</span></code> directory within the scoped tests folder you are looking at. For example, the <span class="xref myst">input</span> directory under the <span class="xref myst">test_generators</span> subfolder. One of the main test schemas that most LinkML generator related unit tests use is the <a class="reference download internal" download="" href="../_downloads/3056c1be5011c2a007c49ae6675d18e5/kitchen_sink.yaml"><span class="xref download myst">kitchen_sink.yaml</span></a>.</p></li>
-<li><p>Outside of generators, users will want to create issue specific unit tests. For that, you need to turn your attention to the <span class="xref myst">test_issues</span> folder.</p>
+<li><p>The LinkML test suite can be found in the <a class="reference internal" href="#../../tests/"><span class="xref myst">tests</span></a> folder. The tests are written under specific subfolders within the main aggregated <a class="reference internal" href="#../../tests/"><span class="xref myst">tests</span></a> suite.</p></li>
+<li><p>If you want to formalize your test case into a unit test, you should decide the scope of your test and find the subfolder that the test might best fit under. For example, if your test is related to one of the LinkML generators, then you would create it under the <a class="reference internal" href="#../../tests/test_generators/"><span class="xref myst">test_generators</span></a> subfolder.</p></li>
+<li><p>There are a few model LinkML schemas within the test suite that you can use while creating your unit tests. You will ideally find them in an <code class="docutils literal notranslate"><span class="pre">input</span></code> directory within the scoped tests folder you are looking at. For example, the <a class="reference internal" href="#../../tests/test_generators/input/"><span class="xref myst">input</span></a> directory under the <a class="reference internal" href="#../../tests/test_generators/"><span class="xref myst">test_generators</span></a> subfolder. One of the main test schemas that most LinkML generator related unit tests use is the <a class="reference download internal" download="" href="../_downloads/3056c1be5011c2a007c49ae6675d18e5/kitchen_sink.yaml"><span class="xref download myst">kitchen_sink.yaml</span></a>.</p></li>
+<li><p>Outside of generators, users will want to create issue specific unit tests. For that, you need to turn your attention to the <a class="reference internal" href="#../../tests/test_issues/"><span class="xref myst">test_issues</span></a> folder.</p>
 <ul>
 <li><p>The current direction is to first make an issue with specific instructions to reproduce the bug under the <a class="reference external" href="https://github.com/linkml/linkml/issues">issues</a> tab on the main <a class="reference external" href="https://github.com/linkml/linkml/">linkml</a> GitHub repo.</p></li>
-<li><p>Then, create a test case for the above issue, with an minimal test LinkML schema in the input folder of the <span class="xref myst">test_issues</span> suite. A minimal test case entails that you only use the elements you need in the schema for your unit test and not bloat the test schema with more elements that necessary.</p></li>
+<li><p>Then, create a test case for the above issue, with an minimal test LinkML schema in the input folder of the <a class="reference internal" href="#../../tests/test_issues/"><span class="xref myst">test_issues</span></a> suite. A minimal test case entails that you only use the elements you need in the schema for your unit test and not bloat the test schema with more elements that necessary.</p></li>
 <li><p>Ideally, it is also advised not to bloat the output folders under each sub test suites with large autogenerated outputs. You can use the Python standard <a class="reference external" href="https://docs.python.org/3/library/tempfile.html">tempfile</a> module to create temporary files where you can direct the output to and then load in the temporary file however for your test case assertions. See an example <a class="reference download internal" download="" href="../_downloads/76cf7ccbaa949d8efed48ecf06d010de/test_excelgen.py"><span class="xref download myst">here</span></a>.</p></li>
 </ul>
 </li>
 </ul>
 <section id="directions-for-creating-a-unit-test">
 <h3>Directions for creating a unit test<a class="headerlink" href="#directions-for-creating-a-unit-test" title="Permalink to this heading">#</a></h3>
-<p>There are two cases you need to consider while writing your unit test. The first one is when you are writing a test for bugs in the LinkML library and the second is for enhancements. For bugs you would typically create your test case in the <span class="xref myst">test_issues</span> folder, whereas for enhancements, you would typically create it in the <span class="xref myst">test_generators</span>, <span class="xref myst">test_utils</span>, etc. subfolder.</p>
+<p>There are two cases you need to consider while writing your unit test. The first one is when you are writing a test for bugs in the LinkML library and the second is for enhancements. For bugs you would typically create your test case in the <a class="reference internal" href="#../../tests/test_issues/"><span class="xref myst">test_issues</span></a> folder, whereas for enhancements, you would typically create it in the <a class="reference internal" href="#../../tests/test_generators/"><span class="xref myst">test_generators</span></a>, <a class="reference internal" href="#../../tests/test_utils/"><span class="xref myst">test_utils</span></a>, etc. subfolder.</p>
 <ul class="simple">
 <li><p>While creating a test for a bug, you can should make a file called <code class="docutils literal notranslate"><span class="pre">test_linkml_issue_NNN.py</span></code>. After that it is perhaps easiest to just copy over a test from an existing issue test case and modify it.</p>
 <ul>
@@ -435,6 +438,9 @@ insight into your work and allows them to provide feedback early on.</p></li>
 <h3>Example of a Bad Issue:<a class="headerlink" href="#example-of-a-bad-issue" title="Permalink to this heading">#</a></h3>
 <p><img alt="" src="../_images/a_bad_issue.png" /></p>
 </section>
+<section id="for-general-info-about-how-to-contribute-to-linkml-please-see-faq-contributing">
+<h3>For general info about how to contribute to LinkML, please see <a class="reference external" href="https://linkml.io/linkml/faq/contributing.html">FAQ: Contributing</a>.<a class="headerlink" href="#for-general-info-about-how-to-contribute-to-linkml-please-see-faq-contributing" title="Permalink to this heading">#</a></h3>
+</section>
 </section>
 </section>
 
@@ -467,7 +473,7 @@ insight into your work and allows them to provide feedback early on.</p></li>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -506,6 +512,7 @@ insight into your work and allows them to provide feedback early on.</p></li>
 <li><a class="reference internal" href="#ticket-issue-creation">Ticket/Issue Creation</a></li>
 <li><a class="reference internal" href="#example-of-a-good-issue">Example of a Good Issue:</a></li>
 <li><a class="reference internal" href="#example-of-a-bad-issue">Example of a Bad Issue:</a></li>
+<li><a class="reference internal" href="#for-general-info-about-how-to-contribute-to-linkml-please-see-faq-contributing">For general info about how to contribute to LinkML, please see FAQ: Contributing.</a></li>
 </ul>
 </li>
 </ul>

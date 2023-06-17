@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="FAQ: Python" href="python.html" /><link rel="prev" title="FAQ: Modeling" href="modeling.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>FAQ: Tools - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -535,8 +537,8 @@ exchange format.</p>
 able to take any LinkML objects, <a class="reference external" href="https://linkml.io/linkml/data/index.html">serialize as JSON</a>,
 and store in the database, as well as the reverse.</p>
 </section>
-<section id="can-i-use-linkml-is-conjunction-with-triplestores">
-<h2>Can I use LinkML is conjunction with Triplestores?<a class="headerlink" href="#can-i-use-linkml-is-conjunction-with-triplestores" title="Permalink to this heading">#</a></h2>
+<section id="can-i-use-linkml-in-conjunction-with-triplestores">
+<h2>Can I use LinkML in conjunction with Triplestores?<a class="headerlink" href="#can-i-use-linkml-in-conjunction-with-triplestores" title="Permalink to this heading">#</a></h2>
 <p>RDF is a natural way of serializing and working with data in LinkML, see
 <a class="reference external" href="https://linkml.io/linkml/data/rdf.html">working with RDF</a>.</p>
 <p>There are some additional helper packages for working with RDF stored in triplestores:</p>
@@ -544,6 +546,20 @@ and store in the database, as well as the reverse.</p>
 <li><p><a class="reference external" href="https://github.com/linkml/sparqlfun">sparqlfun</a> allows you to define SPARQL templates in LinkML</p></li>
 <li><p><a class="reference external" href="https://github.com/linkml/linkml-sparql">linkml-sparql</a> is an experimental ORM for SPARQL</p></li>
 </ul>
+</section>
+<section id="can-i-use-linkml-in-conjunction-with-neo4j-or-graph-databases">
+<h2>Can I use LinkML in conjunction with Neo4J or graph databases?<a class="headerlink" href="#can-i-use-linkml-in-conjunction-with-neo4j-or-graph-databases" title="Permalink to this heading">#</a></h2>
+<p>You definitely can, although we don’t yet have any bindings for Neo4J or other graph databases.</p>
+<p>Note however, that most of the examples and documentation on this site
+is geared towards either JSON tree-oriented data shapes, or RDF
+triples. Graph databases typically follow a property-graph (PG).</p>
+<p>If you are using PGs, we recommend following the design patterns in
+the <a class="reference external" href="https://biolink.github.io/biolink-model/">BioLink Model</a>, which
+itself follows commonly established Entity-Relationship (ER)
+patterns. Here you would have one set of classes corresponding to
+nodes, and another set of classes corresponding to edges. The slots on
+edge classes can be decorated with
+<a class="reference external" href="https://w3id.org/relational_role">relational_role</a> descriptors.</p>
 </section>
 <section id="can-i-use-my-schema-to-do-reasoning-over-my-data">
 <h2>Can I use my schema to do reasoning over my data?<a class="headerlink" href="#can-i-use-my-schema-to-do-reasoning-over-my-data" title="Permalink to this heading">#</a></h2>
@@ -609,7 +625,7 @@ but there may be scenarios where you have a CSV with large data values, e.g</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -656,7 +672,8 @@ but there may be scenarios where you have a CSV with large data values, e.g</p>
 <li><a class="reference internal" href="#can-i-customize-the-markdown-generation-for-my-schema-site">Can I customize the Markdown generation for my schema site?</a></li>
 <li><a class="reference internal" href="#can-i-use-linkml-in-conjunction-with-sql-databases">Can I use LinkML in conjunction with SQL Databases?</a></li>
 <li><a class="reference internal" href="#can-i-use-linkml-in-conjunction-with-mongodb">Can I use LinkML in conjunction with MongoDB?</a></li>
-<li><a class="reference internal" href="#can-i-use-linkml-is-conjunction-with-triplestores">Can I use LinkML is conjunction with Triplestores?</a></li>
+<li><a class="reference internal" href="#can-i-use-linkml-in-conjunction-with-triplestores">Can I use LinkML in conjunction with Triplestores?</a></li>
+<li><a class="reference internal" href="#can-i-use-linkml-in-conjunction-with-neo4j-or-graph-databases">Can I use LinkML in conjunction with Neo4J or graph databases?</a></li>
 <li><a class="reference internal" href="#can-i-use-my-schema-to-do-reasoning-over-my-data">Can I use my schema to do reasoning over my data?</a></li>
 <li><a class="reference internal" href="#what-does-if-missing-mean-in-my-json-output">What does _if_missing mean in my JSON output?</a></li>
 <li><a class="reference internal" href="#what-does-csv-error-field-larger-than-field-limit-131072-mean">What does _csv.Error: field larger than field limit (131072) mean?</a></li>

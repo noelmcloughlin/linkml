@@ -1,5 +1,11 @@
 # FAQ: Modeling
 
+## How do I get started defining a data model?
+
+The [tutorial](https://linkml.io/linkml/intro/tutorial) walks you through some basic data models.
+
+After that the section on [schemas](https://linkml.io/linkml/schemas/) guides you through some of the core features of the modeling framework.
+
 ## What is the difference between is_a and mixins?
 
 LinkML allows any class to have:
@@ -74,7 +80,7 @@ types:
     uri: xsd:string
     base: str
     pattern: "^\\w+$"
-    description: A symbol is a string used as a shorthand identifier that is restriced to a subset of characters
+    description: A symbol is a string used as a shorthand identifier that is restricted to a subset of characters
 ```
 
 Some applications may choose to interpret this in particular ways. E.g. you may want to define all narrative text fields as being amenable to spellchecking, or machine learning natual language processing, or special kinds of indexing in ElasticSearch/Solr
@@ -326,7 +332,7 @@ Then this will translate as follows:
    * my_schema:MyClass
    * my_schema:my_slot
 
-Note in the RDF/OWL representation, seperate `rdfs:label` triples will be generated retaining the original human-friendly name.
+Note in the RDF/OWL representation, separate `rdfs:label` triples will be generated retaining the original human-friendly name.
 
 This has the advantage of keeping human-friendly nomenclature in the appropriate places without specifying redundant computer names and human names
 
@@ -456,6 +462,29 @@ Applications can make use of this metadata - e.g for compact
 property graph representations, ER-style visualizations of the schema,
 auto-inferring convenient shortcut slots.
 
+## How do I avoid name clashes when importing a schema?
+
+Currently the assumption of existing LinkML tools is that all element
+names are unique, both within an individual schema *and across imports*.
+
+This means if you want to import a schema `personinfo`, and
+`personinfo` includes a class `Person`, or another imported schema or your own schema has a
+class `Person`, there will be an element clash, and you will need to
+either remove the import, change the imported schema, or change your
+own schema.
+
+Historically this has not been a major issue, as imports are typically
+used sparingly, and the assumption is that the imported schema is
+orthogonal to the importing one. In many cases the apparent issue is
+resolved simply by not using an import and instead reusing `class_uri`s.
+
+However, we recognize the unique element restriction can be limiting, and we are currently
+exploring mechanisms that provide more flexibility in reuse, including:
+
+- the use of [structured_imports](https://w3id.org/linkml/structured_imports) to *selectively* import elements from a schema
+- alternatives to imports and inheritance, such as using [implements](https://w3id.org/linkml/implements)
+- using [linkml-transformer](https://github.com/linkml/linkml-transformer) to *transform* upstream schemas rather than import them
+
 ## What are id_prefixes used for and why do we want them?
 
 The LinkML meta modeling element, [id_prefixes](https://w3id.org/linkml/id_prefixes) can be applied to any Class. This is used to specify which prefixes should be used on the identifiers for that class.
@@ -475,7 +504,7 @@ Any element in a LinkML schema can have any number of *mappings* associated with
 
 Mappings are useful in a variety of ways including: 
 
-- they make your data and your schema more FAIR (Findable, Accessable, Reusable, and Interoperable)
+- they make your data and your schema more FAIR (Findable, Accessible, Reusable, and Interoperable)
 - when people use data that conforms to your model, and integrated with data that conforms to another model, they can use mappings between models to help automate data harmonization.  
 - mappings can provide links to other documentation sources for your model, allowing expertise to be shared between projects and not duplicated
 - mappings allow advanced users to reason over your model.
@@ -507,6 +536,6 @@ Depending on the answer, LinkML has different modeling constructs to help you, i
 
 - [range](https://w3id.org/linkml/range) constraints, which can refer to classes
 - the ability to assign a slot as an [identifier](https://w3id.org/linkml/identifier), allowing other objects to link to it
-- [inlining](https://w3id.org/linkml/inlining) which determins how relationships are serialized in formats like JSON
+- [inlining](https://w3id.org/linkml/inlining) which determines how relationships are serialized in formats like JSON
 
 Other more advanced constructs are also possible to allow you to treat relationships as first-class entities

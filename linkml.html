@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>linkml package - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of use</a></li>
@@ -352,19 +354,23 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="linkml.generators.html#module-linkml.generators.excelgen">linkml.generators.excelgen module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.enum_dict"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.enum_dict</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.generator_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generator_name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.generator_version"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generator_version</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.output"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.add_columns_to_worksheet"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.add_columns_to_worksheet()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.column_enum_validation"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.column_enum_validation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.create_schema_worksheets"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_schema_worksheets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.create_workbook"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_workbook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.create_worksheet"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_worksheet()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.emit_prefixes"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.emit_prefixes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generatorname</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generatorversion</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.get_workbook_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.get_workbook_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.mergeimports"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.mergeimports</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.metadata"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.remove_worksheet_by_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.remove_worksheet_by_name()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.requires_metamodel"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.requires_metamodel</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.sheet_name_cols"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.sheet_name_cols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.schema"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.schema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.serialize"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.serialize()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.uses_schemaloader"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.uses_schemaloader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.valid_formats"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.valid_formats</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.visit_class"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_class()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.visit_class_slot"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_class_slot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.visit_enum"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_enum()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.wb_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.wb_name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.excelgen.ExcelGenerator.workbook"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.workbook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -507,11 +513,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.generate"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generate()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generatorname</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generatorversion</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_subschema_for_anonymous_class"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_subschema_for_anonymous_class()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_subschema_for_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_subschema_for_slot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_type_info_for_slot_subschema"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_type_info_for_slot_subschema()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_value_constraints_for_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_value_constraints_for_slot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_class"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_class()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_class_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_class_slot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_enum"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_enum()</span></code></a></li>
@@ -624,6 +632,7 @@
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.create_documents"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.create_documents()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.default_value_for_type"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.default_value_for_type()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.generate_enum_label"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.generate_enum_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.generate_enums"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.generate_enums()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.get_class_name"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.get_class_name()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.get_slot_name"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.get_slot_name()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.oocodegen.OOCodeGenerator.java_style"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.java_style</span></code></a></li>
@@ -667,6 +676,7 @@
 <li class="toctree-l3"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.add_metadata"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.add_metadata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.add_ols_annotations"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.add_ols_annotations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.assert_equivalent_classes"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.assert_equivalent_classes</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.end_schema"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.end_schema()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.generatorname</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.owlgen.OwlSchemaGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.generatorversion</span></code></a></li>
@@ -747,12 +757,14 @@
 <li class="toctree-l2"><a class="reference internal" href="linkml.generators.html#module-linkml.generators.pydanticgen">linkml.generators.pydanticgen module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.allow_extra"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.allow_extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.compile_module"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.compile_module()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.default_value_for_type"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.default_value_for_type()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.emit_metadata"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.emit_metadata</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.gen_classvars"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_classvars</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.gen_mixin_inheritance"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_mixin_inheritance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.gen_slots"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_slots</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.generate_enums"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_enums()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.generate_collection_key"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_collection_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.generate_python_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_python_range()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generatorname</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generatorversion</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.genmeta"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.genmeta</span></code></a></li>
@@ -760,6 +772,7 @@
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.get_class_slot_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_class_slot_range()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.get_mixin_identifier_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_mixin_identifier_range()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.get_predefined_slot_values"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_predefined_slot_values()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.range_class_has_identifier_slot"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.range_class_has_identifier_slot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.serialize"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.serialize()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.sort_classes"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.sort_classes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pydanticgen.PydanticGenerator.template_file"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.template_file</span></code></a></li>
@@ -795,8 +808,7 @@
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_postinits"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_postinits()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_pv_constructor"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pv_constructor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_pvs"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_pvs2"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs2()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_pvs2_initializers"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs2_initializers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_pvs_as_setattrs"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs_as_setattrs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_references"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_references()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_schema"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_schema()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.gen_slot"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_slot()</span></code></a></li>
@@ -810,6 +822,7 @@
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.is_key_value_class"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.is_key_value_class()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.key_name_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.key_name_for()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.primary_keys_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.primary_keys_for()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.process_multiline_string"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.process_multiline_string()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.python_uri_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.python_uri_for()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.range_cardinality"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.range_cardinality()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.pythongen.PythonGenerator.range_type_name"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.range_type_name()</span></code></a></li>
@@ -998,6 +1011,7 @@
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.class_associations"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.class_associations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.class_box"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.class_box()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.classes"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.diagram_name"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.diagram_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.directory"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.directory</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.filtered_cls_slots"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.filtered_cls_slots()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linkml.generators.html#linkml.generators.yumlgen.YumlGenerator.focus_classes"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.focus_classes</span></code></a></li>
@@ -1210,6 +1224,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="linkml.utils.html#module-linkml.utils.helpers">linkml.utils.helpers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.helpers.convert_to_snake_case"><code class="docutils literal notranslate"><span class="pre">convert_to_snake_case()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.helpers.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">remove_duplicates()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.helpers.write_to_file"><code class="docutils literal notranslate"><span class="pre">write_to_file()</span></code></a></li>
 </ul>
@@ -1217,6 +1232,7 @@
 <li class="toctree-l2"><a class="reference internal" href="linkml.utils.html#module-linkml.utils.ifabsent_functions">linkml.utils.ifabsent_functions module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.curie_for"><code class="docutils literal notranslate"><span class="pre">curie_for()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.default_curie_or_uri"><code class="docutils literal notranslate"><span class="pre">default_curie_or_uri()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.default_ns_for"><code class="docutils literal notranslate"><span class="pre">default_ns_for()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.default_uri_for"><code class="docutils literal notranslate"><span class="pre">default_uri_for()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.ifabsent_postinit_declaration"><code class="docutils literal notranslate"><span class="pre">ifabsent_postinit_declaration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="linkml.utils.html#linkml.utils.ifabsent_functions.ifabsent_value_declaration"><code class="docutils literal notranslate"><span class="pre">ifabsent_value_declaration()</span></code></a></li>
@@ -1348,7 +1364,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

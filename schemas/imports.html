@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Advanced features" href="advanced.html" /><link rel="prev" title="Subsets" href="subsets.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>Imports - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -300,7 +302,7 @@
           <section id="imports">
 <h1>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h1>
 <p>LinkML encourages modular schema development. You can split you schema into modules, and even reuse other peoples modules on the web</p>
-<p>A schema can have a list of <a class="reference external" href="https://w3id.org/linkml/imports">imports</a> associated with it. These are specified as <span class="xref myst">CURIEs</span> or local imports.</p>
+<p>A schema can have a list of <a class="reference external" href="https://w3id.org/linkml/imports">imports</a> associated with it. These are specified as <a class="reference internal" href="#curies"><span class="xref myst">CURIEs</span></a> or local imports.</p>
 <section id="importing-external-schemas">
 <h2>Importing external schemas<a class="headerlink" href="#importing-external-schemas" title="Permalink to this heading">#</a></h2>
 <p>Most schemas will have at least an imports to the linkml types schema, which defines core types:</p>
@@ -312,7 +314,7 @@
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linkml:types</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">prefixes</span></code> declaration (see <a class="reference internal" href="uris-and-mappings.html"><span class="doc std std-doc">URIs and
+<p>The <code class="docutils literal notranslate"><span class="pre">prefixes</span></code> declaration (see <a class="reference internal" href="uris-and-mappings.html"><span class="std std-doc">URIs and
 mappings</span></a>) registers the linkml prefix. The
 import is exanded to <code class="docutils literal notranslate"><span class="pre">https://w3id.org/linkml/types</span></code>, and an implicit
 file type suffix is added, yielding <a class="reference external" href="https://w3id.org/linkml/types.yaml">https://w3id.org/linkml/types.yaml</a></p>
@@ -337,7 +339,7 @@ distribution. This makes it easier for programs that want to make use
 of a linkml schema, as they only have to work with one file, rather
 than implementing the full import mechanism. It can also help
 eliminate network dependencies.</p>
-<p>All <span class="xref myst">generators</span> have a <code class="docutils literal notranslate"><span class="pre">--mergeimports</span></code> import that
+<p>All <a class="reference internal" href="#../generators/"><span class="xref myst">generators</span></a> have a <code class="docutils literal notranslate"><span class="pre">--mergeimports</span></code> import that
 will merge the imports closure. i.e. all imported definitions will be
 recursively copied into the main file.</p>
 <p>One particularly useful generator is the <a class="reference internal" href="../generators/linkml.html"><span class="doc std std-doc">linkml
@@ -375,7 +377,7 @@ combined file for distribution (in either JSON or YAML)</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

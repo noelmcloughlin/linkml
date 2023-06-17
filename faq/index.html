@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="FAQ: General" href="general.html" /><link rel="prev" title="Contribution Guidelines" href="../contributing/contributing.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>FAQ - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -309,6 +311,8 @@
 <li class="toctree-l2"><a class="reference internal" href="general.html#who-uses-linkml">Who uses LinkML?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="general.html#is-linkml-only-for-python-developers">Is LinkML only for Python developers?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="general.html#do-i-need-to-be-a-developer-to-use-linkml">Do I need to be a developer to use LinkML?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general.html#is-linkml-just-for-metadata">Is LinkML just for metadata?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general.html#is-linkml-suitable-for-high-volume-datasets">Is LinkML suitable for high volume datasets?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="general.html#how-do-i-cite-linkml">How do I cite LinkML?</a></li>
 </ul>
 </li>
@@ -326,6 +330,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modeling.html">FAQ: Modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#how-do-i-get-started-defining-a-data-model">How do I get started defining a data model?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#what-is-the-difference-between-is-a-and-mixins">What is the difference between is_a and mixins?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#didn-t-you-know-composition-is-favored-over-inheritance-these-days">Didn’t you know composition is favored over inheritance these days?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#when-should-i-use-attributes-vs-slots">When should I use attributes vs slots?</a></li>
@@ -338,6 +343,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#how-do-i-do-the-equivalent-of-json-schema-composition">How do I do the equivalent of JSON-Schema composition?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#why-are-my-class-names-translated-to-camelcase">Why are my class names translated to CamelCase?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#when-two-data-classes-are-linked-by-a-slot-in-one-class-definition-how-is-the-reciprocal-association-expressed-in-linkml">When two data classes are linked by a slot in one class definition, how is the reciprocal association expressed in LinkML?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#how-do-i-avoid-name-clashes-when-importing-a-schema">How do I avoid name clashes when importing a schema?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#what-are-id-prefixes-used-for-and-why-do-we-want-them">What are id_prefixes used for and why do we want them?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#when-is-it-important-to-have-mappings">When is it important to have mappings?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modeling.html#how-do-i-represent-relationships-in-linkml">How do I represent relationships in LinkML?</a></li>
@@ -364,7 +370,8 @@
 <li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-customize-the-markdown-generation-for-my-schema-site">Can I customize the Markdown generation for my schema site?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-linkml-in-conjunction-with-sql-databases">Can I use LinkML in conjunction with SQL Databases?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-linkml-in-conjunction-with-mongodb">Can I use LinkML in conjunction with MongoDB?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-linkml-is-conjunction-with-triplestores">Can I use LinkML is conjunction with Triplestores?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-linkml-in-conjunction-with-triplestores">Can I use LinkML in conjunction with Triplestores?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-linkml-in-conjunction-with-neo4j-or-graph-databases">Can I use LinkML in conjunction with Neo4J or graph databases?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html#can-i-use-my-schema-to-do-reasoning-over-my-data">Can I use my schema to do reasoning over my data?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html#what-does-if-missing-mean-in-my-json-output">What does _if_missing mean in my JSON output?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html#what-does-csv-error-field-larger-than-field-limit-131072-mean">What does _csv.Error: field larger than field limit (131072) mean?</a></li>
@@ -428,7 +435,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

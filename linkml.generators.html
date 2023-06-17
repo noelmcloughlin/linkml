@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>linkml.generators package - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of use</a></li>
@@ -529,38 +531,128 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <span id="linkml-generators-excelgen-module"></span><h2>linkml.generators.excelgen module<a class="headerlink" href="#module-linkml.generators.excelgen" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.excelgen.</span></span><span class="sig-name descname"><span class="pre">ExcelGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schema:</span> <span class="pre">~typing.Union[str,</span> <span class="pre">~typing.TextIO,</span> <span class="pre">~linkml_runtime.linkml_model.meta.SchemaDefinition,</span> <span class="pre">~linkml.utils.generator.Generator],</span> <span class="pre">schemaview:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">format:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">useuris:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30,</span> <span class="pre">mergeimports:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">source_file_date:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">source_file_size:</span> <span class="pre">~typing.Optional[int]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">logger:</span> <span class="pre">~typing.Optional[~logging.Logger]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">namespaces:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">base_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metamodel_name_map:</span> <span class="pre">~typing.Optional[~typing.Dict[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">importmap:</span> <span class="pre">~typing.Optional[~typing.Union[str,</span> <span class="pre">~typing.Mapping[str,</span> <span class="pre">str]]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">emit_prefixes:</span> <span class="pre">~typing.Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metamodel:</span> <span class="pre">~typing.Optional[~linkml.utils.schemaloader.SchemaLoader]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">sheet_name_cols:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">workbook:</span> <span class="pre">~openpyxl.workbook.workbook.Workbook</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">wb_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">enum_dict:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">**_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.excelgen.</span></span><span class="sig-name descname"><span class="pre">ExcelGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schema:</span> <span class="pre">Union[str,</span> <span class="pre">TextIO,</span> <span class="pre">linkml_runtime.linkml_model.meta.SchemaDefinition,</span> <span class="pre">ForwardRef('Generator')],</span> <span class="pre">schemaview:</span> <span class="pre">Optional[linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">format:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">useuris:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30,</span> <span class="pre">mergeimports:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">source_file_date:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">source_file_size:</span> <span class="pre">Optional[int]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">logger:</span> <span class="pre">Optional[logging.Logger]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">namespaces:</span> <span class="pre">Optional[linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">base_dir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metamodel_name_map:</span> <span class="pre">Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">importmap:</span> <span class="pre">Union[str,</span> <span class="pre">Mapping[str,</span> <span class="pre">str],</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">emit_prefixes:</span> <span class="pre">Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metamodel:</span> <span class="pre">linkml.utils.schemaloader.SchemaLoader</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">**_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="linkml.utils.html#linkml.utils.generator.Generator" title="linkml.utils.generator.Generator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a></p>
-<p>This class is a blueprint for the generator module that is responsible
-for automatically creating Excel spreadsheets from the LinkML schema.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.add_columns_to_worksheet">
+<span class="sig-name descname"><span class="pre">add_columns_to_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workbook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_headings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.add_columns_to_worksheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.add_columns_to_worksheet" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a worksheet by name and add a column to it in an existing workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>schema</strong> (class:<cite>SchemaDefinition</cite>) – LinkML schema object</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – LinkML schema specification in YAML format</p></li>
+<li><p><strong>workbook</strong> – The workbook to which the worksheet should be added.</p></li>
+<li><p><strong>worksheet_name</strong> – Name of the worksheet to add the column to.</p></li>
+<li><p><strong>column_data</strong> – List of data to populate the column with.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.enum_dict">
-<span class="sig-name descname"><span class="pre">enum_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.enum_dict" title="Permalink to this definition">#</a></dt>
-<dd><p>dictionary with slot types and possibles values for those types</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.column_enum_validation">
+<span class="sig-name descname"><span class="pre">column_enum_validation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workbook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropdown_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.column_enum_validation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.column_enum_validation" title="Permalink to this definition">#</a></dt>
+<dd><p>Get worksheet by name and add a dropdown to a specific column in it
+based on a list of values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workbook</strong> – The workbook to which the worksheet should be added.</p></li>
+<li><p><strong>worksheet_name</strong> – Name of the worksheet to add the column dropdown to.</p></li>
+<li><p><strong>column_name</strong> – Name of the worksheet column to add the dropdown to.</p></li>
+<li><p><strong>dropdown_values</strong> – List of dropdown values to add to a column in a worksheet.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.create_schema_worksheets">
+<span class="sig-name descname"><span class="pre">create_schema_worksheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.create_schema_worksheets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.create_schema_worksheets" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates worksheets in a given Excel workbook based on the classes in the
+schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>workbook</strong> – The workbook to which the worksheet should be added.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.create_workbook">
+<span class="sig-name descname"><span class="pre">create_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Workbook</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.create_workbook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.create_workbook" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an Excel workbook using the openpyxl library and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>workbook_name</strong> – Name of the workbook to be created.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An openpyxl Workbook object representing the newly created workbook.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.create_worksheet">
+<span class="sig-name descname"><span class="pre">create_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workbook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Worksheet</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.create_worksheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.create_worksheet" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an Excel worksheet with the given name in the given workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workbook</strong> – The workbook to which the worksheet should be added.</p></li>
+<li><p><strong>worksheet_name</strong> – Name of the worksheet to be created.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.generator_name">
-<span class="sig-name descname"><span class="pre">generator_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'excelgen'</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.generator_name" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.emit_prefixes">
+<span class="sig-name descname"><span class="pre">emit_prefixes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.emit_prefixes" title="Permalink to this definition">#</a></dt>
+<dd><p>Prefixes to emit, for RDF-based generators</p>
+</dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.generator_version">
-<span class="sig-name descname"><span class="pre">generator_version</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.0.1'</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.generator_version" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.generatorname">
+<span class="sig-name descname"><span class="pre">generatorname</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'excelgen.py'</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.generatorname" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the generator. Override with os.path.basename(__file__)</p>
+</dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.output">
-<span class="sig-name descname"><span class="pre">output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.output" title="Permalink to this definition">#</a></dt>
-<dd><p>Path to output file. Note all generators may not implement this uniformly, see <a class="reference external" href="https://github.com/linkml/linkml/issues/923">https://github.com/linkml/linkml/issues/923</a></p>
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.generatorversion">
+<span class="sig-name descname"><span class="pre">generatorversion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.1.1'</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.generatorversion" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the generator. Consider deprecating and instead use overall linkml version</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.get_workbook_name">
+<span class="sig-name descname"><span class="pre">get_workbook_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workbook</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.get_workbook_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.get_workbook_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the name of the given workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>workbook</strong> – The workbook whose name should be returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the workbook.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.mergeimports">
+<span class="sig-name descname"><span class="pre">mergeimports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.mergeimports" title="Permalink to this definition">#</a></dt>
+<dd><p>True means merge non-linkml sources into importing package.  False means separate packages</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>True means include date, generator, etc. information in source header if appropriate</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.remove_worksheet_by_name">
+<span class="sig-name descname"><span class="pre">remove_worksheet_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workbook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workbook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.remove_worksheet_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.remove_worksheet_by_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Remove worksheet from workbook by name.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -570,13 +662,29 @@ for automatically creating Excel spreadsheets from the LinkML schema.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.sheet_name_cols">
-<span class="sig-name descname"><span class="pre">sheet_name_cols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.sheet_name_cols" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.schema">
+<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">TextIO</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SchemaDefinition" title="linkml_runtime.linkml_model.meta.SchemaDefinition"><span class="pre">SchemaDefinition</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="linkml.utils.html#linkml.utils.generator.Generator" title="linkml.utils.generator.Generator"><span class="pre">Generator</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>metamodel compliant schema.  Can be URI, file name, actual schema, another generator, an
+open file or a pre-parsed schema</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.serialize" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate output in the required format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generated output</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.uses_schemaloader">
-<span class="sig-name descname"><span class="pre">uses_schemaloader</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.uses_schemaloader" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">uses_schemaloader</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.uses_schemaloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Old-style generator that uses the SchemaLoader and visitor pattern</p>
 </dd></dl>
 
@@ -585,35 +693,6 @@ for automatically creating Excel spreadsheets from the LinkML schema.</p>
 <span class="sig-name descname"><span class="pre">valid_formats</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['xlsx']</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.valid_formats" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed formats - first format is default</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.visit_class">
-<span class="sig-name descname"><span class="pre">visit_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.ClassDefinition" title="linkml_runtime.linkml_model.meta.ClassDefinition"><span class="pre">ClassDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.visit_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.visit_class" title="Permalink to this definition">#</a></dt>
-<dd><p>Overridden method to intercept classes from generator framework.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.visit_class_slot">
-<span class="sig-name descname"><span class="pre">visit_class_slot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.ClassDefinition" title="linkml_runtime.linkml_model.meta.ClassDefinition"><span class="pre">ClassDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliased_slot_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SlotDefinition" title="linkml_runtime.linkml_model.meta.SlotDefinition"><span class="pre">SlotDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.visit_class_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.visit_class_slot" title="Permalink to this definition">#</a></dt>
-<dd><p>Overridden method to intercept classes and associated slots from generator
-framework.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.visit_enum">
-<span class="sig-name descname"><span class="pre">visit_enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/linkml/generators/excelgen.html#ExcelGenerator.visit_enum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.visit_enum" title="Permalink to this definition">#</a></dt>
-<dd><p>Overridden method to intercept enums from generator framework.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.wb_name">
-<span class="sig-name descname"><span class="pre">wb_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.wb_name" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="linkml.generators.excelgen.ExcelGenerator.workbook">
-<span class="sig-name descname"><span class="pre">workbook</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Workbook</span></em><a class="headerlink" href="#linkml.generators.excelgen.ExcelGenerator.workbook" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -963,7 +1042,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -1229,7 +1308,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.jsonschemagen.JsonSchema.add_keyword">
-<span class="sig-name descname"><span class="pre">add_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">applies_to_all_array_elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchema.add_keyword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchema.add_keyword" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchema.add_keyword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchema.add_keyword" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1281,6 +1360,11 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <li><p>Enumerations treated as strings</p></li>
 <li><p>Foreign key references are treated as semantics-free strings</p></li>
 </ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.jsonschemagen.JsonSchemaGenerator.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchemaGenerator.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.generate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorname">
 <span class="sig-name descname"><span class="pre">generatorname</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'jsonschemagen.py'</span></em><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorname" title="Permalink to this definition">#</a></dt>
@@ -1305,7 +1389,12 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.jsonschemagen.JsonSchemaGenerator.get_type_info_for_slot_subschema">
-<span class="sig-name descname"><span class="pre">get_type_info_for_slot_subschema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnonymousSlotExpression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_is_inlined</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchemaGenerator.get_type_info_for_slot_subschema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_type_info_for_slot_subschema" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_type_info_for_slot_subschema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnonymousSlotExpression</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchemaGenerator.get_type_info_for_slot_subschema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_type_info_for_slot_subschema" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.jsonschemagen.JsonSchemaGenerator.get_value_constraints_for_slot">
+<span class="sig-name descname"><span class="pre">get_value_constraints_for_slot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnonymousSlotExpression</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchema" title="linkml.generators.jsonschemagen.JsonSchema"><span class="pre">JsonSchema</span></a></span></span><a class="reference internal" href="_modules/linkml/generators/jsonschemagen.html#JsonSchemaGenerator.get_value_constraints_for_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_value_constraints_for_slot" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1350,7 +1439,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -1854,6 +1943,11 @@ building</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.oocodegen.OOCodeGenerator.generate_enums">
+<span class="sig-name descname"><span class="pre">generate_enums</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_enums</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">EnumDefinitionName</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">EnumDefinition</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/linkml/generators/oocodegen.html#OOCodeGenerator.generate_enums"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.oocodegen.OOCodeGenerator.generate_enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.oocodegen.OOCodeGenerator.get_class_name">
 <span class="sig-name descname"><span class="pre">get_class_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/oocodegen.html#OOCodeGenerator.get_class_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.oocodegen.OOCodeGenerator.get_class_name" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1900,7 +1994,7 @@ building</p>
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -2028,7 +2122,7 @@ metadata of generated OWL elements</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="linkml.generators.owlgen.OwlSchemaGenerator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.owlgen.</span></span><span class="sig-name descname"><span class="pre">OwlSchemaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.TextIO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~linkml_runtime.linkml_model.meta.SchemaDefinition]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schemaview:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useuris:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mergeimports:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_date:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_size:</span> <span class="pre">~typing.Optional[int]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~typing.Optional[~logging.Logger]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespaces:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metamodel_name_map:</span> <span class="pre">~typing.Optional[~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">importmap:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emit_prefixes:</span> <span class="pre">~typing.Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metamodel:</span> <span class="pre">~typing.Optional[~linkml.utils.schemaloader.SchemaLoader]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_profile:</span> <span class="pre">~typing.Optional[~linkml.generators.owlgen.MetadataProfile]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ontology_uri_suffix:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaclasses:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_ols_annotations:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">~typing.Optional[~rdflib.graph.Graph]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_value_uri:</span> <span class="pre">~typing.Optional[~rdflib.term.URIRef]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_objects:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/owlgen.html#OwlSchemaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.owlgen.OwlSchemaGenerator" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.owlgen.</span></span><span class="sig-name descname"><span class="pre">OwlSchemaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.TextIO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~linkml_runtime.linkml_model.meta.SchemaDefinition]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schemaview:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useuris:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mergeimports:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_date:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_size:</span> <span class="pre">~typing.Optional[int]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~typing.Optional[~logging.Logger]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">~typing.Optional[bool]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespaces:</span> <span class="pre">~typing.Optional[~linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metamodel_name_map:</span> <span class="pre">~typing.Optional[~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">importmap:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emit_prefixes:</span> <span class="pre">~typing.Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metamodel:</span> <span class="pre">~typing.Optional[~linkml.utils.schemaloader.SchemaLoader]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_profile:</span> <span class="pre">~typing.Optional[~linkml.generators.owlgen.MetadataProfile]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ontology_uri_suffix:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaclasses:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_ols_annotations:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">~typing.Optional[~rdflib.graph.Graph]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_value_uri:</span> <span class="pre">~typing.Optional[~rdflib.term.URIRef]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_objects:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assert_equivalent_classes:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/owlgen.html#OwlSchemaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.owlgen.OwlSchemaGenerator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="linkml.utils.html#linkml.utils.generator.Generator" title="linkml.utils.generator.Generator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a></p>
 <p>Generates a schema-oriented OWL representation of a LinkML model</p>
 <p><a class="reference external" href="https://linkml.io/linkml/generators/owl">OWL Generator Docs</a></p>
@@ -2057,6 +2151,11 @@ metaclasses     if True, include OWL representations of ClassDefinition, SlotDef
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.owlgen.OwlSchemaGenerator.add_ols_annotations">
 <span class="sig-name descname"><span class="pre">add_ols_annotations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#linkml.generators.owlgen.OwlSchemaGenerator.add_ols_annotations" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="linkml.generators.owlgen.OwlSchemaGenerator.assert_equivalent_classes">
+<span class="sig-name descname"><span class="pre">assert_equivalent_classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#linkml.generators.owlgen.OwlSchemaGenerator.assert_equivalent_classes" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2442,6 +2541,13 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.compile_module">
+<span class="sig-name descname"><span class="pre">compile_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">module</span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.compile_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.compile_module" title="Permalink to this definition">#</a></dt>
+<dd><p>Compiles generated python code to a module
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.default_value_for_type">
 <span class="sig-name descname"><span class="pre">default_value_for_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.default_value_for_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.default_value_for_type" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -2467,9 +2573,25 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.generate_enums">
-<span class="sig-name descname"><span class="pre">generate_enums</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_enums</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">EnumDefinitionName</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">EnumDefinition</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.generate_enums"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_enums" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.generate_collection_key">
+<span class="sig-name descname"><span class="pre">generate_collection_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_def</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SlotDefinition" title="linkml_runtime.linkml_model.meta.SlotDefinition"><span class="pre">SlotDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_def</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.ClassDefinition" title="linkml_runtime.linkml_model.meta.ClassDefinition"><span class="pre">ClassDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.generate_collection_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_collection_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the python range value (str, int, etc) for the identifier slot
+of a class used as a slot range.</p>
+<p>If a pyrange value matches a class name, the range of the identifier slot
+will be returned. If more than one match is found and they don’t match,
+an exception will be raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>slot_ranges</strong> – list of python range values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.generate_python_range">
+<span class="sig-name descname"><span class="pre">generate_python_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot_def</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.SlotDefinition" title="linkml_runtime.linkml_model.meta.SlotDefinition"><span class="pre">SlotDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_def</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="code.html#linkml_runtime.linkml_model.meta.ClassDefinition" title="linkml_runtime.linkml_model.meta.ClassDefinition"><span class="pre">ClassDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.generate_python_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_python_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate the python range for a slot range value</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.generatorname">
@@ -2497,7 +2619,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.get_class_slot_range">
-<span class="sig-name descname"><span class="pre">get_class_slot_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.get_class_slot_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.get_class_slot_range" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_class_slot_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inlined</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inlined_as_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.get_class_slot_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.get_class_slot_range" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2516,12 +2638,28 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.range_class_has_identifier_slot">
+<span class="sig-name descname"><span class="pre">range_class_has_identifier_slot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.range_class_has_identifier_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.range_class_has_identifier_slot" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the range class of a slot has an identifier slot, via both slot.any_of and slot.range
+Should return False if the range is not a class, and also if the range is a class but has no
+identifier slot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>slot</strong> – SlotDefinition</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pydanticgen.PydanticGenerator.serialize">
 <span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pydanticgen.html#PydanticGenerator.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pydanticgen.PydanticGenerator.serialize" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -2648,7 +2786,7 @@ any LinkML element</p>
 <dd><p>Generate the variable declarations for a dataclass.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cls</strong> – class containing variables to be rendered in inheritence hierarchy</p>
+<dd class="field-odd"><p><strong>cls</strong> – class containing variables to be rendered in inheritance hierarchy</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>variable declarations for target class and its ancestors</p>
@@ -2677,7 +2815,10 @@ Note that apply_to classes are transformed to mixins</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_enum">
 <span class="sig-name descname"><span class="pre">gen_enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_enum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_enum" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Generate an enum class
+&#64;param enum: EnumDefinition object to be converted into code
+&#64;return: python code string</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_enum_comment">
@@ -2739,9 +2880,16 @@ Note that apply_to classes are transformed to mixins</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_pv_constructor">
-<span class="sig-name descname"><span class="pre">gen_pv_constructor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PermissibleValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pv_constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pv_constructor" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate a permissible value constructor
-&#64;param pv: Value to be constructed
+<span class="sig-name descname"><span class="pre">gen_pv_constructor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PermissibleValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pv_constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pv_constructor" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a permissible value constructor in the form</p>
+<p>PermissibleValue(text=”NAME_ONLY”)
+PermissibleValue(</p>
+<blockquote>
+<div><p>text=”CODE”,
+description=”…”,
+meaning=”…”)</p>
+</div></blockquote>
+<p>&#64;param pv: Value to be constructed
 &#64;param indent: number of additional spaces to add on successive lines
 &#64;return: Permissible value constructor</p>
 </dd></dl>
@@ -2750,22 +2898,30 @@ Note that apply_to classes are transformed to mixins</p>
 <dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_pvs">
 <span class="sig-name descname"><span class="pre">gen_pvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate the python compliant permissible value initializers as a set of class variables
-&#64;param enum:
-&#64;return:</p>
+&#64;param enum: EnumDefinition object to be converted into class variables
+&#64;return: string containing the enum declaration</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_pvs2">
-<span class="sig-name descname"><span class="pre">gen_pvs2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pvs2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs2" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_pvs_as_setattrs">
+<span class="sig-name descname"><span class="pre">gen_pvs_as_setattrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pvs_as_setattrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs_as_setattrs" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate the non-python compliant permissible value initializers as a set of setattr instructions
-&#64;param enum:
-&#64;return:</p>
+in the form</p>
+<p>&#64;classmethod
+def _addvals(cls):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>setattr(cls, “NAME”,</dt><dd><dl class="simple">
+<dt>PermissibleValue(</dt><dd><p>text=”NAME”,
+description=”description here”))</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>&#64;param enum: EnumDefinition object to be converted into code
+&#64;return: string containing the enum declaration</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_pvs2_initializers">
-<span class="sig-name descname"><span class="pre">gen_pvs2_initializers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnumDefinition</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.gen_pvs2_initializers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs2_initializers" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.gen_references">
@@ -2850,6 +3006,15 @@ Note that apply_to classes are transformed to mixins</p>
 </dl>
 <p>&#64;param cls: class to get keys for
 &#64;return: List of primary keys or identifiers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="linkml.generators.pythongen.PythonGenerator.process_multiline_string">
+<span class="sig-name descname"><span class="pre">process_multiline_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/linkml/generators/pythongen.html#PythonGenerator.process_multiline_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.pythongen.PythonGenerator.process_multiline_string" title="Permalink to this definition">#</a></dt>
+<dd><p>Process a (potentially multi-line) string, preserving existing formatting</p>
+<p>&#64;param input: input string to be formatted
+&#64;param prefix_string: the text to prefix the first line of the output
+&#64;return: formatted string</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3056,7 +3221,7 @@ open file or a pre-parsed schema</p>
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -3223,7 +3388,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -3729,7 +3894,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dd><p>Generate output in the required format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – Generater specific parameters</p>
+<dd class="field-odd"><p><strong>kwargs</strong> – Generator specific parameters</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Generated output</p>
@@ -3763,7 +3928,7 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <p><a class="reference external" href="https://yuml.me/diagram/scruffy/class/samples">https://yuml.me/diagram/scruffy/class/samples</a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="linkml.generators.yumlgen.YumlGenerator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.yumlgen.</span></span><span class="sig-name descname"><span class="pre">YumlGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schema:</span> <span class="pre">Union[str,</span> <span class="pre">TextIO,</span> <span class="pre">linkml_runtime.linkml_model.meta.SchemaDefinition,</span> <span class="pre">ForwardRef('Generator')],</span> <span class="pre">schemaview:</span> <span class="pre">Optional[linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">format:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">useuris:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30,</span> <span class="pre">mergeimports:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">source_file_date:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">source_file_size:</span> <span class="pre">Optional[int]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">logger:</span> <span class="pre">Optional[logging.Logger]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">namespaces:</span> <span class="pre">Optional[linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">base_dir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metamodel_name_map:</span> <span class="pre">Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">importmap:</span> <span class="pre">Union[str,</span> <span class="pre">Mapping[str,</span> <span class="pre">str],</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">emit_prefixes:</span> <span class="pre">Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metamodel:</span> <span class="pre">linkml.utils.schemaloader.SchemaLoader</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">referenced:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">box_generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">associations_generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">focus_classes:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">gen_classes:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output_file_name:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">classes:</span> <span class="pre">Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">load_image:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">**_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/yumlgen.html#YumlGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">linkml.generators.yumlgen.</span></span><span class="sig-name descname"><span class="pre">YumlGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schema:</span> <span class="pre">Union[str,</span> <span class="pre">TextIO,</span> <span class="pre">linkml_runtime.linkml_model.meta.SchemaDefinition,</span> <span class="pre">ForwardRef('Generator')],</span> <span class="pre">schemaview:</span> <span class="pre">Optional[linkml_runtime.utils.schemaview.SchemaView]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">format:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metadata:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">useuris:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">log_level:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">30,</span> <span class="pre">mergeimports:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">source_file_date:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">source_file_size:</span> <span class="pre">Optional[int]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">logger:</span> <span class="pre">Optional[logging.Logger]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">Optional[bool]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">namespaces:</span> <span class="pre">Optional[linkml_runtime.utils.namespaces.Namespaces]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory_output:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">base_dir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">metamodel_name_map:</span> <span class="pre">Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">importmap:</span> <span class="pre">Union[str,</span> <span class="pre">Mapping[str,</span> <span class="pre">str],</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">emit_prefixes:</span> <span class="pre">Set[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metamodel:</span> <span class="pre">linkml.utils.schemaloader.SchemaLoader</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">stacktrace:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">referenced:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">box_generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">associations_generated:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">focus_classes:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">gen_classes:</span> <span class="pre">Optional[Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">output_file_name:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">classes:</span> <span class="pre">Set[linkml_runtime.linkml_model.meta.ClassDefinitionName]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">directory:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">diagram_name:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">load_image:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">**_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/linkml/generators/yumlgen.html#YumlGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="linkml.utils.html#linkml.utils.generator.Generator" title="linkml.utils.generator.Generator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.yumlgen.YumlGenerator.associations_generated">
@@ -3801,6 +3966,11 @@ for any class that is inherited (class itself, is_a, mixin, apply_to).  Otherwis
 <dl class="py attribute">
 <dt class="sig sig-object py" id="linkml.generators.yumlgen.YumlGenerator.classes">
 <span class="sig-name descname"><span class="pre">classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">ClassDefinitionName</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator.classes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="linkml.generators.yumlgen.YumlGenerator.diagram_name">
+<span class="sig-name descname"><span class="pre">diagram_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator.diagram_name" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -3890,7 +4060,7 @@ in defining order, with class slots returned last</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="linkml.generators.yumlgen.YumlGenerator.visit_schema">
-<span class="sig-name descname"><span class="pre">visit_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">ClassDefinitionName</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/yumlgen.html#YumlGenerator.visit_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator.visit_schema" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">ClassDefinitionName</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagram_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/linkml/generators/yumlgen.html#YumlGenerator.visit_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#linkml.generators.yumlgen.YumlGenerator.visit_schema" title="Permalink to this definition">#</a></dt>
 <dd><p>Visited once at the beginning of generation</p>
 <p>&#64;param kwargs: Arguments passed through from CLI – implementation dependent</p>
 </dd></dl>
@@ -3916,7 +4086,7 @@ representation such as JsonSchema</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -3991,19 +4161,23 @@ representation such as JsonSchema</p>
 </li>
 <li><a class="reference internal" href="#module-linkml.generators.excelgen">linkml.generators.excelgen module</a><ul>
 <li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator</span></code></a><ul>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.enum_dict"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.enum_dict</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.generator_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generator_name</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.generator_version"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generator_version</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.output"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.output</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.add_columns_to_worksheet"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.add_columns_to_worksheet()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.column_enum_validation"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.column_enum_validation()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.create_schema_worksheets"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_schema_worksheets()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.create_workbook"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_workbook()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.create_worksheet"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.create_worksheet()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.emit_prefixes"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.emit_prefixes</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generatorname</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.generatorversion</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.get_workbook_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.get_workbook_name()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.mergeimports"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.mergeimports</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.metadata"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.metadata</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.remove_worksheet_by_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.remove_worksheet_by_name()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.requires_metamodel"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.requires_metamodel</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.sheet_name_cols"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.sheet_name_cols</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.schema"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.schema</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.serialize"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.serialize()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.uses_schemaloader"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.uses_schemaloader</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.valid_formats"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.valid_formats</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.visit_class"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_class()</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.visit_class_slot"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_class_slot()</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.visit_enum"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.visit_enum()</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.wb_name"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.wb_name</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.excelgen.ExcelGenerator.workbook"><code class="docutils literal notranslate"><span class="pre">ExcelGenerator.workbook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -4146,11 +4320,13 @@ representation such as JsonSchema</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator</span></code></a><ul>
+<li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.generate"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generate()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generatorname</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.generatorversion</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_subschema_for_anonymous_class"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_subschema_for_anonymous_class()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_subschema_for_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_subschema_for_slot()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_type_info_for_slot_subschema"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_type_info_for_slot_subschema()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.get_value_constraints_for_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.get_value_constraints_for_slot()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_class"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_class()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_class_slot"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_class_slot()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.jsonschemagen.JsonSchemaGenerator.handle_enum"><code class="docutils literal notranslate"><span class="pre">JsonSchemaGenerator.handle_enum()</span></code></a></li>
@@ -4263,6 +4439,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.create_documents"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.create_documents()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.default_value_for_type"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.default_value_for_type()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.generate_enum_label"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.generate_enum_label()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.generate_enums"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.generate_enums()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.get_class_name"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.get_class_name()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.get_slot_name"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.get_slot_name()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.oocodegen.OOCodeGenerator.java_style"><code class="docutils literal notranslate"><span class="pre">OOCodeGenerator.java_style</span></code></a></li>
@@ -4306,6 +4483,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.add_metadata"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.add_metadata()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.add_ols_annotations"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.add_ols_annotations</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.assert_equivalent_classes"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.assert_equivalent_classes</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.end_schema"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.end_schema()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.generatorname</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.owlgen.OwlSchemaGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">OwlSchemaGenerator.generatorversion</span></code></a></li>
@@ -4386,12 +4564,14 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#module-linkml.generators.pydanticgen">linkml.generators.pydanticgen module</a><ul>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.allow_extra"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.allow_extra</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.compile_module"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.compile_module()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.default_value_for_type"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.default_value_for_type()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.emit_metadata"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.emit_metadata</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.gen_classvars"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_classvars</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.gen_mixin_inheritance"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_mixin_inheritance</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.gen_slots"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.gen_slots</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_enums"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_enums()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_collection_key"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_collection_key()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.generate_python_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generate_python_range()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.generatorname"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generatorname</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.generatorversion"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.generatorversion</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.genmeta"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.genmeta</span></code></a></li>
@@ -4399,6 +4579,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.get_class_slot_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_class_slot_range()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.get_mixin_identifier_range"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_mixin_identifier_range()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.get_predefined_slot_values"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.get_predefined_slot_values()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.range_class_has_identifier_slot"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.range_class_has_identifier_slot()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.serialize"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.serialize()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.sort_classes"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.sort_classes()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pydanticgen.PydanticGenerator.template_file"><code class="docutils literal notranslate"><span class="pre">PydanticGenerator.template_file</span></code></a></li>
@@ -4434,8 +4615,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_postinits"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_postinits()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_pv_constructor"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pv_constructor()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs()</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs2"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs2()</span></code></a></li>
-<li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs2_initializers"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs2_initializers()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_pvs_as_setattrs"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_pvs_as_setattrs()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_references"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_references()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_schema"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_schema()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.gen_slot"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.gen_slot()</span></code></a></li>
@@ -4449,6 +4629,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.is_key_value_class"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.is_key_value_class()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.key_name_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.key_name_for()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.primary_keys_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.primary_keys_for()</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.process_multiline_string"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.process_multiline_string()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.python_uri_for"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.python_uri_for()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.range_cardinality"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.range_cardinality()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.pythongen.PythonGenerator.range_type_name"><code class="docutils literal notranslate"><span class="pre">PythonGenerator.range_type_name()</span></code></a></li>
@@ -4637,6 +4818,7 @@ representation such as JsonSchema</p>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.class_associations"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.class_associations()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.class_box"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.class_box()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.classes"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.classes</span></code></a></li>
+<li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.diagram_name"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.diagram_name</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.directory"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.directory</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.filtered_cls_slots"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.filtered_cls_slots()</span></code></a></li>
 <li><a class="reference internal" href="#linkml.generators.yumlgen.YumlGenerator.focus_classes"><code class="docutils literal notranslate"><span class="pre">YumlGenerator.focus_classes</span></code></a></li>

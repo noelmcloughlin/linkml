@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="FAQ: Tools" href="tools.html" /><link rel="prev" title="FAQ: Why LinkML" href="why-linkml.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+    <link rel="shortcut icon" href="https://linkml.io/uploads/linkml-logo_color-no-words.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
         <title>FAQ: Modeling - linkml documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -229,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../howtos/using-jsonld.html">Using JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/model-measurements.html">How to model quantities and measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/port-linkml.html">Porting LinkML tools to other programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/multidimensional-arrays.html">Multidimensional Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples of use</a></li>
@@ -299,6 +301,11 @@
         <article role="main">
           <section id="faq-modeling">
 <h1>FAQ: Modeling<a class="headerlink" href="#faq-modeling" title="Permalink to this heading">#</a></h1>
+<section id="how-do-i-get-started-defining-a-data-model">
+<h2>How do I get started defining a data model?<a class="headerlink" href="#how-do-i-get-started-defining-a-data-model" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://linkml.io/linkml/intro/tutorial">tutorial</a> walks you through some basic data models.</p>
+<p>After that the section on <a class="reference external" href="https://linkml.io/linkml/schemas/">schemas</a> guides you through some of the core features of the modeling framework.</p>
+</section>
 <section id="what-is-the-difference-between-is-a-and-mixins">
 <h2>What is the difference between is_a and mixins?<a class="headerlink" href="#what-is-the-difference-between-is-a-and-mixins" title="Permalink to this heading">#</a></h2>
 <p>LinkML allows any class to have:</p>
@@ -360,7 +367,7 @@ text.</p>
 <span class="w">    </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xsd:string</span>
 <span class="w">    </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">str</span>
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^\\w+$&quot;</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A symbol is a string used as a shorthand identifier that is restriced to a subset of characters</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A symbol is a string used as a shorthand identifier that is restricted to a subset of characters</span>
 </pre></div>
 </div>
 <p>Some applications may choose to interpret this in particular ways. E.g. you may want to define all narrative text fields as being amenable to spellchecking, or machine learning natual language processing, or special kinds of indexing in ElasticSearch/Solr</p>
@@ -582,7 +589,7 @@ JSON-Schema, RDF, Python then those naming conventions are applied.</p>
 </ul>
 </li>
 </ul>
-<p>Note in the RDF/OWL representation, seperate <code class="docutils literal notranslate"><span class="pre">rdfs:label</span></code> triples will be generated retaining the original human-friendly name.</p>
+<p>Note in the RDF/OWL representation, separate <code class="docutils literal notranslate"><span class="pre">rdfs:label</span></code> triples will be generated retaining the original human-friendly name.</p>
 <p>This has the advantage of keeping human-friendly nomenclature in the appropriate places without specifying redundant computer names and human names</p>
 <p>However, the autotmatic translation can be confusing, so some schemas opt to follow standard naming conventions in the schema:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">default_prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_schema</span>
@@ -699,6 +706,27 @@ your classes represent <em>entities</em> and one represents a <em>relationship</
 property graph representations, ER-style visualizations of the schema,
 auto-inferring convenient shortcut slots.</p>
 </section>
+<section id="how-do-i-avoid-name-clashes-when-importing-a-schema">
+<h2>How do I avoid name clashes when importing a schema?<a class="headerlink" href="#how-do-i-avoid-name-clashes-when-importing-a-schema" title="Permalink to this heading">#</a></h2>
+<p>Currently the assumption of existing LinkML tools is that all element
+names are unique, both within an individual schema <em>and across imports</em>.</p>
+<p>This means if you want to import a schema <code class="docutils literal notranslate"><span class="pre">personinfo</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">personinfo</span></code> includes a class <code class="docutils literal notranslate"><span class="pre">Person</span></code>, or another imported schema or your own schema has a
+class <code class="docutils literal notranslate"><span class="pre">Person</span></code>, there will be an element clash, and you will need to
+either remove the import, change the imported schema, or change your
+own schema.</p>
+<p>Historically this has not been a major issue, as imports are typically
+used sparingly, and the assumption is that the imported schema is
+orthogonal to the importing one. In many cases the apparent issue is
+resolved simply by not using an import and instead reusing <code class="docutils literal notranslate"><span class="pre">class_uri</span></code>s.</p>
+<p>However, we recognize the unique element restriction can be limiting, and we are currently
+exploring mechanisms that provide more flexibility in reuse, including:</p>
+<ul class="simple">
+<li><p>the use of <a class="reference external" href="https://w3id.org/linkml/structured_imports">structured_imports</a> to <em>selectively</em> import elements from a schema</p></li>
+<li><p>alternatives to imports and inheritance, such as using <a class="reference external" href="https://w3id.org/linkml/implements">implements</a></p></li>
+<li><p>using <a class="reference external" href="https://github.com/linkml/linkml-transformer">linkml-transformer</a> to <em>transform</em> upstream schemas rather than import them</p></li>
+</ul>
+</section>
 <section id="what-are-id-prefixes-used-for-and-why-do-we-want-them">
 <h2>What are id_prefixes used for and why do we want them?<a class="headerlink" href="#what-are-id-prefixes-used-for-and-why-do-we-want-them" title="Permalink to this heading">#</a></h2>
 <p>The LinkML meta modeling element, <a class="reference external" href="https://w3id.org/linkml/id_prefixes">id_prefixes</a> can be applied to any Class. This is used to specify which prefixes should be used on the identifiers for that class.</p>
@@ -712,7 +740,7 @@ auto-inferring convenient shortcut slots.</p>
 <p>Any element in a LinkML schema can have any number of <em>mappings</em> associated with it</p>
 <p>Mappings are useful in a variety of ways including:</p>
 <ul class="simple">
-<li><p>they make your data and your schema more FAIR (Findable, Accessable, Reusable, and Interoperable)</p></li>
+<li><p>they make your data and your schema more FAIR (Findable, Accessible, Reusable, and Interoperable)</p></li>
 <li><p>when people use data that conforms to your model, and integrated with data that conforms to another model, they can use mappings between models to help automate data harmonization.</p></li>
 <li><p>mappings can provide links to other documentation sources for your model, allowing expertise to be shared between projects and not duplicated</p></li>
 <li><p>mappings allow advanced users to reason over your model.</p></li>
@@ -742,7 +770,7 @@ will need to answer:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://w3id.org/linkml/range">range</a> constraints, which can refer to classes</p></li>
 <li><p>the ability to assign a slot as an <a class="reference external" href="https://w3id.org/linkml/identifier">identifier</a>, allowing other objects to link to it</p></li>
-<li><p><a class="reference external" href="https://w3id.org/linkml/inlining">inlining</a> which determins how relationships are serialized in formats like JSON</p></li>
+<li><p><a class="reference external" href="https://w3id.org/linkml/inlining">inlining</a> which determines how relationships are serialized in formats like JSON</p></li>
 </ul>
 <p>Other more advanced constructs are also possible to allow you to treat relationships as first-class entities</p>
 </section>
@@ -777,7 +805,7 @@ will need to answer:</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2021, LinkML Authors
+                Copyright &#169; 2021-2023, LinkML Authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -804,6 +832,7 @@ will need to answer:</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">FAQ: Modeling</a><ul>
+<li><a class="reference internal" href="#how-do-i-get-started-defining-a-data-model">How do I get started defining a data model?</a></li>
 <li><a class="reference internal" href="#what-is-the-difference-between-is-a-and-mixins">What is the difference between is_a and mixins?</a></li>
 <li><a class="reference internal" href="#didn-t-you-know-composition-is-favored-over-inheritance-these-days">Didn’t you know composition is favored over inheritance these days?</a></li>
 <li><a class="reference internal" href="#when-should-i-use-attributes-vs-slots">When should I use attributes vs slots?</a></li>
@@ -821,6 +850,7 @@ will need to answer:</p>
 <li><a class="reference internal" href="#how-do-i-do-the-equivalent-of-json-schema-composition">How do I do the equivalent of JSON-Schema composition?</a></li>
 <li><a class="reference internal" href="#why-are-my-class-names-translated-to-camelcase">Why are my class names translated to CamelCase?</a></li>
 <li><a class="reference internal" href="#when-two-data-classes-are-linked-by-a-slot-in-one-class-definition-how-is-the-reciprocal-association-expressed-in-linkml">When two data classes are linked by a slot in one class definition, how is the reciprocal association expressed in LinkML?</a></li>
+<li><a class="reference internal" href="#how-do-i-avoid-name-clashes-when-importing-a-schema">How do I avoid name clashes when importing a schema?</a></li>
 <li><a class="reference internal" href="#what-are-id-prefixes-used-for-and-why-do-we-want-them">What are id_prefixes used for and why do we want them?</a></li>
 <li><a class="reference internal" href="#when-is-it-important-to-have-mappings">When is it important to have mappings?</a></li>
 <li><a class="reference internal" href="#how-do-i-represent-relationships-in-linkml">How do I represent relationships in LinkML?</a></li>
