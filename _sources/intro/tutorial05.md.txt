@@ -24,7 +24,7 @@ prefixes:                                  ## Note are adding 3 new ones here
 imports:
   - linkml:types
 default_range: string
-  
+
 classes:
   Person:
     class_uri: schema:Person              ## reuse schema.org vocabulary
@@ -142,7 +142,7 @@ Outputs:
 - We also provide a generator for [creating SQL Alchemy models](https://linkml.io/linkml/generators/sqlalchemy.html)
 - We are gradually adding support for other languages
    - [java](https://linkml.io/linkml/generators/java.html)
-   - [typescript generators](https://linkml.io/linkml/generators/java.html) for javascript developers
+   - [typescript generators](https://linkml.io/linkml/generators/typescript.html) for javascript developers
 - For a full list of generators see [generators](https://linkml.io/linkml/generators/index.html)
 
 
@@ -157,4 +157,3 @@ Outputs:
 ## Next
 
 Next we will look at the *enumerations* feature of LinkML
-

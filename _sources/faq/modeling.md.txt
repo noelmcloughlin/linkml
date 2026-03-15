@@ -22,7 +22,7 @@ hierarchies should be stratified.
 See these wikipedia pages for more information.
 
  - [mixins](https://en.wikipedia.org/wiki/Mixin)
- - [traits](https://en.wikipedia.org/wiki/Trait_(computer_programming))
+ - [traits](https://en.wikipedia.org/wiki/Trait_%28computer_programming%29)
 
 ## Didn't you know composition is favored over inheritance these days?
 
@@ -42,7 +42,8 @@ However, this can also be slightly inconvenient for simple schemas, especially t
 
 ## What are induced slots?
 
-Because the same slot can be reused in different classes (with each class potentially refining semantics using slot_usage), it can be useful to give a new "name" for the implicit class-specific version of that slot.
+Because the same slot can be reused in different classes (with each class potentially refining semantics using [slot_usage](https://w3id.org/linkml/slot_usage)),
+it can be useful to give a new "name" for the implicit class-specific version of that slot.
 
 For example, if you have a slot `name`, and this is used in classes `Person` and `Organization`, and these are refined for each class (for example, "Organization" may refine the name slot to follow a particular regular expression). In some generators such as the markdown generator, you will see "induced" slots such as `Organization_name`.
 
@@ -83,7 +84,7 @@ types:
     description: A symbol is a string used as a shorthand identifier that is restricted to a subset of characters
 ```
 
-Some applications may choose to interpret this in particular ways. E.g. you may want to define all narrative text fields as being amenable to spellchecking, or machine learning natual language processing, or special kinds of indexing in ElasticSearch/Solr
+Some applications may choose to interpret this in particular ways. E.g. you may want to define all narrative text fields as being amenable to spellchecking, or machine learning natural language processing, or special kinds of indexing in ElasticSearch/Solr
 
 ## Why would I want to use enums over strings?
 
@@ -95,6 +96,54 @@ More on enums:
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQyQsRIBjSxhaDie5ASDAOTfJO9JqFjYmdoBHgCVVKMHzKo0AyL04lGNqWdgbCnyV8a-syk1U81tRXg/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
+## How do I constrain the value of a slot based on an entry in a different slot?
+
+You may want to make the entries in one slot contingent on a different slot. If, for example, you are developing a schema for a toy store that sells wooden horses and frogs. The horses are available in red and green, but the frogs are available in blue and pink.
+
+You can use a [rules block](https://linkml.io/linkml/schemas/advanced.html#rules) to constrain the permissible values for a particular slot dependent on the entry in another slot.
+
+```yaml
+classes:
+  Toys:
+    attributes:
+      species:
+        range: SpeciesRng
+      colour:
+    rules:
+      - preconditions:
+          slot_conditions:
+            species:
+              equals_string: horse
+        postconditions:
+          slot_conditions:
+            colour:
+              any_of:
+                - range: RedGreen
+      - preconditions:
+          slot_conditions:
+            species:
+              equals_string: frog
+        postconditions:
+          slot_conditions:
+            colour:
+              any_of:
+                - range: BluePink
+
+enums:
+  SpeciesRng:
+    permissible_values:
+      horse:
+      frog:
+  BluePink:
+    permissible_values:
+      blue:
+      pink:
+  RedGreen:
+    permissible_values:
+      red:
+      green:
+```
+
 ## How do I constrain the value of a slot using an ontology or vocabulary?
 
 There are a variety of ways of tackling this in LinkML.
@@ -102,7 +151,7 @@ There are a variety of ways of tackling this in LinkML.
 The fundamental question is whether you want to either:
 
 1. define a fixed set of terms in the schema in advance
-2. specify the set of terms via a query (e.g. a particular ontology brannch)
+2. specify the set of terms via a query (e.g. a particular ontology branch)
 
 See the two questions below for answers to each
 
@@ -121,7 +170,7 @@ classes:
     slots:
        - ...
        - variant type
-        
+
 slots:
   variant type:
     range: variant_type_enum
@@ -129,16 +178,43 @@ slots:
 
 enums:
   variant_type_enum:
-    permissible_values: 
+    permissible_values:
       point_mutation:
-          meaning: SO:12345
+          meaning: SO:1000008
       deletion:
-          meaning: SO:24681
-      insertion: 
-          meaning: SO:36912
+          meaning: SO:0000159
+      insertion:
+          meaning: SO:0000667
 ```
 
-Note that we are mapping each permissible value to an ontology term
+Note that we are mapping each permissible value to an ontology term.
+Mapping to ontology/vocabulary terms is optional, but if you can do it,
+we strongly recommend it. It provides *interoperation hooks* - others with different
+data models may have their own enumerations, by making the meaning of each permissible
+value explicit, data can be merged automatically.
+
+### How do I model an enum so that it gets rendered as an IRI in RDF format?
+
+From the schema developers perspective, the `meaning` slot does not _have_ to refer to an existing term from
+an ontology or similar, it can refer to anything at all. Consider this example of an enum with a single
+value, `Not`.
+
+```
+my_enum:
+  permissible_values:
+    Not:
+      meaning: mynamespace:Not
+```
+
+Without the `meaning` property, the usages of the `Not` enum would be rendered as a string literal in RDF:
+
+```
+"Not"^^xsd:string
+```
+
+However, adding the `meaning` property, you can use _any_ prefix (e.g. `mynamespace:`), including the schema-internal one.
+So, if you like to have your enum be serialised as an IRI (RDF Resource) in RDF-based serialisations,
+all you need to do is specify the `meaning` slot; if you do not do this, the enum value will be interpreted as a string literal.
 
 ### How do I constrain a slot to a branch of an ontology or a whole ontology?
 
@@ -186,8 +262,6 @@ slots:
     range: CellTypeId
 
 ```
-
-
 
 However, this has a number of limitations
 
@@ -237,8 +311,8 @@ classes:
         - ontology namespace
         - synonyms
         - secondary ids
-    id_prefixes:
-       - SO
+     id_prefixes:
+        - SO
 
 
 slots:
@@ -254,12 +328,61 @@ slots:
 
 ```
 
+See [dynamic enums](https://linkml.io/linkml/schemas/enums.html#dynamic-enums) for more details.
+
+### Can I use LinkML to develop ontologies?
+
+LinkML is intended as a schema modeling framework, rather than an ontology modeling framework.
+Schemas are intended for modeling and constraining the structure of *data*, whereas ontologies
+and ontology modeling frameworks like OWL are for modeling and constraining models of the *world*.
+
+LinkML is intended to be *combined* with OWLs and other controlled vocabularies, using terms from
+these resources as mappings in enumerations.
+
+However, the distinction here is frequently blurred, and there are many examples of schemas that
+have been modeled using OWL - e.g. BioPAX, FOAF.
+
+LinkML allows any schema to be translated to OWL using the `gen-owl <https://linkml.io/linkml/generators/owl>`_
+generator. There are a number of reasons to do this:
+
+- take advantage of ontology exploration and browsing tools such as BioPortal and Protege
+- use OWL reasoning over schemas and data (with the caveat that OWL uses *Open World* reasoning)
+
+You can also use `Schema Automator <https://linkml.io/schema-automator>`_ to do the reverse translation.
+
+It doesn't make sense to develop a large terminological-style ontology such as an OBO
+ontology as LinkML classes, since LinkML is intended for data modeling.
+
+One option is to use the `linkml-owl <https://linkml.io/linkml-owl>`_ framework to generate OWL
+classes from LinkML *data*
+
+### Are CURIEs used in schema definitions checked for expandability and resolution?
+
+No, not at this time.  However, linkml_runtime does have methods to help you expand the CURIEs in your data
+using the prefixes in your model (see: linkml_runtime.utils.namespaces.py) into URIs.  In addition, the
+`curies` [python package](https://github.com/cthoyt/curies/) which provides a standalone CURIE expansion service.
+There are many ways to check if a URI is resolvable.  One open source python package to do this
+is: [LinkChecker](https://pypi.org/project/LinkChecker/).
+
+### Are CURIEs used in data that validates against a given LinkML schema checked for expandability and resolution?
+
+No, not at this time.  However, linkml_runtime does have methods to help you expand the CURIEs in your data
+using the prefixes in your model (see: linkml_runtime.utils.namespaces.py) into URIs.  Specifying a regular expression
+to constrain the CURIEs in your data to a particular pattern is also possible.
+See the [regular expression](https://w3id.org/linkml/regular_expression) metaslot.  However, validating a CURIE
+that matches the regular expression, but is invalid in some other way (e.g. is an obsolete ontology term) is not
+currently supported.
+
+### Is it possible for us to import only a subset of an existing LinkML model?
+
+Not yet, but we are working on a tool to this, please check out
+[linkml-transformer](https://github.com/linkml/linkml-transformer) for more details.
+
 ### Can I combine dynamic enums using boolean expressions
 
 Yes, this is possible.
 
 See [enum](../schemas/enums) documentation
-
 
 ## Can I use regular expressions to constrain values?
 
@@ -336,7 +459,7 @@ Note in the RDF/OWL representation, separate `rdfs:label` triples will be genera
 
 This has the advantage of keeping human-friendly nomenclature in the appropriate places without specifying redundant computer names and human names
 
-However, the autotmatic translation can be confusing, so some schemas opt to follow standard naming conventions in the schema:
+However, the automatic translation can be confusing, so some schemas opt to follow standard naming conventions in the schema:
 
 ```yaml
 default_prefix: my_schema
@@ -388,9 +511,9 @@ classes:
     slots:
        - allele of
   gene:
-     
+
 slots:
-  allele of: 
+  allele of:
      type: uriorcurie
      domain: allele
      range: gene
@@ -409,9 +532,9 @@ classes:
         - subject
         - object
         - predicate
-      
+
 slots:
-  predicate: 
+  predicate:
      range: predicate_enum
   subject:
      range: allele
@@ -440,9 +563,9 @@ classes:
         - subject
         - object
         - predicate
-      
+
 slots:
-  predicate: 
+  predicate:
      range: predicate_enum
      relational_role: PREDICATE
   subject:
@@ -485,7 +608,38 @@ exploring mechanisms that provide more flexibility in reuse, including:
 - alternatives to imports and inheritance, such as using [implements](https://w3id.org/linkml/implements)
 - using [linkml-transformer](https://github.com/linkml/linkml-transformer) to *transform* upstream schemas rather than import them
 
-## What are id_prefixes used for and why do we want them?
+## What is the prefixes section at the start of a schema?
+
+The prefixes section can be used to provide CURIE abbreviations for entities. Under the hood,
+all elements in a LinkML schema are identified by a URI, but we typically expose these
+as CURIEs.
+
+For example `linkml:SchemaDefinition` is a CURIE that expands to `https://w3id.org/linkml/SchemaDefinition`.
+
+The prefixes section allows you to define a set of prefixes that can be used throughout the schema,
+for example:
+
+```yaml
+prefixes:
+  linkml: https://w3id.org/linkml/
+  biolink: https://w3id.org/biolink/
+  schema: http://schema.org/
+```
+
+## Is there a standard registry of prefixes?
+
+LinkML is closely aligned with the
+[bioregistry](https://bioregistry.io/), a community-driven, curated, hierarchical collection of prefix namespaces
+for use in data resources. Bioregistry is used commonly in the life sciences, but it is not restricted to
+this domain.
+
+We recommend using prefixes that align with bioregistry.
+
+See also
+**Unifying the identification of biomedical entities with the Bioregistry** (2022),
+[doi:10.1038/s41597-022-01807-3](https://doi.org/10.1038/s41597-022-01807-3)
+
+## What are id_prefixes used for?
 
 The LinkML meta modeling element, [id_prefixes](https://w3id.org/linkml/id_prefixes) can be applied to any Class. This is used to specify which prefixes should be used on the identifiers for that class.
 
@@ -493,27 +647,54 @@ The id_prefixes are listed in decreasing priority order, with the "preferred" pr
 
 Downstream software components can use this field to constrain data entry to a particular kind of identifier.
 
-To see examples, Biolink uses id_prefixes extensively. For example, the [MolecularEntity](https://biolink.github.io/biolink-model/docs/MolecularEntity) class shows that identifiers for this class can be drawn from PubChem, CHEBI, DrugBank, etc.
+To see examples, Biolink uses id_prefixes extensively. For example, the [MolecularEntity](https://biolink.github.io/biolink-model/MolecularEntity/) class shows that identifiers for this class can be drawn from PubChem, CHEBI, DrugBank, etc.
 
 For more, see [URIs and Mappings](https://linkml.io/linkml/schemas/uris-and-mappings.html)
 
+## How to use the `alias` metamodel construct?
+
+The [alias](https://linkml.io/linkml-model/latest/docs/alias/) construct from the metamodel is an element that can be asserted on slot definitions in the schema. If *alias* is asserted on a slot and the slot is asserted on a class then, we would need to use the alias name to refer to the slot in the instance file (CSV/TSV, YAML, JSON, etc.).
+
+For example:
+
+Snippet of schema file:
+
+```yaml
+classes:
+  Sample:
+    slots:
+      - id
+      - altitude
+slots:
+  altitude_in_meters:
+    alias: alt_in_m
+    unit:
+      ucum_code: m
+```
+
+Instance file (as YAML):
+
+```yaml
+- id: EX-123
+  alt_in_m: 5
+```
 
 ## When is it important to have mappings?
 
 Any element in a LinkML schema can have any number of *mappings* associated with it
 
-Mappings are useful in a variety of ways including: 
+Mappings are useful in a variety of ways including:
 
 - they make your data and your schema more FAIR (Findable, Accessible, Reusable, and Interoperable)
-- when people use data that conforms to your model, and integrated with data that conforms to another model, they can use mappings between models to help automate data harmonization.  
+- when people use data that conforms to your model, and integrated with data that conforms to another model, they can use mappings between models to help automate data harmonization.
 - mappings can provide links to other documentation sources for your model, allowing expertise to be shared between projects and not duplicated
 - mappings allow advanced users to reason over your model.
 
 Mappings can be established for exact equivalences, close, related, narrow and broad equivalences
-For more detail on the kinds of mappings (and their mappings to SKOS): https://linkml.io/linkml-model/docs/mappings/)
+For more detail on the kinds of mappings (and their mappings to SKOS), see [linkml:mappings](https://w3id.org/linkml/mappings)
 
 Mappings are an entire optional feature, you can create a schema without any mappings. However, we encourage their use, and we
-encourage adding them *prospectively* as you build our your datamodel, rather than doing this *retrospectively*. Thinking about mappings
+encourage adding them *prospectively* as you build your data model, rather than doing this *retrospectively*. Thinking about mappings
 will help you think about how your modeling relates to the modeling done by others as part of other databases or standards.
 
 ## How do I represent relationships in LinkML?
@@ -522,7 +703,7 @@ For some use cases, objects described using LinkML can stand in
 isolation, and do not need to be related. For example, for a simple
 database of material samples (biosamples, geosamples, etc), each
 sample may be considered a standalone entity described with an
-identifier, and various properties.
+identifier and various properties.
 
 However, more often then not, your objects need to be
 inter-related. Here there are a number of modeling questions that you
@@ -536,6 +717,102 @@ Depending on the answer, LinkML has different modeling constructs to help you, i
 
 - [range](https://w3id.org/linkml/range) constraints, which can refer to classes
 - the ability to assign a slot as an [identifier](https://w3id.org/linkml/identifier), allowing other objects to link to it
-- [inlining](https://w3id.org/linkml/inlining) which determines how relationships are serialized in formats like JSON
+- [inlining](../schemas/inlining), which determines how relationships are serialized in formats like JSON
 
-Other more advanced constructs are also possible to allow you to treat relationships as first-class entities
+Other more advanced constructs are also possible to allow you to treat relationships as first-class entities.
+
+## Can LinkML handle punning?
+
+### Punning in OWL
+In OWL, punning refers to the practice of using the same entity name in different roles—sometimes as a class and sometimes as an individual. This flexibility allows an entity to be treated as both a class (concept) and an individual (instance), depending on the context in which it is used. However, this can lead to ambiguities if not handled carefully.
+
+### Punning in LinkML
+In LinkML, there is no explicit support for punning. However, we can simulate this behavior by using the same name for both classes and slots, with the understanding that this might introduce ambiguity. Below is an example where we "pun" the name of a class and a slot, replicating a common OWL punning scenario where the entity serves both as a class and a property.
+
+### Example Scenario: "Author" as a Class and Property
+Let’s imagine a scenario where we define an "Author" both as a class (representing a person or entity who writes books) and as a property (representing the relationship between a book and its author).
+
+#### In OWL
+This could look like:
+
+```turtle
+:Author rdf:type owl:Class .
+:author rdf:type owl:ObjectProperty ;
+    rdfs:label "author" ;
+    rdfs:range :Author ;
+    skos:inScheme <https://example.org/schema> .
+```
+Here, `:Author` is a class representing authors, and `:author` is an object property linking books to authors.
+
+
+#### In LinkML
+We don't directly support this kind of punning. However, we can simulate it by reusing the name "author" for both the class and the slot. Below are two approaches to achieving this:
+
+* Approach 1: Using `uriorcurie` for Class Reference
+```yaml
+classes:
+  Author:
+    slots:
+      - id
+      - name
+  Book:
+    slots:
+      - author  # Reference to the "Author" class
+slots:
+  author:
+    range: uriorcurie  # This points to the URI of the "Author" class
+  id:
+    identifier: true
+  name:
+```
+In this example, the `author` slot in the `Book` class refers to an identifier of the `Author` class. The `range: uriorcurie` indicates that this slot is expected to hold an identifier (CURIE) for an author.
+
+* Approach 2: Using Direct Class Reference
+```yaml
+classes:
+  Author:
+    slots:
+      - id
+      - name
+  Book:
+    slots:
+      - author  # Use "author" slot in the Book class
+slots:
+  author:
+    range: Author  # Direct reference to the Author class
+  id:
+    identifier: true
+  name:
+```
+In this example, we reference the `Author` class directly in the range of the `author` slot for the `Book` class. While this introduces potential ambiguity (because `author` is both a slot and a class name), it works if we're careful with the context in which it's used.
+
+### Potential Pitfalls
+While this mimics punning, there are some caveats to keep in mind:
+
+#### Ambiguity
+If a class and a slot share the same name, it can lead to confusion. In the above example, the term "author" could be interpreted either as a class or as a property, depending on context.
+
+#### Best Practices Warning
+Many LinkML generators will issue warnings when you have overlapping class and slot names, as it’s generally considered a bad practice. For instance:
+
+```kotlin
+WARNING:linkml.utils.generator:Overlapping slot and class names: author
+```
+#### Serialization
+Despite the potential issues with overlapping names, the LinkML-to-OWL serialization will correctly generate an object property and a class with the same name:
+```turtle
+test:author a owl:ObjectProperty ;
+    rdfs:label "author" ;
+    rdfs:range test:author ;
+    skos:inScheme <https://w3id.org/test/test-model> .
+
+test:author a owl:Class ;
+    rdfs:label "author" ;
+```
+This serialization may work fine in OWL, but the model could be harder to read or reason about, especially when debugging or collaborating across teams.
+
+### Final Considerations
+
+* Clarity and Readability: If punning is crucial for your model, it’s important to document your reasoning and ensure all stakeholders understand the use of shared names. In LinkML, using different names for classes and slots, even if slightly different (e.g., `AuthorClass` and `AuthorSlot`), might help to avoid confusion.
+
+* Tools and Validation: Be mindful of validation warnings that arise from naming overlaps. If you must use the same name, you may want to ensure that the generators or tools you use can handle this without generating errors or ambiguous interpretations.

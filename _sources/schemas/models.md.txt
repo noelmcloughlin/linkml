@@ -76,7 +76,7 @@ default_range: string
      * [description](https://w3id.org/linkml/description) -- a summary of the schema. Can include markdown formatting
      * [license](https://w3id.org/linkml/license) -- CC0 recommended
  * modules
-     * [imports](https://w3id.org/linkml/imports) -- allows for modular development. See [imports](imports)
+     * [imports](https://w3id.org/linkml/imports) -- allows for modular development. See [imports](/schemas/imports)
  * prefix management
      * [prefixes](https://w3id.org/linkml/prefixes) -- A map of prefixes. See [prefixes](prefixes)
      * [default_prefixes](https://w3id.org/linkml/default_prefix) -- The prefix used for all elements in this schema
@@ -171,7 +171,7 @@ slots:
     range: Address
 ```
 
-You can then re-use these in your class definitions. For example, if your `Person` class has a `name` slot, just list it:
+You can then reuse these in your class definitions. For example, if your `Person` class has a `name` slot, just list it:
 
 ```yaml
 classes:
@@ -188,7 +188,7 @@ Note that LinkML models are "closed" by default. If a slot is not listed for a c
 Slots are [inherited](inheritance), so for example if `name` is listed
 as an allowed slot for `NamedThing`, and `Person` inherits from
 NamedThing, then `name` will be valid for Person. There is no need to
-re-declare
+redeclare
 
 See [SlotDefinition](https://w3id.org/linkml/SlotDefinition) for a full list of which metamodel slots can be applied to slots.
 
@@ -231,7 +231,7 @@ Types in LinkML are scalar data values such as strings, integers, floats, and so
 For example, you may represent chemical formulae as strings in your model, but if you provide an explicit type that maps to string, it makes the intended meaning clearer, and different applications can operate on these differently:
 
 ```yaml
-  chemical formula value:
+  ChemicalFormulaValue:
     uri: xsd:string
     base: str
     description: A chemical formula

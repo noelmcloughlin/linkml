@@ -1,4 +1,4 @@
-Tool Implementor Guide
+Tool Implementer Guide
 ======================
 
 This guide is for developers of *generic* LinkML tools that operate
@@ -9,10 +9,10 @@ over the linkml metamodel, for example:
 - Tools that analyze schemas or align schemas or schema elements
 - Tools that auto-genete APIs from schemas
 - Generic faceted data browsers that flexibly operate over multiple
-  schemas (see   `this draft <https://docs.google.com/document/d/1jOLRF_doeSomVxZD5H8Ig_WujQ-2sNxhvWBmojZos3o/edit>`_
+  schemas (see `this draft <https://docs.google.com/document/d/1jOLRF_doeSomVxZD5H8Ig_WujQ-2sNxhvWBmojZos3o/edit>`_)
 - Schema editors for LinkML itself
 
-  
+
 .. note:: This guide is *not* intended for developers of *specific*
           applications that are built for any one particular
           schema. For example, if I am building an application geared
@@ -33,7 +33,7 @@ Another example is `DataHarmonizer
 <https://github.com/cidgoh/DataHarmonizer>`_ which provides a
 spreadsheet-like data entry interface for any "flat" LinkML schema.
 
-          
+
 General Considerations
 ----------------------
 
@@ -52,8 +52,8 @@ Another challenge is working with schemas themselves. The native
 syntax for LinkML is YAML, and YAML parsers are provided with all
 major languages. However, you will likely need to do more than parse
 the model. There is a lot of "business logic" associated with a
-model. For example, the rules that govern 
-:doc:`inheritance and refinement of slots <schemas/inheritance>`.
+model. For example, the rules that govern
+:doc:`inheritance and refinement of slots </schemas/inheritance>`.
 
 For Python applications, the SchemaView library provides this business
 logic, but currently this logic must be re-implemented for different
@@ -131,7 +131,7 @@ Other Languages
 LinkML is programming language neutral. However, currently much of the
 stack for introspecting schemas is written in Python.
 
-For example, in Python, if you want a list of slots for that class you can use :ref:`class_slots
+For example, in Python, if you want a list of slots for that class you can use :attr:`class_slots
 <linkml_runtime.utils.schemaview.SchemaView.class_slots>`. But
 what if you are building a generic JavaScript data entry widget that
 will work for any LinkML class?
@@ -162,7 +162,7 @@ which can help bootstrap efforts to make domain logical libraries.
 Materializing imports and inferences
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The `linkml generator <../generators/linkml.html>`_ can be used to
+The :doc:`linkml generator <../generators/linkml>` can be used to
 materialize imports closure and to materialize inferred/induced slots
 as attributes. This frees the client logic from needing to implement
 this logic locally.
@@ -206,17 +206,17 @@ LinkML metamodel.
 - In a data entry application, a slot that is multivalued and has a
   range of an enum may be implemented as a multi-select.
 - Enums that take exactly two possible permissible values may be
-  displayed as toggles  
+  displayed as toggles
 - Applications may choose to use standard ontology browsers such as
   OLS or BioPortal, or standard query endpoints to obtain more
-  information on enums. See below.  
+  information on enums. See below.
 
 
 Slots that may potentially be added to provide applications with
 hints:
 
 - precedence order
-- grouping categories  
+- grouping categories
 
 
 
@@ -242,7 +242,7 @@ mechanism for a generic application to customize look, feel, and
 behavior in a way that doesn't require changing software/code.
 
 External Configuration
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 External configuration files may be best for "style sheet" type
 configurations for controlling colors, shapes, sizes, etc. These could
@@ -255,7 +255,7 @@ example of this is `KGViz Schema
 language for visualizing ontology graphs, based on `Graphviz<https://graphviz.org/>`.
 
 Schema Hints
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 Schema hints embed additional information in the schema itself. In
 contrast to external configurations, this is harder for a user to
@@ -278,7 +278,7 @@ example, you could define two types:
 .. code-block:: yaml
 
   types:
-  
+
     NameString:
       typeof: string
       pattern: "^[^\\n]$"
@@ -287,13 +287,13 @@ example, you could define two types:
        - This is designed to support different styles of names from
          multiple languages, but certain characters such as newlines are
          never in names
-  
+
     FormattedString:
       typeof: string
       description: >-
         A string in which characters such as newlines are
         permitted and used for formatting
-  
+
   slots:
     full_name:
       range: NameString
@@ -308,22 +308,22 @@ A more flexible approach would be instead to use annotations on the
 types:
 
 .. code-block:: yaml
-                
+
   types:
-  
+
     NameString:
       typeof: string
       pattern: "^[^\\n]$"
       description: ...
       annotations:
         dash.singleLine: true
-  
+
     FormattedString:
       typeof: string
       description: ...
       annotations:
         dash.singleLine: false
-  
+
 
 
 This is better as you can reuse the same vocabulary on different
@@ -337,7 +337,7 @@ then it will have the dash annotations, allowing you to leverage
 generic SHACL applications (next section).
 
 Using ontologies and standard vocabularies to drive behavior
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Consider a schema that reuses standard vocabularies such as wgs84 for
 slots:
@@ -348,7 +348,7 @@ slots:
   prefixes:
     wgs: http://www.w3.org/2003/01/geo/wgs84_pos#
     schema: http://schema.org/
-  
+
   slots:
     latitude:
       domain: geolocation value
@@ -358,7 +358,7 @@ slots:
       slot_uri: wgs:lat
       exact_mappings:
         - schema:latitude
-  
+
     longitude:
       domain: geolocation value
       range: decimal degree
@@ -374,7 +374,7 @@ for example, including a map widget. Applications may also choose to
 use mappings as well as the primary URI.
 
 Handling enums
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 In addition to the general guidance above, applications may allow for
 custom behavior with enums.
@@ -395,7 +395,7 @@ more values than are present in the permissible value list.
 
 
 Handling units and quantities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are a wide variety of ways to model quantities, and these are
 use case dependent. Is it important to capture ranges or

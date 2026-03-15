@@ -27,8 +27,7 @@ To run:
 Inheritance
 ^^^^^^^^^^^
 
-.. code-block:: proto
-
+::
 
     type Person implements HasAliases
       {
@@ -45,12 +44,12 @@ Inheritance
         hasFamilialRelationships: [FamilialRelationship]
         hasMedicalHistory: [MedicalEvent]
         aliases: [String]
-      }                
+      }
 
-      
+
 Docs
 ----
-      
+
 Command Line
 ^^^^^^^^^^^^
 
@@ -62,7 +61,6 @@ Code
 ^^^^
 
 .. currentmodule:: linkml.generators.graphqlgen
-                   
-.. autoclass:: GrapghlGenerator
-    :members: serialize
 
+.. autoclass:: GraphqlGenerator
+    :members: serialize

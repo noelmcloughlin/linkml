@@ -20,7 +20,7 @@ prefixes:
 imports:
   - linkml:types
 default_range: string
-  
+
 classes:
   Person:
     attributes:
@@ -50,10 +50,6 @@ classes:
 
 We use yaml comment syntax (i.e the part after `#`) for comments - these are ignored by the parser.
 
-Depicted as:
-
-![img](https://yuml.me/diagram/nofunky;dir:TB/class/[Container]++-%20persons%200..*>[Person|id:string;full_name:string;aliases:string%20*;phone:string%20%3F;age:integer%20%3F],[Container])
-
 Note that we haven't declared ranges for some fields, but the *default_range* directive at the schema level ensures things default to string.
 
 ## Example data
@@ -62,87 +58,50 @@ Let's deliberately introduce some bad data to make sure our validator is working
 
 bad-data.yaml:
 
-```yaml
-persons:
-  - id: ORCID:1234
-    full_name: Clark Kent
-    age: 90
-    phone: 1-800-kryptonite
-  - id: ORCID:1234
-    age: 33
+```{literalinclude} ../../examples/tutorial/tutorial03/bad-data.yaml
+:language: yaml
 ```
 
-Running the following command:
+Running the following command will result in errors printed to the console:
 
 <!-- FAIL -->
 ```bash
 linkml-validate -s personinfo.yaml bad-data.yaml
 ```
 
-Will result in:
+Output:
 
+```text
+[ERROR] [bad-data.yaml/0] '1-800-kryptonite' does not match '^[\\d\\(\\)\\-]+$' in /persons/0/phone
+[ERROR] [bad-data.yaml/0] 'full_name' is a required property in /persons/1
 ```
-ValueError: full_name must be supplied
-```
 
-better-data-v1.yaml:
+This indicates there are two issues with our data. The first says that the phone number of the first entry in the persons list (`/persons/0/phone`) doesn’t conform to the regular expression syntax we stated. The second says that we are missing the required `full_name` slot on the second entry in the person list (`/persons/1`).
 
-```yaml
-persons:
-  - id: ORCID:1234
-    full_name: Clark Kent
-    age: 90
-    phone: 1-800-kryptonite
-  - id: ORCID:1234
-    full_name: Lois Lane
-    age: 33
+Let's fix the second issue.
+
+better-data.yaml:
+
+```{literalinclude} ../../examples/tutorial/tutorial03/better-data.yaml
+:language: yaml
 ```
 
 <!-- FAIL -->
 ```bash
-linkml-validate -s personinfo.yaml better-data-v1.yaml
+linkml-validate -s personinfo.yaml better-data.yaml
 ```
 
-Will result in:
+Output:
 
-```
-ValueError: File "<file>", line 6, col 9: ORCID:1234: duplicate key
-```
-
-Let's fix that:
-
-better-data-v2.yaml:
-
-```yaml
-persons:
-  - id: ORCID:1234
-    full_name: Clark Kent
-    age: 90
-    phone: 1-800-kryptonite
-  - id: ORCID:4567
-    full_name: Lois Lane
-    age: 33
+```text
+[ERROR] [better-data.yaml/0] '1-800-kryptonite' does not match '^[\\d\\(\\)\\-]+$' in /persons/0/phone
 ```
 
-<!-- FAIL -->
-```bash
-linkml-validate -s personinfo.yaml better-data-v2.yaml
-```
-
-Will result in:
-
-```
-{'pattern': '^[\\d\\(\\)\\-]+$', 'type': 'string'}
-
-On instance['persons'][0]['phone']:
-    '1-800-kryptonite'
-```
-
-This reflexts that the phone number doesn't conform to the regular expression syntax we stated.
+We have successfully fixed one of the issues with the data!
 
 ## Exercises
 
- 1. See if you can iterate on the example file to get something that works.
+ 1. See if you can iterate on the example data to get something that validates.
 
 ## Using the JSON Schema directly
 
@@ -153,14 +112,15 @@ JSON-Schema - note that there are some features of LinkML not
 supported by JSON-Schema, so the current validator is not guaranteed
 to be complete.
 
-If you prefer you can use your own JSON Schema validator. First compile to jsonschema:
+If you prefer you can use your own JSON Schema validator. First compile to jsonschema. Unlike the `linkml-validate` command, the `gen-json-schema` command does not attempt to automatically infer which class in your schema to use for validation. You must either identify it in your schema by setting `tree_root: true` on one class or pass the `-t/--top-class` option to `gen-json-schema`.
 
 ```bash
-gen-json-schema personinfo.yaml > personinfo.schema.json
+gen-json-schema personinfo.yaml --top-class Container > personinfo.schema.json
 ```
 
 You can then use the `jsonschema` command that comes with the python library (any jsonschema validator will do here)
 
+<!-- Note: this will actually fail when executed because 'bad-data.json' does not exist. -->
 <!-- FAIL -->
 ```bash
 jsonschema -i bad-data.json personinfo.schema.json
@@ -184,12 +144,13 @@ The next section deals with working with RDF data.
 
 ## Further reading
 
-* [Working with Data](../data/working-with-data)
+* [Working with Data](/data/index)
 * Metamodel Specification
     * [identifier](https://w3id.org/linkml/identifier) slot
     * [required](https://w3id.org/linkml/required) slot
-    * [minimum_value](https://w3id.org/linkml/minimum_value) slot    
-    * [maximum_value](https://w3id.org/linkml/maximum_value) slot    
+    * [minimum_value](https://w3id.org/linkml/minimum_value) slot
+    * [maximum_value](https://w3id.org/linkml/maximum_value) slot
+    * [tree_root](https://w3id.org/linkml/tree_root) slot
 * FAQ:
     - {ref}`LinkML vs shape languages <faq/why-linkml:why should i use linkml over shex/shacl?>`
 * Generators:
