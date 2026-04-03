@@ -276,6 +276,7 @@
 <li class="toctree-l2"><a class="reference internal" href="generators/csv.html">CSV</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generators/yaml.html">Yaml</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generators/pandera.html">Pandera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators/dashboard.html">Generator Feature Dashboard</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="generators/common/index.html">Common</a><input aria-label="Toggle navigation of Common" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generators/common/build.html">Build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generators/common/lifecycle.html">Lifecycle</a></li>
@@ -297,6 +298,7 @@
 <li class="toctree-l2"><a class="reference internal" href="howtos/generate-ai-prompts.html">How to Generate AI prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/deprecating-elements.html">Deprecating elements while maintaining PURLs and other URIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/ontologies-as-values.html">Using ontology terms as values in data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/implements-instantiates-guide.html">Implements vs Instantiates vs Inheritance: A Best Practices Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="howtos/skip-logic.html">How to implement skip logic in LinkML</a></li>
 </ul>
 </li>
@@ -2787,8 +2789,6 @@
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-golang-nullable-primitives">linkml-generate-(full)-golang command line option</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     --no-prefixes
 
@@ -2798,6 +2798,8 @@
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-jsonld-context-prefixes">linkml-generate-(full)-jsonld-context command line option</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     --no-pydantic
 
@@ -3043,6 +3045,15 @@
           <li><a href="generators/owl.html#cmdoption-gen-owl-type-objects">gen-owl command line option</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-owl-type-objects">linkml-generate-(full)-owl command line option</a>
+</li>
+        </ul></li>
+        <li>
+    --no-use-aliases
+
+        <ul>
+          <li><a href="generators/java.html#cmdoption-gen-java-use-aliases">gen-java command line option</a>
+</li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-use-aliases">linkml-generate-(full)-java command line option</a>
 </li>
         </ul></li>
         <li>
@@ -3443,6 +3454,15 @@
 </li>
         </ul></li>
         <li>
+    --sqla-style
+
+        <ul>
+          <li><a href="generators/sqlalchemy.html#cmdoption-gen-sqla-sqla-style">gen-sqla command line option</a>
+</li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-sqla-sqla-style">linkml-generate-(full)-sqla command line option</a>
+</li>
+        </ul></li>
+        <li>
     --stacktrace
 
         <ul>
@@ -3719,6 +3739,15 @@
           <li><a href="generators/owl.html#cmdoption-gen-owl-type-objects">gen-owl command line option</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-owl-type-objects">linkml-generate-(full)-owl command line option</a>
+</li>
+        </ul></li>
+        <li>
+    --use-aliases
+
+        <ul>
+          <li><a href="generators/java.html#cmdoption-gen-java-use-aliases">gen-java command line option</a>
+</li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-use-aliases">linkml-generate-(full)-java command line option</a>
 </li>
         </ul></li>
         <li>
@@ -6173,6 +6202,8 @@
 </li>
           <li><a href="generators/java.html#cmdoption-gen-java-true-enums">--no-true-enums</a>
 </li>
+          <li><a href="generators/java.html#cmdoption-gen-java-use-aliases">--no-use-aliases</a>
+</li>
           <li><a href="generators/java.html#cmdoption-gen-java-output-directory">--output-directory</a>
 </li>
           <li><a href="generators/java.html#cmdoption-gen-java-package">--package</a>
@@ -6186,6 +6217,8 @@
           <li><a href="generators/java.html#cmdoption-gen-java-template-variant">--template-variant</a>
 </li>
           <li><a href="generators/java.html#cmdoption-gen-java-true-enums">--true-enums</a>
+</li>
+          <li><a href="generators/java.html#cmdoption-gen-java-use-aliases">--use-aliases</a>
 </li>
           <li><a href="generators/java.html#cmdoption-gen-java-useuris">--useuris</a>
 </li>
@@ -7131,6 +7164,8 @@
           <li><a href="generators/sqlalchemy.html#cmdoption-gen-sqla-use-foreign-keys">--no-use-foreign-keys</a>
 </li>
           <li><a href="generators/sqlalchemy.html#cmdoption-gen-sqla-pydantic">--pydantic</a>
+</li>
+          <li><a href="generators/sqlalchemy.html#cmdoption-gen-sqla-sqla-style">--sqla-style</a>
 </li>
           <li><a href="generators/sqlalchemy.html#cmdoption-gen-sqla-stacktrace">--stacktrace</a>
 </li>
@@ -8510,6 +8545,8 @@
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-true-enums">--no-true-enums</a>
 </li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-use-aliases">--no-use-aliases</a>
+</li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-output-directory">--output-directory</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-package">--package</a>
@@ -8523,6 +8560,8 @@
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-template-variant">--template-variant</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-true-enums">--true-enums</a>
+</li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-use-aliases">--use-aliases</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-java-useuris">--useuris</a>
 </li>
@@ -9561,6 +9600,8 @@
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-sqla-use-foreign-keys">--no-use-foreign-keys</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-sqla-pydantic">--pydantic</a>
+</li>
+          <li><a href="cli/generate.html#cmdoption-linkml-generate-full-sqla-sqla-style">--sqla-style</a>
 </li>
           <li><a href="cli/generate.html#cmdoption-linkml-generate-full-sqla-stacktrace">--stacktrace</a>
 </li>
