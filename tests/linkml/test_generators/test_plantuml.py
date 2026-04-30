@@ -172,38 +172,29 @@ def test_generate_svg(tmp_path, kitchen_sink_path, kroki_url):
         kitchen_sink_path,
         kroki_server=kroki_url,
     )
+
+    # Verify structure via PlantUML text (stable; no Kroki call), because SVG
+    # content checking is brittle - SVG group IDs keep changing across Kroki
+    # releases (elem_ -> entity_ -> ent####) - so check text output instead.
+    puml_text = generator.serialize()
+    assert 'class "Person"' in puml_text
+    assert 'class "Dataset"' in puml_text
+    assert 'class "FamilialRelationship"' in puml_text
+    assert 'class "MedicalEvent"' in puml_text
+    assert '"Person" *--> "0..*" "MedicalEvent"' in puml_text
+    assert '"FamilialRelationship" --> "1" "Person"' in puml_text
+    assert '"Dataset" *--> "0..*" "Person"' in puml_text
+    assert not any(
+        '"Dataset"' in ln and '"MarriageEvent"' in ln
+        for ln in puml_text.splitlines()
+        if "-->" in ln or "<--" in ln
+    )
+
+    # Generate SVG via Kroki and verify the file is produced and parses as valid XML.
     generator.serialize(directory=tmp_path)
-
-    # name of SVG file will be inferred from schema name because
-    # we are passing a value to the directory argument
     svg_file = tmp_path / "KitchenSink.svg"
-
-    # check that SVG file is generated correctly
     assert svg_file.is_file()
-
-    svg_dom = minidom.parse(os.fspath(tmp_path / "KitchenSink.svg"))
-
-    classes_list = []  # list of all classes in schema
-    relationships_list = []  # list of all links/relationships in schema
-    groups = svg_dom.getElementsByTagName("g")
-    for group in groups:
-        id = group.getAttribute("id")
-        if id.startswith("entity_"):
-            class_name = id[len("entity_") :]
-            classes_list.append(class_name)
-        if id.startswith("link_"):
-            link_name = id[len("link_") :]
-            relationships_list.append(link_name)
-
-    assert "Person" in classes_list
-    assert "Dataset" in classes_list
-    assert "FamilialRelationship" in classes_list
-    assert "MedicalEvent" in classes_list
-
-    assert "Person_MedicalEvent" in relationships_list
-    assert "FamilialRelationship_Person" in relationships_list
-    assert "Dataset_Person" in relationships_list
-    assert "Dataset_MarriageEvent" not in relationships_list
+    minidom.parse(os.fspath(svg_file))
 
 
 def test_preserve_names():
