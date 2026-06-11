@@ -1078,6 +1078,78 @@ def test_hierarchical_class_view(kitchen_sink_path, tmp_path):
     )
 
 
+def test_yaml_inferred_uses_induced_class(kitchen_sink_path):
+    """Test that yaml(inferred=True) delegates to SchemaView.induced_class."""
+    gen = DocGenerator(kitchen_sink_path, mergeimports=True, no_types_dir=True)
+    sv = gen.schemaview
+    cls = sv.get_class("Person")
+
+    result = gen.yaml(cls, inferred=True)
+    result_dict = yaml.load(result, Loader=yaml.Loader)
+
+    # induced_class produces attributes (no top-level slots list)
+    assert "attributes" in result_dict
+    assert result_dict.get("slots") is None or result_dict["slots"] == []
+    # known induced slots should be present as attributes
+    assert "id" in result_dict["attributes"]
+    assert "name" in result_dict["attributes"]
+
+    # Compare directly with SchemaView.induced_class output
+    from linkml_runtime.dumpers import yaml_dumper
+
+    expected = yaml.load(yaml_dumper.dumps(sv.induced_class("Person")), Loader=yaml.Loader)
+    assert result_dict == expected
+
+
+def test_yaml_inferred_rejects_non_class(kitchen_sink_path):
+    """Test that yaml(inferred=True) raises ValueError for non-class elements."""
+    gen = DocGenerator(kitchen_sink_path, mergeimports=True, no_types_dir=True)
+    sv = gen.schemaview
+    slot = sv.get_slot("id")
+    with pytest.raises(ValueError, match="Inferred only applicable for classes"):
+        gen.yaml(slot, inferred=True)
+
+
+def test_ensure_slot_range_fallback(kitchen_sink_path, tmp_path):
+    """Test that _ensure_slot_range sets range to 'string' when no range is resolved."""
+    gen = DocGenerator(kitchen_sink_path, mergeimports=True, no_types_dir=True)
+
+    # Create a slot with no range set
+    slot = SlotDefinition(name="test_slot")
+    assert not slot.range
+
+    result = DocGenerator._ensure_slot_range(slot)
+    assert result.range == "string"
+    assert result is slot  # mutates in place
+
+    # A slot that already has a range should keep it
+    slot2 = SlotDefinition(name="test_slot2", range="integer")
+    result2 = DocGenerator._ensure_slot_range(slot2)
+    assert result2.range == "integer"
+
+
+def test_get_direct_slots_have_range(kitchen_sink_path):
+    """Test that get_direct_slots returns slots with non-empty range."""
+    gen = DocGenerator(kitchen_sink_path, mergeimports=True, no_types_dir=True)
+    sv = gen.schemaview
+    cls = sv.get_class("Person")
+
+    direct_slots = gen.get_direct_slots(cls)
+    for slot in direct_slots:
+        assert slot.range, f"Slot {slot.name} should have a range set"
+
+
+def test_get_indirect_slots_have_range(kitchen_sink_path):
+    """Test that get_indirect_slots returns slots with non-empty range."""
+    gen = DocGenerator(kitchen_sink_path, mergeimports=True, no_types_dir=True)
+    sv = gen.schemaview
+    cls = sv.get_class("EmploymentEvent")
+
+    indirect_slots = gen.get_indirect_slots(cls)
+    assert len(indirect_slots) > 0, "EmploymentEvent should have indirect slots"
+    for slot in indirect_slots:
+        assert slot.range, f"Slot {slot.name} should have a range set"
+
 def test_subfolder_type_separation(kitchen_sink_path, tmp_path):
     """Test to check if class table view on index page follows hierarchical view"""
     gen = DocGenerator(kitchen_sink_path, mergeimports=True, subfolder_type_separation=True)

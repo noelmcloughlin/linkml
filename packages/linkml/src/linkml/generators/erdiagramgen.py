@@ -385,9 +385,10 @@ class ERDiagramGenerator(Generator):
 
         # Process regular induced slots
         for slot in sv.class_induced_slots(class_name):
-            # TODO: schemaview should infer this
+            # induced_slot already resolves schema.default_range;
+            # fall back to "string" only when even that is unset.
             if slot.range is None:
-                slot.range = sv.schema.default_range or "string"
+                slot.range = "string"
             all_slots[slot.name] = slot
 
         # Also process slots defined in slot_usage (which may not appear in induced_slots)
@@ -411,7 +412,7 @@ class ERDiagramGenerator(Generator):
                 try:
                     slot = sv.induced_slot(slot_name, class_name)
                     if slot.range is None:
-                        slot.range = sv.schema.default_range or "string"
+                        slot.range = "string"
                     all_slots[slot_name] = slot
                 except (KeyError, AttributeError, ValueError) as e:
                     # Slot might not exist, have missing attributes, or not be a valid induced slot, skip it

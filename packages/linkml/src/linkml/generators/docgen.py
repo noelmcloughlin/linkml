@@ -2,7 +2,7 @@ import importlib.util
 import logging
 import os
 from collections.abc import Iterable, Iterator
-from copy import deepcopy
+
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -795,13 +795,7 @@ class DocGenerator(Generator):
         else:
             if not isinstance(element, ClassDefinition):
                 raise ValueError(f"Inferred only applicable for classes, not {element.name} {type(element)}")
-            # TODO: move this code to schemaview
-            c = deepcopy(element)
-            attrs = self.schemaview.class_induced_slots(c.name)
-            for a in attrs:
-                c.attributes[a.name] = a
-            c.slots = []
-            return yaml_dumper.dumps(c)
+            return yaml_dumper.dumps(self.schemaview.induced_class(element.name))
 
     def class_induced_slots(self, class_name: ClassDefinitionName) -> Iterator[SlotDefinition]:
         """
@@ -922,17 +916,16 @@ class DocGenerator(Generator):
         else:
             return False
 
-    def inject_slot_info(self, slot: SlotDefinition) -> SlotDefinition:
-        """
-        Injects additional information into a slot
+    @staticmethod
+    def _ensure_slot_range(slot: SlotDefinition) -> SlotDefinition:
+        """Ensure slot has a non-empty range, falling back to 'string'.
 
-        TODO: move this functionality into schemaview
-        :param slot:
-        :return:
+        SchemaView.induced_slot already populates range from schema.default_range;
+        this handles the edge case where even default_range is unset.
+
+        :param slot: an induced slot definition
+        :return: the same slot, with range guaranteed non-empty
         """
-        sv = self.schemaview
-        if not slot.range:
-            slot.range = sv.schema.default_range
         if not slot.range:
             slot.range = "string"
         return slot
@@ -955,7 +948,8 @@ class DocGenerator(Generator):
         :return: list of all own attributes of a class
         """
         return [
-            self.inject_slot_info(self.schemaview.induced_slot(sn, cls.name)) for sn in self.get_direct_slot_names(cls)
+            self._ensure_slot_range(self.schemaview.induced_slot(sn, cls.name))
+            for sn in self.get_direct_slot_names(cls)
         ]
 
     def get_indirect_slots(self, cls: ClassDefinition) -> list[SlotDefinition]:
@@ -968,7 +962,7 @@ class DocGenerator(Generator):
         sv = self.schemaview
         direct_slot_names = self.get_direct_slot_names(cls)
         return [
-            self.inject_slot_info(slot)
+            self._ensure_slot_range(slot)
             for slot in sv.class_induced_slots(cls.name)
             if slot.name not in direct_slot_names
         ]
