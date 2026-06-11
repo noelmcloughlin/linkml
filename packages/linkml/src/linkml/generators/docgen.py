@@ -179,14 +179,12 @@ class DocGenerator(Generator):
     def __post_init__(self):
         dialect = self.dialect
         if dialect is not None:
-            # TODO: simplify this
             if isinstance(dialect, str):
-                if dialect == MarkdownDialect.myst.value:
-                    dialect = MarkdownDialect.myst
-                elif dialect == MarkdownDialect.python.value:
-                    dialect = MarkdownDialect.python
-                else:
-                    raise NotImplementedError(f"{dialect} not supported")
+                try:
+                    dialect = MarkdownDialect(dialect)
+                except ValueError:
+                    supported = ", ".join(d.value for d in MarkdownDialect)
+                    raise NotImplementedError(f"{dialect} not supported; expected one of: {supported}")
             self.dialect = dialect
         if isinstance(self.diagram_type, str):
             self.diagram_type = DiagramType[self.diagram_type]
@@ -651,25 +649,25 @@ class DocGenerator(Generator):
             return ""
 
     @staticmethod
-    def number_value_range(e: SlotDefinition | TypeDefinition) -> str:
+    def number_value_range(e: SlotDefinition | TypeDefinition) -> str | None:
         """
         Render the minimum and maximum values for a slot or type as a range, e.g 5-100
 
         :param e:
         :return:
         """
-        r = None
-        if isinstance(e, TypeDefinition):
-            # TODO: new version
-            return None
-        if e.minimum_value is not None:
-            if e.maximum_value is not None:
-                r = f"{e.minimum_value} to {e.maximum_value}"
+        minimum_value = getattr(e, "minimum_value", None)
+        maximum_value = getattr(e, "maximum_value", None)
+        if minimum_value is not None:
+            if maximum_value is not None:
+                r = f"{minimum_value} to {maximum_value}"
             else:
-                r = f">= {e.minimum_value}"
+                r = f">= {minimum_value}"
         else:
-            if e.maximum_value is not None:
-                r = f"<= {e.maximum_value}"
+            if maximum_value is not None:
+                r = f"<= {maximum_value}"
+            else:
+                r = None
         return r
 
     @staticmethod

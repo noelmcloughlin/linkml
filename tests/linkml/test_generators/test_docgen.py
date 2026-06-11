@@ -14,7 +14,7 @@ import pytest
 import yaml
 
 from linkml.generators.docgen import DiagramType, DocGenerator
-from linkml_runtime.linkml_model.meta import ClassDefinition, SchemaDefinition, SlotDefinition
+from linkml_runtime.linkml_model.meta import ClassDefinition, SchemaDefinition, SlotDefinition, TypeDefinition
 from linkml_runtime.utils.introspection import package_schemaview
 from linkml_runtime.utils.schemaview import SchemaView
 
@@ -831,6 +831,30 @@ def test_custom_directory(kitchen_sink_path, input_path, tmp_path):
     gen.serialize(directory=str(tmp_path))
     # assert_mdfile_contains('Organization.md', 'Organization', after='Inheritance')
     assert_mdfile_contains(tmp_path / "Organization.md", "FAKE TEMPLATE")
+
+
+def test_invalid_dialect_raises(kitchen_sink_path):
+    """An invalid dialect string must raise NotImplementedError listing supported values."""
+    with pytest.raises(NotImplementedError, match="not supported.*python.*myst"):
+        DocGenerator(kitchen_sink_path, dialect="invalid_dialect")
+
+
+@pytest.mark.parametrize(
+    "element, expected",
+    [
+        (TypeDefinition(name="T1", minimum_value=5, maximum_value=10), "5 to 10"),
+        (TypeDefinition(name="T2", minimum_value=5), ">= 5"),
+        (TypeDefinition(name="T3", maximum_value=10), "<= 10"),
+        (TypeDefinition(name="T4"), None),
+        (SlotDefinition(name="S1", minimum_value=0, maximum_value=100), "0 to 100"),
+        (SlotDefinition(name="S2", minimum_value=1), ">= 1"),
+        (SlotDefinition(name="S3", maximum_value=50), "<= 50"),
+        (SlotDefinition(name="S4"), None),
+    ],
+)
+def test_number_value_range(element, expected):
+    """number_value_range must work for both SlotDefinition and TypeDefinition."""
+    assert DocGenerator.number_value_range(element) == expected
 
 
 def test_gen_custom_named_index(kitchen_sink_path, tmp_path):
