@@ -341,11 +341,26 @@ class DocGenerator(Generator):
         """
         if self.template_mappings and element_type in self.template_mappings:
             path = self.template_mappings[element_type]
-            # TODO: relative paths
-            # loader = FileSystemLoader()
-            env = Environment()
+            template_path = Path(path).expanduser()
+            if not template_path.is_absolute():
+                base_dirs = []
+                if self.template_directory:
+                    base_dirs.append(Path(self.template_directory).expanduser())
+                if self.base_dir:
+                    base_dirs.append(Path(self.base_dir).expanduser())
+                base_dirs.append(Path.cwd())
+                for base_dir in base_dirs:
+                    candidate = base_dir / template_path
+                    if candidate.is_file():
+                        template_path = candidate
+                        break
+                else:
+                    template_path = base_dirs[0] / template_path
+
+            loader = FileSystemLoader(str(template_path.parent))
+            env = Environment(loader=loader)
             self.customize_environment(env)
-            return env.get_template(path)
+            return env.get_template(template_path.name)
         else:
             base_file_name = f"{element_type}.{self._file_suffix()}.jinja2"
             folder = None
@@ -1073,7 +1088,6 @@ class DocGenerator(Generator):
         rule_dicts = []
 
         for rule in element.rules:
-            # TODO: expand this list of ClassRule metaslots based on use case
             rule_dict = {
                 "title": rule.title or "",
                 "preconditions": None,
@@ -1087,6 +1101,18 @@ class DocGenerator(Generator):
                     json_obj = json_dumper.to_dict(condition_obj)
                     sanitized_condition = self._remove_name_keys(json_obj)
                     rule_dict[key] = sanitized_condition
+
+            for key in rule.__dict__:
+                if key in {"title", "preconditions", "postconditions", "elseconditions"}:
+                    continue
+                value = getattr(rule, key, None)
+                if value in (None, "", [], {}):
+                    continue
+                if isinstance(value, str | int | float | bool):
+                    rule_dict[key] = value
+                    continue
+                json_obj = json_dumper.to_dict(value)
+                rule_dict[key] = self._remove_name_keys(json_obj)
 
             rule_dicts.append(rule_dict)
 

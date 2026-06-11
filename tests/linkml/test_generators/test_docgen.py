@@ -833,6 +833,39 @@ def test_custom_directory(kitchen_sink_path, input_path, tmp_path):
     assert_mdfile_contains(tmp_path / "Organization.md", "FAKE TEMPLATE")
 
 
+def test_template_mappings_relative_path(kitchen_sink_path, tmp_path):
+    """Relative template_mappings paths should resolve from template_directory."""
+    template_dir = tmp_path / "templates"
+    template_dir.mkdir()
+    template_file = template_dir / "custom-index.md.jinja2"
+    template_file.write_text("# Relative Template Test\n{{ schema.name }}\n", encoding="utf-8")
+
+    gen = DocGenerator(
+        kitchen_sink_path,
+        mergeimports=True,
+        template_directory=str(template_dir),
+        template_mappings={"index": "custom-index.md.jinja2"},
+    )
+    template = gen._get_template("index")
+    rendered = template.render(gen=gen, schema=gen.schemaview.schema, schemaview=gen.schemaview)
+    assert "Relative Template Test" in rendered
+
+
+def test_template_mappings_absolute_path(kitchen_sink_path, tmp_path):
+    """Absolute paths in template_mappings should be used directly."""
+    template_file = tmp_path / "absolute-index.md.jinja2"
+    template_file.write_text("# Absolute Path Test\n{{ schema.name }}\n", encoding="utf-8")
+
+    gen = DocGenerator(
+        kitchen_sink_path,
+        mergeimports=True,
+        template_mappings={"index": str(template_file)},
+    )
+    template = gen._get_template("index")
+    rendered = template.render(gen=gen, schema=gen.schemaview.schema, schemaview=gen.schemaview)
+    assert "Absolute Path Test" in rendered
+
+
 def test_gen_custom_named_index(kitchen_sink_path, tmp_path):
     """Tests that the name of the index page can be customized"""
     gen = DocGenerator(kitchen_sink_path, index_name="custom-index")
@@ -1311,6 +1344,47 @@ def test_classrule_to_dict_view_method(input_path, tmp_path):
 
     # Test that elseconditions is None since it's not defined in the rule
     assert rule_dict["elseconditions"] is None
+
+
+def test_classrule_to_dict_view_expands_non_condition_metaslots(tmp_path):
+    """classrule_to_dict_view should include non-condition metaslots like description, open_world, notes."""
+    schema_path = tmp_path / "rules.yaml"
+    schema_path.write_text(
+        "\n".join(
+            [
+                "id: https://example.org/rule-test",
+                "name: rule_test",
+                "prefixes:",
+                "  linkml: https://w3id.org/linkml/",
+                "default_prefix: linkml",
+                "imports:",
+                "  - linkml:types",
+                "classes:",
+                "  Thing:",
+                "    rules:",
+                "      - title: Test rule",
+                "        description: Rule description",
+                "        open_world: true",
+                "        notes:",
+                "          - Note A",
+                "        preconditions:",
+                "          slot_conditions:",
+                "            id:",
+                "              required: true",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    gen = DocGenerator(str(schema_path), mergeimports=True)
+    thing = gen.schemaview.get_class("Thing")
+    processed = gen.classrule_to_dict_view(thing)
+
+    assert len(processed) == 1
+    rule_dict = processed[0]
+    assert rule_dict["title"] == "Test rule"
+    assert rule_dict["description"] == "Rule description"
+    assert rule_dict["open_world"] is True
+    assert rule_dict["notes"] == ["Note A"]
 
 
 def test_common_metadata_properties(input_path, tmp_path):
