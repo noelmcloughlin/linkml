@@ -1,0 +1,17 @@
+package {{ item.package }};
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+{% if item.documentation -%}
+/**
+ * {{ item.documentation }}
+ */
+{% endif -%}
+@Retention(RetentionPolicy.{{ item.retention }})
+@Target({% if item.targets | length == 1 %}ElementType.{{ item.targets[0] }}{% else %}{ {%- for t in item.targets %}ElementType.{{ t }}{{ ", " if not loop.last }}{% endfor -%} }{% endif %})
+public @interface {{ item.name }} {
+{% for e in item.elements %}  {{ e.element_type }} {{ e.name }}(){% if e.default_value %} default {{ e.default_value }}{% endif %};
+{% endfor %}}

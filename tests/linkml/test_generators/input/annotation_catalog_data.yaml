@@ -1,0 +1,26 @@
+annotation_types:
+  - name: MkvField
+    package: com.example.mkv
+    documentation: Optional annotation used to specify attribute mapping overrides.
+    targets: [FIELD, METHOD]
+    retention: RUNTIME
+    elements:
+      - name: name
+        element_type: String
+        default_value: '""'
+        documentation: the name of the target field to map to
+      - name: useCamelCasing
+        element_type: boolean
+        default_value: "true"
+      - name: optional
+        element_type: boolean
+        default_value: "false"
+  - name: MkvType
+    package: com.example.mkv
+    documentation: Optional annotation used to override the platform type name.
+    targets: [TYPE]
+    retention: RUNTIME
+    elements:
+      - name: name
+        element_type: String
+        default_value: '""'

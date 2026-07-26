@@ -1,0 +1,9 @@
+{% set graphql_loc = {"TYPE": "OBJECT", "FIELD": "FIELD_DEFINITION", "METHOD": "FIELD_DEFINITION", "PARAMETER": "ARGUMENT_DEFINITION", "CONSTRUCTOR": "FIELD_DEFINITION"} -%}
+{% set graphql_type = {"String": "String", "boolean": "Boolean", "int": "Int", "double": "Float"} -%}
+{% set ns = namespace(locations=[]) -%}
+{% for t in item.targets %}{% set _ = ns.locations.append(graphql_loc.get(t, t)) %}{% endfor -%}
+{% if item.documentation %}"""{{ item.documentation }}"""
+{% endif -%}
+directive @{{ item.name }}{% if item.elements %}(
+{% for e in item.elements %}  {{ e.name }}: {{ graphql_type.get(e.element_type, e.element_type) }}{% if e.default_value %} = {{ e.default_value }}{% endif %}
+{% endfor %}){% endif %} on {{ ns.locations | unique | join(' | ') }}

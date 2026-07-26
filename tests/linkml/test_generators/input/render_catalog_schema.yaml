@@ -1,0 +1,28 @@
+id: https://example.org/catalog
+name: catalog
+prefixes:
+  linkml: https://w3id.org/linkml/
+  catalog: https://example.org/catalog/
+default_prefix: catalog
+default_range: string
+imports:
+  - linkml:types
+
+classes:
+  Catalog:
+    tree_root: true
+    attributes:
+      items:
+        range: Item
+        multivalued: true
+        inlined_as_list: true
+
+  Item:
+    attributes:
+      name:
+        identifier: true
+        range: string
+      package:
+        range: string
+      label:
+        range: string

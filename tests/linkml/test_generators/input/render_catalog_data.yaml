@@ -1,0 +1,7 @@
+items:
+  - name: Alpha
+    package: com.example.a
+    label: first
+  - name: Beta
+    package: com.example.b
+    label: second

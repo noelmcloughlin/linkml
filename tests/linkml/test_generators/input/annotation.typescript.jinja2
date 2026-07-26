@@ -1,0 +1,9 @@
+{% set ts_type = {"String": "string", "boolean": "boolean", "int": "number", "double": "number"} -%}
+{% if item.documentation %}/** {{ item.documentation }} */
+{% endif -%}
+export function {{ item.name }}({% for e in item.elements %}{{ e.name }}: {{ ts_type.get(e.element_type, e.element_type) }}{% if e.default_value %} = {{ e.default_value }}{% endif %}{{ ", " if not loop.last }}{% endfor %}) {
+  return function (target: any) {
+    (target as any).__{{ item.name }}__ = { {% for e in item.elements %}{{ e.name }}{{ ", " if not loop.last }}{% endfor %} };
+    return target;
+  };
+}

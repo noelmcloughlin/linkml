@@ -1,0 +1,20 @@
+{% macro py_default(e) -%}
+{%- if e.default_value == "true" -%}True
+{%- elif e.default_value == "false" -%}False
+{%- elif e.default_value -%}{{ e.default_value }}
+{%- else -%}None
+{%- endif -%}
+{%- endmacro -%}
+"""Generated decorator for the {{ item.name }} annotation."""
+
+
+{% if item.documentation %}# {{ item.documentation }}
+{% endif -%}
+def {{ item.name }}({% for e in item.elements %}{{ e.name }}={{ py_default(e) }}{{ ", " if not loop.last }}{% endfor %}):
+    def _decorator(target):
+        target.__{{ item.name }}__ = {
+{% for e in item.elements %}            "{{ e.name }}": {{ e.name }},
+{% endfor %}        }
+        return target
+
+    return _decorator

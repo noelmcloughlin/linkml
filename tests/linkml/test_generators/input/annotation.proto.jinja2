@@ -1,0 +1,19 @@
+{% set opt = {"TYPE": "MessageOptions", "FIELD": "FieldOptions", "METHOD": "MethodOptions", "PARAMETER": "FieldOptions"} -%}
+{% set ptype = {"String": "string", "boolean": "bool", "int": "int32", "double": "double"} -%}
+syntax = "proto3";
+
+package {{ item.package }};
+
+import "google/protobuf/descriptor.proto";
+
+{% if item.documentation %}// {{ item.documentation }}
+{% endif -%}
+message {{ item.name }} {
+{% for e in item.elements %}  {{ ptype.get(e.element_type, e.element_type) }} {{ e.name }} = {{ loop.index }};
+{% endfor %}}
+{% set ns = namespace(seen=[]) -%}
+{% for t in item.targets %}{% if opt.get(t, t) not in ns.seen %}{% set _ = ns.seen.append(opt.get(t, t)) %}
+extend google.protobuf.{{ opt.get(t, t) }} {
+  {{ item.name }} {{ item.name | lower }} = 50001;  // pick a unique field number for your build
+}
+{% endif %}{% endfor -%}

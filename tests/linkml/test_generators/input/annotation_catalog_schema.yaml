@@ -1,0 +1,51 @@
+id: https://example.org/annocat
+name: annotation_catalog
+description: A small catalog of annotation-type definitions, used to demonstrate linkml-render.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  annocat: https://example.org/annocat/
+default_prefix: annocat
+default_range: string
+imports:
+  - linkml:types
+
+classes:
+  AnnotationCatalog:
+    tree_root: true
+    attributes:
+      annotation_types:
+        range: AnnotationType
+        multivalued: true
+        inlined_as_list: true
+
+  AnnotationType:
+    attributes:
+      name:
+        identifier: true
+        range: string
+      package:
+        range: string
+      documentation:
+        range: string
+      targets:
+        range: string
+        multivalued: true
+      retention:
+        range: string
+      elements:
+        range: AnnotationElement
+        multivalued: true
+        inlined_as_list: true
+
+  AnnotationElement:
+    attributes:
+      name:
+        range: string
+        required: true
+      element_type:
+        range: string
+        required: true
+      default_value:
+        range: string
+      documentation:
+        range: string
