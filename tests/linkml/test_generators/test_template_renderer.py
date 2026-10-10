@@ -20,7 +20,7 @@ def data_path(input_path):
 
 
 def test_render_file_one_per_item(schema_path, data_path, tmp_path):
-    """render_file writes one file per item, path derived from item data."""
+    """render_file writes one file per item, at a path derived from the item's data."""
     template = tmp_path / "item.txt.jinja2"
     template.write_text("name={{ item.name }} label={{ item.label }}\n", encoding="utf-8")
 
@@ -169,7 +169,7 @@ def test_render_strict_undefined(schema_path, data_path, tmp_path):
             filename_expr="{{ item.name }}.txt",
             output_dir=str(tmp_path / "out"),
             collection="items",
-            typed=False,  # dicts: unknown key -> StrictUndefined
+            typed=False,  # in dict mode, an unknown key is StrictUndefined
         )
 
 
@@ -230,11 +230,11 @@ def test_example_render_java_annotations(input_path, tmp_path):
     assert "boolean useCamelCasing() default true;" in field
 
     typ = (tmp_path / "java" / "com" / "example" / "mkv" / "MkvType.java").read_text()
-    assert "@Target(ElementType.TYPE)" in typ  # single target -> no braces
+    assert "@Target(ElementType.TYPE)" in typ  # a single target has no braces
 
 
 def test_example_render_graphql_directives(input_path, tmp_path):
-    """The same catalog renders GraphQL directive definitions via a different template."""
+    """The same catalog renders GraphQL directive definitions through a different template."""
     written = render_file(
         schema=input_path("annotation_catalog.yaml"),
         data_path=input_path("annotation_catalog_data.yaml"),
@@ -272,7 +272,7 @@ def test_example_render_protobuf_options(input_path, tmp_path):
     assert "message MkvField {" in field
     assert "string name = 1;" in field
     assert "bool useCamelCasing = 2;" in field
-    # FIELD -> FieldOptions, METHOD -> MethodOptions (both emitted)
+    # FIELD maps to FieldOptions and METHOD to MethodOptions, and both are emitted
     assert "extend google.protobuf.FieldOptions {" in field
     assert "extend google.protobuf.MethodOptions {" in field
 

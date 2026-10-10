@@ -1,4 +1,4 @@
-"""CLI entrypoint for ``linkml-render``."""
+"""Command-line entry point for ``linkml-render``."""
 
 from pathlib import Path
 from typing import Any
@@ -23,17 +23,18 @@ def _parse_template_vars(values: tuple[str, ...]) -> dict[str, Any]:
     return parsed
 
 
-# Default config filename looked up in the current directory when ``--config``
-# is not given (mirrors the ``gen-project`` convention of a top-level config.yaml).
+# The default config filename, which is looked up in the current directory when
+# ``--config`` is not given. ``gen-project`` uses the same top-level config.yaml.
 _DEFAULT_CONFIG_FILE = "config.yaml"
 
 
 def _resolve_config_file(config_file: str | None) -> str | None:
     """Resolve the config path, falling back to a top-level ``config.yaml``.
 
-    An explicit ``--config`` value is returned as-is (its existence is validated
-    by Click). When omitted, ``config.yaml`` in the current directory is used if
-    present; otherwise ``None`` (no config).
+    An explicit ``--config`` value is returned as it is, and Click checks that
+    it exists. When ``--config`` is omitted, ``config.yaml`` in the current
+    directory is used if it is present. Otherwise the result is ``None``, for no
+    config.
     """
     if config_file is not None:
         return config_file
@@ -42,7 +43,7 @@ def _resolve_config_file(config_file: str | None) -> str | None:
 
 
 def _load_config(config_file: str | None) -> dict[str, Any]:
-    """Load a YAML config file (e.g. a ``gen-project`` ``config.yaml``)."""
+    """Load a YAML config file, such as a ``gen-project`` ``config.yaml``."""
     if config_file is None:
         return {}
     with open(config_file, encoding="utf-8") as stream:
@@ -57,7 +58,7 @@ def _load_config(config_file: str | None) -> dict[str, Any]:
 def _render_section(config: dict[str, Any], target: str | None) -> dict[str, Any]:
     """Return the ``render.<target>`` settings mapping.
 
-    The ``render:`` block is keyed by target name (parallel to ``generator_args``);
+    The ``render:`` block is keyed by target name, as ``generator_args`` is.
     ``--target NAME`` selects ``render[NAME]``. Without a target, or when the block
     or entry is absent, an empty mapping is returned.
     """
@@ -73,10 +74,11 @@ def _render_section(config: dict[str, Any], target: str | None) -> dict[str, Any
 
 
 def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, Any]) -> dict[str, Any]:
-    """Build template ``vars``: the target's ``generator_args`` then the block's ``vars``.
+    """Build the template ``vars`` from the target's ``generator_args``, then the block's ``vars``.
 
-    Merging ``generator_args`` for the selected target lets existing ``gen-project``
-    values (e.g. the java ``package``) be reused as ``vars`` without duplication.
+    The ``generator_args`` of the selected target are merged in, so existing
+    ``gen-project`` values, such as the java ``package``, are reused as ``vars``
+    and not duplicated.
     """
     result: dict[str, Any] = {}
     if target is not None:
@@ -110,7 +112,7 @@ def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, 
     "filename_expr",
     default=None,
     help=(
-        "Jinja2 expression for each item's output path, e.g. "
+        "Jinja2 expression for each item's output path, for example "
         "\"{{ vars.package.replace('.', '/') }}/{{ item.name }}.java\""
     ),
 )
@@ -120,9 +122,9 @@ def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, 
     default=None,
     type=click.Path(exists=True, dir_okay=False),
     help=(
-        "YAML config file (e.g. a gen-project config.yaml). Optional: defaults to "
-        "./config.yaml if present. Exposed to templates as `config`; a `render:` "
-        "block may supply render options and `vars`."
+        "YAML config file, such as a gen-project config.yaml. It is optional, and "
+        "defaults to ./config.yaml if that is present. It is exposed to templates as "
+        "`config`. A `render:` block may supply render options and `vars`."
     ),
 )
 @click.option(
@@ -130,7 +132,7 @@ def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, 
     "--target",
     default=None,
     help=(
-        "Target name (e.g. java, proto, graphql). Selects the `render.<target>` "
+        "Target name, such as java, proto or graphql. It selects the `render.<target>` "
         "block and merges that target's `generator_args` into `vars`."
     ),
 )
@@ -138,7 +140,7 @@ def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, 
     "--var",
     "template_vars_raw",
     multiple=True,
-    help="Template variable (KEY=VALUE). Repeat to pass multiple values; available as vars.KEY.",
+    help="Template variable (KEY=VALUE). Repeat it to pass multiple values. Each is available as vars.KEY.",
 )
 @click.option("-d", "--output-dir", default=None, help="Output directory (default: current directory)")
 @click.option("-C", "--target-class", default=None, help="Root class name (else inferred)")
@@ -151,7 +153,7 @@ def _config_vars(config: dict[str, Any], target: str | None, section: dict[str, 
 @click.option(
     "--typed/--no-typed",
     default=None,
-    help="Load data as typed objects (applies defaults); --no-typed loads plain dicts (default: typed)",
+    help="Load data as typed objects, which applies defaults. --no-typed loads plain dicts (default: typed)",
 )
 @click.version_option(__version__, "-V", "--version")
 @click.pass_context
@@ -173,19 +175,20 @@ def cli(
 ):
     """Render LinkML instance data through a Jinja2 template, one file per item.
 
-    Unlike the schema-driven ``gen-*`` generators, this consumes *instance data*:
-    it loads the data (optionally validating it), iterates a collection, and
-    renders each item to its own output file.
+    Unlike the schema-driven ``gen-*`` generators, this command consumes
+    *instance data*. It loads the data, optionally validates it, iterates a
+    collection, and renders each item to its own output file.
 
-    Values may come from a ``--config`` file (including a ``gen-project``
-    ``config.yaml``); explicit command-line options always take precedence. The
-    parsed config is available to templates as ``config``, so a value such as
-    ``generator_args.java.package`` can drive output without living in the data.
+    Values may come from a ``--config`` file, such as a ``gen-project``
+    ``config.yaml``. Explicit command-line options always take precedence. The
+    parsed config is available to templates as ``config``. So a value such as
+    ``generator_args.java.package`` can be used in the output without being part
+    of the data.
 
     Different targets (java, proto, graphql, ...) usually need different
     templates and variables. Key the ``render:`` block by target name and select
-    one with ``--target``; that target's ``generator_args`` entry is merged into
-    ``vars`` automatically.
+    one with ``--target``. That target's ``generator_args`` entry is merged into
+    ``vars``.
 
     Example (single target on the command line)::
 
@@ -204,7 +207,7 @@ def cli(
     config = _load_config(config_file)
     section = _render_section(config, target)
 
-    # Config render-block values fill in only where the CLI used its default.
+    # A value from the config's render block is used only where the command line left the default.
     def pick(param: str, current: Any, key: str) -> Any:
         if ctx.get_parameter_source(param) == click.core.ParameterSource.COMMANDLINE:
             return current
@@ -245,7 +248,7 @@ def cli(
     if not Path(template_file).is_file():
         raise click.BadParameter(f"template file does not exist: '{template_file}'")
 
-    # Variables: config `vars` (incl. target generator_args) first, then --var overrides.
+    # Take the config `vars`, including the target's generator_args, first, and let --var override them.
     template_vars = _config_vars(config, target, section)
     template_vars.update(_parse_template_vars(template_vars_raw))
 

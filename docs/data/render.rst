@@ -4,22 +4,23 @@ Rendering data with templates (linkml-render)
 =============================================
 
 The ``linkml-render`` command renders **instance data** through a
-`Jinja2 <https://jinja.palletsprojects.com/>`__ template, writing one output
+`Jinja2 <https://jinja.palletsprojects.com/>`__ template. It writes one output
 file per item of a chosen collection.
 
-Where the ``gen-*`` generators turn a *schema* into an artifact, and
-``linkml-convert`` moves *data* between serialization formats,
-``linkml-render`` turns *data* into arbitrary text: source code, documentation,
-configuration, SQL, and so on. All target-specific logic lives in the template,
+The ``gen-*`` generators turn a *schema* into an artifact, and
+``linkml-convert`` moves *data* between serialization formats.
+``linkml-render`` turns *data* into any text: source code, documentation,
+configuration, SQL, and so on. All target-specific logic is in the template,
 so the same engine can emit any text format.
 
 How it works
 ------------
 
-1. The schema is loaded and (unless ``--no-validate``) the instance data is
-   validated against it.
-2. The root object is loaded - either as typed LinkML-runtime objects (default)
-   or as plain dicts (``--no-typed``, YAML/JSON only, faster).
+1. The schema is loaded. Unless ``--no-validate`` is given, the instance data
+   is validated against it.
+2. The root object is loaded, either as typed LinkML-runtime objects (the
+   default) or as plain dicts. Plain dicts (``--no-typed``) are faster, and they
+   work with YAML and JSON only.
 3. Each item of ``--collection`` (a multivalued slot of the root class) is
    rendered through the template. With no ``--collection`` the root object is
    rendered once.
@@ -28,28 +29,30 @@ How it works
 
 Template context:
 
-- ``item`` - the current item being rendered (or the root, if no collection)
-- ``root`` - the root object
-- ``sv`` - a :class:`SchemaView` over the schema
-- ``vars`` - optional user-supplied variables from repeatable ``--var KEY=VALUE``
-- ``config`` - the parsed configuration mapping (from ``--config`` or a default
-  ``config.yaml``); an empty mapping when no config file is found
+- ``item``: the current item being rendered, or the root if there is no
+  collection
+- ``root``: the root object
+- ``sv``: a :class:`SchemaView` over the schema
+- ``vars``: optional user-supplied variables from ``--var KEY=VALUE``, which
+  can be repeated
+- ``config``: the parsed configuration mapping, from ``--config`` or a default
+  ``config.yaml``, or an empty mapping when no config file is found
 
 Configuration file
 ------------------
 
 Reuse an existing ``gen-project`` ``config.yaml`` instead of repeating values on
-the command line. ``--config`` is optional: when omitted, a ``config.yaml`` in
-the current directory is used automatically (as with ``gen-project``). The parsed
-file is exposed to templates as ``config``.
+the command line. ``--config`` is optional. When it is omitted, a
+``config.yaml`` in the current directory is used, as ``gen-project`` does. The
+parsed file is exposed to templates as ``config``.
 
-Different targets (java, proto, graphql, python, typescript, ...) need different
-templates and variables, so key the ``render:`` block by target name (parallel to
-``generator_args``) and select one with ``--target``. Each target supplies its own
-``template``, ``collection``, ``filename``, ``output_dir`` and ``vars``; the
-target's ``generator_args`` entry is merged into ``vars`` (so the java ``package``
-is reused, not duplicated). Targets use only the variables they need - java has a
-``package``; graphql and python have none.
+Key the ``render:`` block by target name, as ``generator_args`` is keyed, and
+select one target with ``--target``. Different targets (java, proto, graphql,
+python, typescript, ...) need different templates and variables. Each target
+supplies its own ``template``, ``collection``, ``filename``, ``output_dir`` and
+``vars``. The target's ``generator_args`` entry is merged into ``vars``, so the
+java ``package`` is reused, not duplicated. Targets use only the variables they
+need: java has a ``package``, and graphql and python have none.
 
 .. code-block:: yaml
 
@@ -84,8 +87,9 @@ is reused, not duplicated). Targets use only the variables they need - java has 
        filename: "{{ item.name }}.ts"
        output_dir: out/typescript
 
-Each target is then a one-liner - swap ``--target`` (nothing in the engine is
-language-specific; the template alone determines the output):
+Nothing in the engine is language-specific, and the template alone determines
+the output. So each target is then one command, in which only ``--target``
+changes:
 
 .. code-block:: bash
 
@@ -94,21 +98,25 @@ language-specific; the template alone determines the output):
    # ... likewise: graphql, python, typescript
 
 Explicit command-line options override the config, and ``--var KEY=VALUE``
-overrides a target's ``vars``. Precedence, highest to lowest: CLI options and
-``--var``; the selected ``render.<target>`` block (with its ``vars``); the
-target's ``generator_args`` entry; built-in defaults.
+overrides a target's ``vars``. The order of precedence, from highest to lowest,
+is:
+
+- command-line options and ``--var``;
+- the selected ``render.<target>`` block, with its ``vars``;
+- the target's ``generator_args`` entry;
+- built-in defaults.
 
 Example
 -------
 
-The bundled example renders one *annotation catalog* to several targets by
-swapping only the template. The files live under
-``tests/linkml/test_generators/input/``: schema
-``annotation_catalog_schema.yaml``, data ``annotation_catalog_data.yaml``, and one
-``annotation.<target>.jinja2`` template per target (java, graphql, proto, python,
-typescript). Each ``annotation_types`` item has ``name``, ``package``,
-``retention``, ``targets`` and ``elements``; only the template differs. Render a
-target with:
+The bundled example renders one *annotation catalog* to several targets, and
+only the template changes from one target to the next. The files are under
+``tests/linkml/test_generators/input/``: the schema
+``annotation_catalog_schema.yaml``, the data ``annotation_catalog_data.yaml``,
+and one ``annotation.<target>.jinja2`` template per target (java, graphql,
+proto, python, typescript). Each ``annotation_types`` item has ``name``,
+``package``, ``retention``, ``targets`` and ``elements``. Only the template
+differs. Render a target with:
 
 .. code-block:: bash
 
@@ -116,7 +124,7 @@ target with:
        --template annotation.java.jinja2 --collection annotation_types \
        --filename "{{ item.package.replace('.', '/') }}/{{ item.name }}.java" -d out/
 
-The same data produces, per template:
+The same data produces this output for each template:
 
 **Java** (``@interface``):
 
@@ -189,13 +197,13 @@ Notes
 -----
 
 - **Templates are strict.** An undefined variable raises an error
-  (``StrictUndefined``) so template typos are caught early. In ``--no-typed``
-  mode use ``x is defined`` / ``x.get(...)`` for optional keys; in typed mode
-  every slot is an attribute (absent values are ``None``).
+  (``StrictUndefined``), so template typos are caught early. In ``--no-typed``
+  mode, use ``x is defined`` or ``x.get(...)`` for optional keys. In typed mode,
+  every slot is an attribute, and an absent value is ``None``.
 - **Includes** are supported: the template's directory is on the Jinja search
   path, so ``{% include "partial.jinja2" %}`` works.
 - **Output paths are sandboxed.** A ``--filename`` that resolves outside
-  ``--output-dir`` (absolute paths or ``..``) is rejected.
+  ``--output-dir``, such as an absolute path or a path with ``..``, is rejected.
 
 Command Line
 ------------

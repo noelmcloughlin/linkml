@@ -1,10 +1,11 @@
 """Render LinkML instance data through a Jinja2 template (``linkml-render``).
 
-This is the instance-data counterpart of the schema-driven ``gen-*`` generators:
-it loads an instance-data file (validated against a schema), then renders each
-item of a chosen collection through a user-supplied Jinja2 template, writing one
-output file per item. All target-language/format specifics live in the template,
-so the same engine can emit Java, docs, SQL, config, etc.
+This is the instance-data counterpart of the schema-driven ``gen-*`` generators.
+It loads an instance-data file and validates it against a schema. Then it renders
+each item of a chosen collection through a user-supplied Jinja2 template, and
+writes one output file per item. Everything specific to a target language or
+format is in the template, so the same engine can emit Java, docs, SQL, config
+and so on.
 """
 
 from __future__ import annotations
@@ -28,10 +29,11 @@ _DICT_MODE_FORMATS = {"yaml", "yml", "json", "json-ld"}
 class TemplateRenderer:
     """Load LinkML instance data and render it through Jinja2 templates.
 
-    :param schema: Path to (or in-memory) LinkML schema.
-    :param typed: When True (default) instance data is loaded into typed
-        LinkML-runtime objects (applying defaults/inference); when False it is
-        loaded as plain dicts (faster, YAML/JSON only, no default inference).
+    :param schema: Path to a LinkML schema, or an in-memory schema.
+    :param typed: When True, the default, instance data is loaded into typed
+        LinkML-runtime objects, which applies defaults and inference. When False,
+        it is loaded as plain dicts. That is faster, but works with YAML and JSON
+        only and infers no defaults.
     """
 
     def __init__(self, schema: str, typed: bool = True):
@@ -74,10 +76,10 @@ class TemplateRenderer:
         input_format: str | None = None,
         validate: bool = True,
     ):
-        """Load and (optionally) validate the root instance object.
+        """Load the root instance object, and optionally validate it.
 
         :param data_path: Path to the instance-data file.
-        :param target_class: Root class name; inferred (tree_root) when omitted.
+        :param target_class: Root class name. When it is omitted, it is inferred from tree_root.
         :param input_format: Data format; inferred from the file suffix when omitted.
         :param validate: Validate the data against the schema before rendering.
         :return: The loaded root object (typed instance, or dict in non-typed mode).
@@ -137,12 +139,12 @@ class TemplateRenderer:
         :param root_obj: The loaded root instance object.
         :param content_template: Template rendered once per item (context: ``item``, ``root``, ``sv``).
         :param filename_template: Template producing each item's output path (context: ``item``, ``root``).
-        :param collection: Name of the root slot to iterate; if omitted, the root
-            object itself is rendered once.
+        :param collection: Name of the root slot to iterate. If it is omitted, the
+            root object is rendered once.
         :param template_vars: Optional user-provided variables exposed to templates
             as ``vars``.
-        :param config: Optional parsed configuration mapping exposed to templates
-            as ``config`` (e.g. a ``gen-project`` ``config.yaml``).
+        :param config: Optional parsed configuration mapping, such as a
+            ``gen-project`` ``config.yaml``, exposed to templates as ``config``.
         :raises ValueError: if two items resolve to the same output path.
         """
         results: dict[str, str] = {}
@@ -177,7 +179,7 @@ class TemplateRenderer:
 
     @staticmethod
     def environment(template_dir: str | Path | None = None) -> Environment:
-        """Build a Jinja2 environment (StrictUndefined, trailing newline kept)."""
+        """Build a Jinja2 environment that uses StrictUndefined and keeps the trailing newline."""
         loader = FileSystemLoader(str(template_dir)) if template_dir is not None else None
         return Environment(
             loader=loader,
@@ -201,7 +203,7 @@ def render_file(
     template_vars: dict[str, Any] | None = None,
     config: dict[str, Any] | None = None,
 ) -> list[Path]:
-    """Convenience one-shot: load, render, and write to ``output_dir``."""
+    """Load the data, render it, and write the results to ``output_dir``, in one call."""
     renderer = TemplateRenderer(schema, typed=typed)
     root = renderer.load(data_path, target_class=target_class, input_format=input_format, validate=validate)
     template_path = Path(template_file)
