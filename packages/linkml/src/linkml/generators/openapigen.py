@@ -139,6 +139,7 @@ def _misspelt_class_key(key: str) -> str | None:
     'operation_id'
     >>> _misspelt_class_key("summry")
     'summary'
+    # codespell:ignore-next-line descripton
     >>> _misspelt_class_key("descripton")
     'description'
     >>> _misspelt_class_key("related") is None
