@@ -39,7 +39,7 @@ class YAMLRoot(JsonObj):
     The root object for all python YAML representations
     """
 
-    # Python field name <-> slot name, for slots whose name is a Python keyword (see slot_aliases)
+    # The slot name for each Python field name, for slots named after a Python keyword (see slot_aliases)
     _slot_aliases: ClassVar[dict[str, str]] = {}
     _field_names: ClassVar[dict[str, str]] = {}
 
@@ -345,7 +345,7 @@ def slot_aliases(aliases: dict[str, str]) -> Callable[[type[YAMLRoot]], type[YAM
     The decorated class accepts ``from`` as a keyword argument and as an item key (``obj["from"]``),
     and ``items()``, ``keys()`` and the dumpers report ``from``.
 
-    :param aliases: Python field name -> slot name, covering inherited fields as well as the class's own
+    :param aliases: the slot name for each Python field name, inherited fields included
     :return: the decorator
 
     >>> @slot_aliases({"from_": "from"})

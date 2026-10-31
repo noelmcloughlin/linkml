@@ -483,21 +483,24 @@ classes:
         title: my slot
 ```
 
-Note that not every generator protects you from names that are reserved
-in its target language.
+Not every generator protects you from names that are reserved in its
+target language.
 
-The Python, Pydantic, SQLAlchemy and Pandera generators do. A slot named
-after a Python keyword, such as `in` or `from`, gets a trailing underscore
-in the generated code, so `from` becomes the attribute `from_`. Data still
-uses the slot name: the Python class maps between the two names when it
-loads and dumps data, the Pydantic field keeps the slot name as its alias,
-and the column keeps it as its name. A class cannot have both such a slot
-and a slot named like its attribute, such as `from` and `from_`, and the
-generator reports an error for it. The pages for these generators show the
-generated code.
+The Python, Pydantic, SQLAlchemy and Pandera generators do. They add a
+trailing underscore to a slot named after a Python keyword, such as `in`
+or `from`, so `from` becomes the attribute `from_`. Data still uses the
+slot name:
 
-Other generators may not handle reserved names yet, so avoid them when you
-use those generators.
+* the Python class maps between the two names when it loads and dumps data;
+* the Pydantic field keeps the slot name as its alias;
+* the column keeps the slot name as its name.
+
+A class cannot have both such a slot and a slot named like its attribute,
+such as `from` and `from_`. The generator reports an error for it. The
+pages for these generators show the generated code.
+
+Other generators may not handle reserved names yet, so avoid such names
+when you use them.
 
 ## When two data classes are linked by a slot in one class definition, how is the reciprocal association expressed in LinkML?
 

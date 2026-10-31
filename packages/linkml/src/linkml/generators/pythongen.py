@@ -81,7 +81,7 @@ class PythonGenerator(Generator):
         # to HTTP on the first lazy access via ``PythonIfAbsentProcessor``.
         self.schemaview = SchemaView(self.schema, base_dir=self.base_dir, importmap=self.importmap)
         self.ifabsent_processor = PythonIfAbsentProcessor(self.schemaview)
-        self._slot_aliases_cache: dict[str, dict[str, str]] = {}  # class name -> slot_aliases_for(cls)
+        self._slot_aliases_cache: dict[str, dict[str, str]] = {}  # slot_aliases_for(cls), keyed by class name
         super().__post_init__()
         if self.format is None:
             self.format = self.valid_formats[0]
@@ -111,7 +111,7 @@ class PythonGenerator(Generator):
         The result is cached per class, as both the imports and the class definition need it.
 
         :param cls: class whose dataclass fields are checked
-        :return: Python field name -> slot name, empty if no field is escaped
+        :return: the slot name for each Python field name, empty if no field is escaped
         :raises ValueError: if an escaped name is also the name of another slot of cls, e.g. ``from`` and ``from_``
         """
         if cls.name not in self._slot_aliases_cache:
