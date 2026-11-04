@@ -3955,6 +3955,20 @@ def test_induced_slot_domain_of_no_duplicates() -> None:
     assert induced.domain_of.count("A") == 1
 
 
+def test_induced_slot_domain_of_leaves_the_definitions_alone() -> None:
+    """Reading an induced slot must not add to the domain_of of the slot or attribute that defines it."""
+    view = SchemaView(SchemaDefinition(id="test", name="test"))
+    cls = ClassDefinition("A", slots=["shared"])
+    cls.attributes["own"] = SlotDefinition("own")
+    view.add_class(cls)
+    view.add_slot(SlotDefinition("shared", range="string"))
+
+    assert view.induced_slot("shared", "A").domain_of == ["A"]
+    assert view.induced_slot("own", "A").domain_of == ["A"]
+    assert view.schema.slots["shared"].domain_of == []
+    assert view.schema.classes["A"].attributes["own"].domain_of == []
+
+
 def test_annotation_dict_for_induced_slot() -> None:
     """annotation_dict() can return annotation for induced slots."""
 

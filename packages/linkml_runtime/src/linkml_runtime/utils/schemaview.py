@@ -1963,6 +1963,9 @@ class SchemaView:
                 induced_slot.alias = underscored
         # set() handles edge case, slot name in both c.slots and c.attributes.
         existing_domain_of = set(induced_slot.domain_of)
+        # The induced slot is a shallow copy, so it needs a list of its own. Otherwise the names added
+        # below would also reach the slot's definition in the schema.
+        induced_slot.domain_of = list(induced_slot.domain_of)
 
         for class_name_candidate in self._slot_class_map().get(induced_slot.name, []):
             if class_name_candidate not in existing_domain_of:
