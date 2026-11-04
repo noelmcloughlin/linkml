@@ -100,12 +100,6 @@ WHERE {
 {% endfor %}
 """
 
-x = """
-{% for sn in schema_view.class_slots(c.name) %}
-     {{ schema.slots[sn].slot_uri }}
-   {% endfor %}
-"""
-
 
 def query_prefixes(schemaview: SchemaView) -> dict[str, Prefix]:
     """Return the prefixes that the queries declare.
