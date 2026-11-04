@@ -230,6 +230,19 @@ def test_sparqlgen_cli_no_mergeimports_writes_only_the_schemas_own_classes(tmp_p
     assert {path.stem for path in out_dir.glob("*.rq")} == _MAIN_SCHEMA_QUERIES
 
 
+def test_sparqlgen_cli_prints_the_queries_only_without_a_directory(tmp_path):
+    """The queries go to standard output unless a directory is given for them."""
+    main, _ = _write_schemas(tmp_path)
+
+    printed = CliRunner().invoke(cli, [str(main)])
+    written = CliRunner().invoke(cli, ["-d", str(tmp_path / "out"), str(main)])
+
+    assert printed.exit_code == 0, printed.output
+    assert "# @CHECK permitted_Child" in printed.output
+    assert written.exit_code == 0, written.output
+    assert written.output == ""
+
+
 def test_sparqlgen_mergeimports_adds_the_imported_classes(tmp_path):
     """Merging imports writes the same queries for the schema's own classes, and more for the imported ones."""
     main, _ = _write_schemas(tmp_path)

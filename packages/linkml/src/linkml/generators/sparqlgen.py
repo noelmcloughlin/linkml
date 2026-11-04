@@ -262,11 +262,15 @@ def cli(yamlfile, dir, **kwargs):
 
         CHECK_<ConstraintType>_<SchemaElement>.rq
 
+    Without --dir, all of the queries are printed.
+
     Example:
 
         gen-sparql -d ./sparql/ personinfo.yaml
     """
-    SparqlGenerator(yamlfile, **kwargs).serialize(directory=dir)
+    sparql = SparqlGenerator(yamlfile, **kwargs).serialize(directory=dir)
+    if dir is None:
+        print(sparql)
 
 
 if __name__ == "__main__":
