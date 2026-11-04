@@ -366,6 +366,179 @@ def test_sparqlgen_no_mergeimports_queries_run_on_their_own(tmp_path):
         prepareQuery(query)
 
 
+_TERMS_SCHEMA_HEAD = dedent(
+    """\
+    id: https://example.org/main
+    name: main
+    default_range: string
+    """
+)
+
+
+@pytest.mark.parametrize(
+    ("schema", "expected"),
+    [
+        pytest.param(
+            """\
+            prefixes:
+              linkml: https://w3id.org/linkml/
+            imports:
+              - linkml:types
+            classes:
+              A:
+                attributes:
+                  x:
+                    required: true
+            """,
+            ["<https://example.org/main/A>", "<https://example.org/main/x>"],
+            id="no-default-prefix",
+        ),
+        pytest.param(
+            """\
+            prefixes:
+              linkml: https://w3id.org/linkml/
+              ex: https://example.org/
+            default_prefix: ex
+            imports:
+              - linkml:types
+            classes:
+              A:
+                class_uri: https://schema.org/Thing
+                attributes:
+                  x:
+                    slot_uri: https://schema.org/name
+                    required: true
+            """,
+            ["<https://schema.org/Thing>", "<https://schema.org/name>"],
+            id="uris-declared-in-full",
+        ),
+        pytest.param(
+            """\
+            prefixes:
+              ex: https://example.org/
+            default_prefix: ex
+            types:
+              string:
+                base: str
+                uri: xsd:string
+            classes:
+              A:
+                attributes:
+                  x:
+                    required: true
+            """,
+            ["PREFIX linkml: <https://w3id.org/linkml/>", "ex:A", "ex:x"],
+            id="no-linkml-prefix-declared",
+        ),
+        pytest.param(
+            """\
+            default_curi_maps:
+              - semweb_context
+            prefixes:
+              linkml: https://w3id.org/linkml/
+              ex: https://example.org/
+            default_prefix: ex
+            imports:
+              - linkml:types
+            classes:
+              A:
+                class_uri: rdfs:Resource
+                attributes:
+                  x:
+                    slot_uri: dcterms:title
+                    required: true
+            """,
+            ["<http://www.w3.org/2000/01/rdf-schema#Resource>", "<http://purl.org/dc/terms/title>"],
+            id="prefixes-from-default-curi-maps",
+        ),
+        pytest.param(
+            """\
+            prefixes:
+              linkml: https://w3id.org/linkml/
+              ex: https://example.org/
+            default_prefix: ex
+            imports:
+              - linkml:types
+            classes:
+              A:
+                class_uri: ex:a/b
+                attributes:
+                  x:
+                    slot_uri: ex:/c
+                    required: true
+            """,
+            ["<https://example.org/a/b>", "<https://example.org//c>"],
+            id="local-names-sparql-refuses",
+        ),
+        pytest.param(
+            """\
+            prefixes:
+              linkml: https://w3id.org/linkml/
+              sdo: http://schema.org/
+            default_prefix: sdo
+            imports:
+              - linkml:types
+            classes:
+              A:
+                class_uri: schema:Thing
+                attributes:
+                  x:
+                    required: true
+            """,
+            ["PREFIX sdo: <http://schema.org/>", "<http://schema.org/Thing>", "sdo:x"],
+            id="two-names-for-one-iri",
+        ),
+    ],
+)
+def test_sparqlgen_writes_terms_that_parse(tmp_path, schema, expected):
+    """Every query parses, and each class or slot URI is written as a term that keeps its meaning."""
+    path = tmp_path / "main.yaml"
+    path.write_text(_TERMS_SCHEMA_HEAD + dedent(schema))
+
+    gen = SparqlGenerator(str(path))
+
+    assert gen.queries
+    for query in gen.queries.values():
+        prepareQuery(query)
+    for text in expected:
+        assert text in gen.sparql
+
+
+def test_sparqlgen_full_iri_term_judges_data_correctly(tmp_path):
+    """A class and slot declared as full IRIs are the ones the queries look for in the data."""
+    path = tmp_path / "main.yaml"
+    path.write_text(
+        _TERMS_SCHEMA_HEAD
+        + dedent(
+            """\
+            prefixes:
+              linkml: https://w3id.org/linkml/
+            imports:
+              - linkml:types
+            classes:
+              A:
+                class_uri: https://schema.org/Thing
+                attributes:
+                  x:
+                    slot_uri: https://schema.org/name
+                    required: true
+            """
+        )
+    )
+    queries = SparqlGenerator(str(path)).queries
+
+    def violations(turtle):
+        dataset = Dataset()
+        dataset.graph(URIRef("https://example.org/graph")).parse(
+            data="@prefix s: <https://schema.org/> .\n@prefix e: <https://example.org/> .\n" + turtle,
+            format="turtle",
+        )
+        return {name for name, query in queries.items() if list(dataset.query(query))}
+
+    assert not violations('e:a a s:Thing ; s:name "a" .')
+    assert violations('e:a a s:Thing ; e:other "a" .') == {"CHECK_permitted_A", "CHECK_required_A_x"}
+
+
 def test_sparqlgen_no_mergeimports_queries_judge_data_correctly(tmp_path):
     """Data that uses the imported slots conforms, and the same data under the main schema's prefix does not."""
     main, _ = _write_schemas(tmp_path)

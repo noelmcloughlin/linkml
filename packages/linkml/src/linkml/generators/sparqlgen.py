@@ -1,7 +1,9 @@
 import logging
 import os
+import re
 from collections import defaultdict
 from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 
 import click
@@ -14,6 +16,10 @@ from linkml_runtime.utils.formatutils import underscore
 from linkml_runtime.utils.schemaview import SchemaView
 
 logger = logging.getLogger(__name__)
+
+# The local names that a SPARQL prefixed name accepts with no escaping, kept to ASCII. Any other term
+# is written as a full IRI, which is always accepted.
+SPARQL_LOCAL_NAME = re.compile(r"\w(?:[\w.-]*[\w-])?", re.ASCII)
 
 template = """
 {% for pfxn, pfx in prefixes.items() -%}
@@ -29,11 +35,11 @@ PREFIX {{pfxn}}: <{{pfx.prefix_reference}}>
 # @CHECK permitted_{{cn}}
 SELECT ?g ?s ?p WHERE {
  GRAPH ?g {
-  ?s rdf:type {{ schema_view.get_uri(cn) }} ;
+  ?s rdf:type {{ term(schema_view.get_uri(cn)) }} ;
      ?p ?o .
   FILTER ( ?p NOT IN (
    {% for slot in schema_view.class_induced_slots(cn) -%}
-   {{ slot_uri(schema_view, cn, slot) }},
+   {{ term(slot_uri(schema_view, cn, slot)) }},
    {% endfor -%}
    rdf:type ))
  }
@@ -51,11 +57,11 @@ SELECT
   ?subject
   ?predicate WHERE {
  GRAPH ?graph {
-  ?subject rdf:type {{ schema_view.get_uri(cn) }} .
-  FILTER NOT EXISTS { ?subject  {{ slot_uri(schema_view, cn, slot) }} ?o  }
+  ?subject rdf:type {{ term(schema_view.get_uri(cn)) }} .
+  FILTER NOT EXISTS { ?subject  {{ term(slot_uri(schema_view, cn, slot)) }} ?o  }
  }
  VALUES ?check { linkml:required }
- VALUES ?predicate { {{ slot_uri(schema_view, cn, slot) }} }
+ VALUES ?predicate { {{ term(slot_uri(schema_view, cn, slot)) }} }
  {{ extra }}
 }  {{ limit }}
 {% endif %}
@@ -70,19 +76,19 @@ SELECT
   ?object
 WHERE {
  GRAPH ?graph {
-  ?subject rdf:type {{ schema_view.get_uri(cn) }} ;
+  ?subject rdf:type {{ term(schema_view.get_uri(cn)) }} ;
      ?predicate ?object .
   FILTER NOT EXISTS {
     ?object rdf:type ?otype .
     FILTER ( ?otype IN (
       {% for a in schema_view.class_descendants(slot.range) -%}
-      {{ schema_view.get_uri(a) }}
+      {{ term(schema_view.get_uri(a)) }}
       {{ ", " if not loop.last else "" }}
       {% endfor -%} ))
   }
  }
  VALUES ?check { linkml:range }
- VALUES ?predicate { {{ slot_uri(schema_view, cn, slot) }}  }
+ VALUES ?predicate { {{ term(slot_uri(schema_view, cn, slot)) }}  }
  {{ extra }}
 }  {{ limit }}
 {% endif %}
@@ -107,13 +113,42 @@ def query_prefixes(schemaview: SchemaView) -> dict[str, Prefix]:
     A query can name a class or slot from any imported schema, even when no query is written for
     that class, so the prefixes of every imported schema are included. When two schemas declare the
     same prefix, the schema given to the generator comes first, and then the order of the imports.
+
+    An IRI is declared under one name only, because rdflib forgets the earlier of two names for the
+    same IRI and then refuses a query that uses it. ``query_term`` writes a term that uses a name
+    left out here as a full IRI.
     """
-    prefixes = dict(schemaview.schema.prefixes)
-    prefixes.setdefault("rdf", Prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
-    for schema in schemaview.all_schema():
+    prefixes = {}
+    for schema in (schemaview.schema, *schemaview.all_schema()):
         for name, prefix in schema.prefixes.items():
-            prefixes.setdefault(name, prefix)
+            if prefix.prefix_reference not in {declared.prefix_reference for declared in prefixes.values()}:
+                prefixes.setdefault(name, prefix)
+    prefixes.setdefault("rdf", Prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
+    prefixes.setdefault("linkml", Prefix("linkml", "https://w3id.org/linkml/"))
     return prefixes
+
+
+def query_term(schemaview: SchemaView, prefixes: dict[str, Prefix], uri: str) -> str:
+    r"""Write the URI or CURIE of a class or slot as a term of a query.
+
+    A CURIE stays as it is when the queries declare its prefix and SPARQL accepts its local name.
+    Anything else is written as a full IRI in angle brackets. That covers a URI declared in full, a
+    URI built for a schema with no ``default_prefix``, and a CURIE whose prefix comes only from
+    ``default_curi_maps``.
+
+    >>> view = SchemaView("id: https://example.org/s\nname: s\nprefixes:\n  ex: https://example.org/\n")
+    >>> prefixes = query_prefixes(view)
+    >>> query_term(view, prefixes, "ex:name")
+    'ex:name'
+    >>> query_term(view, prefixes, "ex:a/b")
+    '<https://example.org/a/b>'
+    >>> query_term(view, prefixes, "https://schema.org/name")
+    '<https://schema.org/name>'
+    """
+    prefix, separator, local_name = uri.partition(":")
+    if separator and prefix in prefixes and SPARQL_LOCAL_NAME.fullmatch(local_name):
+        return uri
+    return f"<{schemaview.expand_curie(uri)}>"
 
 
 def slot_uri(schemaview: SchemaView, class_name: str, slot: SlotDefinition) -> str:
@@ -172,9 +207,11 @@ class SparqlGenerator(Generator):
             limit = f"LIMIT {limit}"
         else:
             limit = ""
+        prefixes = query_prefixes(self.schemaview)
         sparql = template_obj.render(
             schema_view=self.schemaview,
-            prefixes=query_prefixes(self.schemaview),
+            prefixes=prefixes,
+            term=partial(query_term, self.schemaview, prefixes),
             slot_uri=slot_uri,
             limit=limit,
             extra=extra,
