@@ -5,9 +5,10 @@ from click.testing import CliRunner
 from rdflib import Dataset, URIRef
 from rdflib.plugins.sparql import prepareQuery
 
+from linkml.generators.pythongen import PythonGenerator
 from linkml.generators.sparqlgen import SparqlGenerator, cli
 from linkml_runtime import SchemaView
-from linkml_runtime.dumpers import yaml_dumper
+from linkml_runtime.dumpers import rdflib_dumper, yaml_dumper
 
 
 def test_sparqlgen(kitchen_sink_path):
@@ -198,7 +199,6 @@ _SPARQLGEN_MAIN_WITH_OWN_PREFIX = dedent(
 # The classes declared in the main schema, with the queries each one should get.
 _MAIN_SCHEMA_QUERIES = {
     "CHECK_permitted_Child",
-    "CHECK_required_Child_id",
     "CHECK_required_Child_kind",
     "CHECK_required_Child_name",
     "CHECK_object_range_Child_part",
@@ -343,6 +343,63 @@ def test_sparqlgen_slot_uri_follows_the_order_of_induced_slot(tmp_path, mergeimp
         assert uri not in permitted
 
 
+def test_sparqlgen_accepts_what_the_rdf_dumper_writes(tmp_path):
+    """
+    An instance written by the RDF dumper passes the checks.
+
+    The dumper writes an identifier as the IRI of the subject, with no triple, so a required check on an identifier
+    would report every instance. A key is an ordinary property, so a missing key is still reported.
+    """
+    path = tmp_path / "main.yaml"
+    path.write_text(
+        dedent(
+            """\
+            id: https://example.org/main
+            name: main
+            prefixes:
+              linkml: https://w3id.org/linkml/
+              ex: https://example.org/
+            default_prefix: ex
+            default_range: string
+            imports:
+              - linkml:types
+            classes:
+              Person:
+                attributes:
+                  id:
+                    identifier: true
+                  name:
+                    required: true
+              Tag:
+                attributes:
+                  code:
+                    key: true
+            """
+        )
+    )
+    queries = SparqlGenerator(str(path)).queries
+    assert "CHECK_required_Person_id" not in queries
+    assert "CHECK_required_Tag_code" in queries
+
+    model = PythonGenerator(str(path)).compile_module()
+    turtle = rdflib_dumper.dumps(
+        model.Person(id="ex:p1", name="Ann"),
+        schemaview=SchemaView(str(path)),
+        prefix_map={"ex": "https://example.org/"},
+    )
+    dataset = Dataset()
+    dataset.graph(URIRef("https://example.org/graph")).parse(data=turtle, format="turtle")
+    assert {name for name, query in queries.items() if list(dataset.query(query))} == set()
+
+    dataset = Dataset()
+    dataset.graph(URIRef("https://example.org/graph")).parse(
+        data='@prefix ex: <https://example.org/> .\nex:t a ex:Tag .\nex:p a ex:Person ; ex:other "x" .',
+        format="turtle",
+    )
+    reported = {name for name, query in queries.items() if list(dataset.query(query))}
+    assert reported == {"CHECK_required_Tag_code", "CHECK_required_Person_name", "CHECK_permitted_Person"}
+
+
 def test_sparqlgen_imported_class_gets_the_same_queries_from_either_schema(tmp_path):
     """The queries for a class are the same from a merged run and from a run over its own schema."""
     main, base = _write_schemas(tmp_path)
@@ -379,10 +436,9 @@ def test_sparqlgen_no_mergeimports_queries_judge_data_correctly(tmp_path):
         )
         return {name for name, query in queries.items() if list(dataset.query(query))}
 
-    assert not violations('m:c a m:Child ; b:id "c" ; b:name "Child" ; b:kind "k" ; m:part m:p .\nm:p a b:SubPart .')
+    assert not violations('m:c a m:Child ; b:name "Child" ; b:kind "k" ; m:part m:p .\nm:p a b:SubPart .')
     assert violations('m:c a m:Child ; m:id "c" ; m:name "Child" ; m:kind "k" .') == {
         "CHECK_permitted_Child",
-        "CHECK_required_Child_id",
         "CHECK_required_Child_kind",
         "CHECK_required_Child_name",
     }

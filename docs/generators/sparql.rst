@@ -54,6 +54,13 @@ specifically permitted properties are used when the domain is Person.
     }
 
 
+Identifiers
+-----------
+
+A slot with ``identifier: true`` gets no required check. In RDF an identifier is
+the IRI of the subject, not a triple, so there is no property for a query to
+look for. A slot with ``key: true`` is an ordinary property and keeps its check.
+
 Schemas that import other schemas
 ---------------------------------
 

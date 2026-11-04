@@ -43,7 +43,7 @@ SELECT ?g ?s ?p WHERE {
 
 {% for slot in schema_view.class_induced_slots(cn) -%}
 
-{% if slot.required %}
+{% if slot.required and not slot.identifier %}
 # @CHECK required_{{cn}}_{{slot.name}}
 SELECT
   ?check
