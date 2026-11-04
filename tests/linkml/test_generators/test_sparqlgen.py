@@ -561,6 +561,29 @@ def test_sparqlgen_no_mergeimports_queries_judge_data_correctly(tmp_path):
     }
 
 
+_PREFIXES_FOR_DATA = "@prefix b: <https://example.org/b/> .\n@prefix m: <https://example.org/m/> .\n"
+
+
+@pytest.mark.parametrize(
+    ("named_graph", "expected"),
+    [
+        ("<https://example.org/graph>", {"CHECK_permitted_Child", "CHECK_required_Child_kind"}),
+        ("<https://example.org/other>", set()),
+    ],
+)
+def test_sparqlgen_named_graphs_limit_every_check(tmp_path, named_graph, expected):
+    """Each check reports what is in a named graph it was given, and nothing from any other graph."""
+    main, _ = _write_schemas(tmp_path)
+    queries = SparqlGenerator(str(main), named_graphs=[named_graph]).queries
+    dataset = Dataset()
+    dataset.graph(URIRef("https://example.org/graph")).parse(
+        data=_PREFIXES_FOR_DATA + 'm:c a m:Child ; b:id "c" ; b:name "Child" ; m:other "x" .',
+        format="turtle",
+    )
+
+    assert {name for name, query in queries.items() if list(dataset.query(query))} == expected
+
+
 def test_sparqlgen_prefix_declared_by_the_given_schema_is_kept(tmp_path):
     """
     The schema given to the generator keeps the meaning of its own prefixes, and imported prefixes are all declared.

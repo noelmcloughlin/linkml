@@ -30,8 +30,8 @@ specifically permitted properties are used when the domain is Person.
 
 .. code-block:: sparql
 
-    SELECT ?g ?s ?p WHERE {
-     GRAPH ?g {
+    SELECT ?graph ?s ?p WHERE {
+     GRAPH ?graph {
       ?s rdf:type schema:Person ;
          ?p ?o .
       FILTER ( ?p NOT IN (

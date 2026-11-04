@@ -33,8 +33,8 @@ PREFIX {{pfxn}}: <{{pfx.prefix_reference}}>
 ## --
 
 # @CHECK permitted_{{cn}}
-SELECT ?g ?s ?p WHERE {
- GRAPH ?g {
+SELECT ?graph ?s ?p WHERE {
+ GRAPH ?graph {
   ?s rdf:type {{ term(schema_view.get_uri(cn)) }} ;
      ?p ?o .
   FILTER ( ?p NOT IN (
