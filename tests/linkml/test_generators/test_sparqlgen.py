@@ -26,12 +26,11 @@ def test_sparqlgen_does_not_mutate_input_schemaview(kitchen_sink_path):
     generator that reused the same schema object then found the attributes missing. The generator now reads
     the caller's schema with no copy in between, so this compares all of it.
 
-    Two fields are filled in first, because this generator is not what writes them. Reading a view sets
-    ``domain_of``, and the base generator sets ``metamodel_version``.
+    Two things are put in place first, because the rendering is not what writes them. A view loads the imports
+    and sets ``from_schema`` when it is first read, and the base generator sets ``metamodel_version``.
     """
     sv = SchemaView(kitchen_sink_path)
-    for class_name in sv.all_classes():
-        sv.class_induced_slots(class_name)
+    sv.all_classes()
     sv.schema.metamodel_version = "0.0.0"
     before = yaml_dumper.dumps(sv.schema)
 

@@ -157,9 +157,7 @@ class SparqlGenerator(Generator):
         # --no-mergeimports then showed that the rewrite itself gave wrong queries: moving attributes
         # into the root schema changed the prefix of inherited ones, and attributes sharing a name
         # overwrote each other. So the rewrite was removed, and query_prefixes and slot_uri read the
-        # same facts from the view, which leaves a copy nothing to protect. The one write left is
-        # domain_of, which SchemaView.induced_slot fills in for any reader of a view, including the
-        # other SchemaView generators.
+        # same facts from the view, which leaves a copy nothing to protect.
         self.queries = self.generate_sparql(named_graphs=self.named_graphs, limit=self.limit)
 
     def generate_sparql(self, named_graphs=None, limit: int = None):
