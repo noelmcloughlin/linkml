@@ -614,3 +614,20 @@ def test_sparqlgen_prefix_declared_by_the_given_schema_is_kept(tmp_path):
     assert "PREFIX m: <https://example.org/m/>" in sparql
     assert "https://example.org/other/" not in sparql
     assert "PREFIX title: <https://example.org/title/>" in sparql
+
+
+def test_sparqlgen_warns_when_two_schemas_give_one_prefix_different_iris(tmp_path, caplog):
+    """A prefix with two IRIs is named in a warning, and a prefix that agrees across schemas is not."""
+    base = _SPARQLGEN_BASE_WITH_OWN_PREFIX.replace(
+        "  b: https://example.org/b/\n",
+        "  b: https://example.org/b/\n  m: https://example.org/other/\n",
+    )
+    main, _ = _write_schemas(tmp_path, base=base)
+
+    with caplog.at_level("WARNING", logger="linkml.generators.sparqlgen"):
+        SparqlGenerator(str(main))
+
+    messages = [record.getMessage() for record in caplog.records if record.name == "linkml.generators.sparqlgen"]
+    assert len(messages) == 1
+    for text in ("Prefix m ", "https://example.org/other/", "https://example.org/m/", "schema base"):
+        assert text in messages[0]

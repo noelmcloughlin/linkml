@@ -117,12 +117,27 @@ def query_prefixes(schemaview: SchemaView) -> dict[str, Prefix]:
     An IRI is declared under one name only, because rdflib forgets the earlier of two names for the
     same IRI and then refuses a query that uses it. ``query_term`` writes a term that uses a name
     left out here as a full IRI.
+
+    A term keeps only its prefix's name, so when two schemas give one prefix different IRIs, a term
+    from the later schema gets the earlier IRI. That cannot be told apart in the queries, so it is
+    logged as a warning.
     """
     prefixes = {}
     for schema in (schemaview.schema, *schemaview.all_schema()):
         for name, prefix in schema.prefixes.items():
-            if prefix.prefix_reference not in {declared.prefix_reference for declared in prefixes.values()}:
-                prefixes.setdefault(name, prefix)
+            if name in prefixes:
+                if prefixes[name].prefix_reference != prefix.prefix_reference:
+                    logger.warning(
+                        "Prefix %s is %s in schema %s, but the queries use %s from an earlier schema. "
+                        "Any term from %s that uses this prefix will point at the wrong IRI.",
+                        name,
+                        prefix.prefix_reference,
+                        schema.name,
+                        prefixes[name].prefix_reference,
+                        schema.name,
+                    )
+            elif prefix.prefix_reference not in {declared.prefix_reference for declared in prefixes.values()}:
+                prefixes[name] = prefix
     prefixes.setdefault("rdf", Prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
     prefixes.setdefault("linkml", Prefix("linkml", "https://w3id.org/linkml/"))
     return prefixes

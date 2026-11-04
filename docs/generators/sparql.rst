@@ -70,6 +70,10 @@ from an imported class, and a range that names an imported class also accepts
 that class's descendants. Each query declares the prefixes of the imported
 schemas too, so it runs on its own.
 
+When two schemas give one prefix different IRIs, the queries use the IRI from
+the schema given to ``gen-sparql``, and a warning names the prefix. Give the
+prefix one IRI, or a term from the other schema will point at the wrong IRI.
+
 Docs
 ----
 
