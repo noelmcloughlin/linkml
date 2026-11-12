@@ -250,6 +250,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/protobuf.html">ProtoBuf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/graphql.html">GraphQL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/openapi.html">OpenAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generators/ossie.html">Ossie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/jsonld-context.html">JSON-LD Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/jsonld.html">JSON-LD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/rdf.html">RDF</a></li>
@@ -413,13 +414,15 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">curies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">XSD</span><span class="p">,</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">URIRef</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">URIRef</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdflib.namespace</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDF</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdflib.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">BNode</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Node</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.dumpers.dumper_root</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dumper</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.linkml_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementName</span><span class="p">,</span> <span class="n">PermissibleValue</span><span class="p">,</span> <span class="n">SlotDefinition</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.utils.rdf_canonicalize</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonicalize_rdf_graph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.utils.rdf_terms</span><span class="w"> </span><span class="kn">import</span> <span class="n">checked_iri</span><span class="p">,</span> <span class="n">value_term</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.utils.schemaview</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaView</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">linkml_runtime.utils.yamlutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">YAMLRoot</span>
 
@@ -452,6 +455,8 @@
 <span class="sd">        :param schemaview:</span>
 <span class="sd">        :param prefix_map:</span>
 <span class="sd">        :return:</span>
+<span class="sd">        :raises ValueError: if an IRI or identifier holds a character that an IRI cannot, or a blank</span>
+<span class="sd">            node label is outside the Turtle grammar</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
         <span class="n">schemaview</span><span class="o">.</span><span class="n">imports_closure</span><span class="p">()</span>  <span class="c1"># ensure all imported sub-schemas are in schema_map before namespaces() caches</span>
@@ -512,20 +517,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">all_types</span><span class="p">():</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">target_type</span><span class="p">)</span>
-            <span class="n">dt_uri</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">uri</span>
-            <span class="k">if</span> <span class="n">dt_uri</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">dt_uri</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;rdfs:Resource&quot;</span><span class="p">,</span> <span class="s2">&quot;xsd:anyURI&quot;</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">schemaview</span><span class="o">.</span><span class="n">expand_curie</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">dt_uri</span> <span class="o">==</span> <span class="s2">&quot;xsd:string&quot;</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="s2">&quot;xsd&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">namespaces</span><span class="p">:</span>
-                        <span class="n">namespaces</span><span class="p">[</span><span class="s2">&quot;xsd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">XSD</span>
-                    <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">namespaces</span><span class="o">.</span><span class="n">uri_for</span><span class="p">(</span><span class="n">dt_uri</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No datatype specified for : </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, using plain Literal&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">induced_type</span><span class="p">(</span><span class="n">target_type</span><span class="p">)</span><span class="o">.</span><span class="n">uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No datatype specified for : </span><span class="si">{</span><span class="n">target_type</span><span class="si">}</span><span class="s2">, using plain Literal&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value_term</span><span class="p">(</span><span class="n">schemaview</span><span class="p">,</span> <span class="n">target_type</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
         <span class="n">element_vars</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">element</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)}</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">element_vars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">id_slot</span> <span class="o">=</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">get_identifier_slot</span><span class="p">(</span><span class="n">target_type</span><span class="p">)</span>
@@ -551,23 +546,42 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v_or_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">vs</span> <span class="o">=</span> <span class="n">v_or_list</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v_or_list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">vs</span> <span class="o">=</span> <span class="n">v_or_list</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="n">vs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">v_or_list</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">v_or_list</span><span class="p">]</span>
+            <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="c1"># Skip slots with no values before resolving the slot: an element may carry</span>
+            <span class="c1"># python attributes (e.g. defaults) that are not schema slots, and resolving</span>
+            <span class="c1"># those would raise. This mirrors the original per-value loop, which only</span>
+            <span class="c1"># touched the schema once it had a value to emit.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">vs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slot_name_map</span><span class="p">:</span>
+                <span class="n">slot_name</span> <span class="o">=</span> <span class="n">slot_name_map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slot </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> not in name map&quot;</span><span class="p">)</span>
+                <span class="n">slot_name</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="n">slot</span> <span class="o">=</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">induced_slot</span><span class="p">(</span><span class="n">slot_name</span><span class="p">,</span> <span class="n">cn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">slot_uri</span> <span class="o">=</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">schemaview</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">multivalued</span> <span class="ow">and</span> <span class="n">slot</span><span class="o">.</span><span class="n">list_elements_ordered</span><span class="p">:</span>
+                <span class="c1"># emit an ordered rdf:List (rdf:first/rdf:rest) so element order is part</span>
+                <span class="c1"># of the RDF semantics and survives canonicalization. This applies to</span>
+                <span class="c1"># both list- and dict-backed collections: ``vs`` is already in the</span>
+                <span class="c1"># correct (insertion) order for either form. See issue #3531.</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inject_triples</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">schemaview</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">slot</span><span class="o">.</span><span class="n">range</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">]</span>
+                <span class="n">list_head</span> <span class="o">=</span> <span class="n">BNode</span><span class="p">()</span>
+                <span class="n">Collection</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">list_head</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">element_uri</span><span class="p">,</span> <span class="n">slot_uri</span><span class="p">,</span> <span class="n">list_head</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">designates_type</span><span class="p">:</span>
+                    <span class="n">type_added</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slot_name_map</span><span class="p">:</span>
-                    <span class="n">k</span> <span class="o">=</span> <span class="n">slot_name_map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slot </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> not in name map&quot;</span><span class="p">)</span>
-                <span class="n">slot</span> <span class="o">=</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">induced_slot</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">cn</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">slot</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
-                    <span class="n">slot_uri</span> <span class="o">=</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">schemaview</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-                    <span class="n">v_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inject_triples</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">schemaview</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">slot</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">element_uri</span><span class="p">,</span> <span class="n">slot_uri</span><span class="p">,</span> <span class="n">v_node</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">designates_type</span><span class="p">:</span>
-                        <span class="n">type_added</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">v_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inject_triples</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">schemaview</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">slot</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">element_uri</span><span class="p">,</span> <span class="n">slot_uri</span><span class="p">,</span> <span class="n">v_node</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">designates_type</span><span class="p">:</span>
+                    <span class="n">type_added</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">type_added</span><span class="p">:</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">element_uri</span><span class="p">,</span> <span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">schemaview</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">))))</span>
         <span class="k">return</span> <span class="n">element_uri</span>
@@ -613,15 +627,18 @@
 <span class="sd">        :param fmt:</span>
 <span class="sd">        :param prefix_map:</span>
 <span class="sd">        :return: serialization of rdflib Graph containing element</span>
+<span class="sd">        :raises ValueError: if an IRI or identifier holds a character that an IRI cannot, or a blank</span>
+<span class="sd">            node label is outside the Turtle grammar</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">canonicalize_rdf_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">as_rdf_graph</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">schemaview</span><span class="p">,</span> <span class="n">prefix_map</span><span class="o">=</span><span class="n">prefix_map</span><span class="p">),</span> <span class="n">output_format</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_as_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_slot</span><span class="p">:</span> <span class="n">SlotDefinition</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">schemaview</span><span class="p">:</span> <span class="n">SchemaView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">URIRef</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the IRI of an identifier. Percent-encoding leaves no character that needs a check.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">id_slot</span> <span class="ow">and</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">is_slot_percent_encoded</span><span class="p">(</span><span class="n">id_slot</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">element_id</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">schemaview</span><span class="o">.</span><span class="n">namespaces</span><span class="p">()</span><span class="o">.</span><span class="n">uri_for</span><span class="p">(</span><span class="n">element_id</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">checked_iri</span><span class="p">(</span><span class="n">schemaview</span><span class="o">.</span><span class="n">namespaces</span><span class="p">()</span><span class="o">.</span><span class="n">uri_for</span><span class="p">(</span><span class="n">element_id</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Identifier </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">element_id</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
